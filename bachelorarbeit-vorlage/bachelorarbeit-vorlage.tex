@@ -34,6 +34,7 @@
 \usepackage{tikz}
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
+\usetikzlibrary{matrix, positioning}
 
 \usetikzlibrary{arrows,automata, matrix,chains,positioning,decorations.pathreplacing,arrows}
 
@@ -278,18 +279,95 @@ Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer})
 \section{Feedforward }
 \section{Layer in \ac{CNN}}
 \subsection{Input Layer}
-Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W$ x $H$ x $D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100$ x $100 $ x $3 $ für ein RGB-Bild und $ 224x224x1 $ für ein Graustufenbild.
+Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W\times H\times D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
 
 
 
 
-\begin{itemize}
-	\item Netzwerke mit einer großen Anzahl von Parametern stehen vor mehreren Problemen, z.B. langsamere Trainingszeit, Überhitzungsgefahr.
-\end{itemize}
+
 \subsection{Convolution Layer}
 %\subsubsection{Depthwise Separable Convolution Layer}
 Kombination von Depthwise und Pointwise Convolution. 
 Verringerung der Anzahl von Parametern und Berechnungen.
+\begin{figure}[h]
+	\centering
+	%%%%%%%%%%%%%%%%%%% Local functions %%%%%%%%%%%%%%%%%%%
+	%% -- Draw marks
+	\newbox\dumbox
+	\newcommand{\mymark}[2]{%
+		\setbox\dumbox=\hbox{#2}%
+		\hbox to \wd\dumbox{\hss%
+			\tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
+			\hss}%
+	}
+	
+\newcommand*{\putunder}[2]{%
+	{\mathop{#1}_{\textstyle #2}}%
+}
+	%%%%%%%%%%%%%%%%%%% Local functions %%%%%%%%%%%%%%%%%%%
+	
+	
+		
+		\[
+		\putunder{\left(\begin{matrix}
+		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
+		0 & 0 & 1 &               1 & 1 &               0 & 0\\
+		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
+		0 & 0 & 0 & 1 & 1 & 0 & 0\\
+		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
+		0 & 1 & 1 & 0 & 0 & 0 & 0\\
+		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
+		\end{matrix}\right)}{X}
+		\times
+		\putunder{\left(\begin{array}{ccc}
+		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
+		0  & 1 &              0 \\
+		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
+		\end{array}\right)}{K}
+		=
+		\putunder{\left(\begin{array}{ccccccc}
+		\mymark{T}{1} & 4 & 3 & 4 &\mymark{C}{1}\\
+		1 & 2 & 4 & 3 & 3\\
+		1 & 2 & \mymark{E}{3} & 4 & 1\\
+		1 & 3 & 3 & 1 & 1\\
+		\mymark{A2}{3} & 3 & 1 & 1 & \mymark{B2}{0}
+		\end{array}\right)}{X\times K}
+		\]
+		
+		\begin{tikzpicture}[overlay, remember picture,
+		myedge1/.style={dashed, black},
+		myedge2/.style={dashed,  red}]
+		
+		%% Draw boxes
+		\draw[red, fill=red, opacity=.2]   (TL1.north west) rectangle (BR1.south east);
+		\draw[blue, fill=blue, opacity=.2]   (A.north west) rectangle (A1.south east);
+		\draw[yellow, fill=yellow, opacity=.2]   (B.north west) rectangle (B1.south east);
+%		\draw[black]   (K.north west) rectangle (K1.south east);
+		\draw[green, fill=green, opacity=.2]   (T1.north west) rectangle (B11.south east);
+%		\draw[blue, fill=blue, fill opacity=.1] (TL2.north west) rectangle (BR2.south east);
+		\draw[red, fill=red, opacity=.2] (C.north west) rectangle (C.south east);
+		\draw[green, fill=green, opacity=.2] (T.north west) rectangle (T.south east);
+		\draw[blue, fill=blue, opacity=.2] (A2.north west) rectangle (A2.south east);
+		\draw[yellow, fill=yellow, opacity=.2] (B2.north west) rectangle (B2.south east) ;
+		\draw[blue, fill=blue, opacity=.5]   (B11.north west) rectangle (B.south east);
+		\draw[blue, fill=blue, opacity=.5] (E.north west) rectangle (E.south east) ;
+		
+		%% Draw blue lines
+%		\draw[myedge1] (TL1) -- (TL2);
+%		\draw[myedge1] (BL1) -- (BL2);
+%		\draw[myedge1] (TR1) -- (TR2);
+%		\draw[myedge1] (BR1) -- (BR2);
+%%		
+%%		%% Draw green lines
+%		\draw[myedge2] (TL2) -- (C.north west);
+%		\draw[myedge2] (BL2) -- (C.south west);
+%		\draw[myedge2] (TR2) -- (C.north east);
+%		\draw[myedge2] (BR2) -- (C.south east);
+		\end{tikzpicture}
+		\caption{Faltungsoperation }
+		\label{Faltungsoperation}
+\end{figure}
+
 \subsection{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während dem Training mit sehr vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
 Die Aktivierungsfunktion auch Transferfunktion oder Aktivitätsfunktion genannt, hilf dem \ac{NN} bei der Durchführung dieser Trennung. Es gibt sehr viele Aktivierungsfunktionen und in folgenden werden wir sehen, dass eine Aktivierungsfunktion je nach zu lösende Aufgaben  vorzuziehen ist.\[\begin{cases}
@@ -620,6 +698,16 @@ Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merk
 
 
 \subsection{Multi-layer Perzeptron (Fully Connected Layer)}
+\textcolor{blue}{
+	\begin{itemize}
+		\item In einer vollständig verbundenen Schicht ist jedes Neuron mit jedem Neuron in der vorherigen Schicht verbunden, und jede Verbindung hat ihr eigenes Gewicht. Dies ist ein völlig universelles Verbindungsmuster und macht keine Annahmen über die Merkmale der Daten. Es ist auch sehr teuer in Bezug auf Speicher (Gewichte) und Berechnung (Verbindungen).
+		\item Vollständig verbundene neuronale Netze sind gut genug, aber sie sind nicht gut für die Extraktion von Merkmalen. Vor der Entstehung von CNNs war der Stand der Technik, explizite Merkmale aus Bildern zu extrahieren und diese Merkmale dann zu klassifizieren.
+		\item CNNs werden geschult, um die besten Merkmale aus den Bildern für das jeweilige Problem zu identifizieren und zu extrahieren. Das ist ihre größte Stärke. Die letztgenannten Schichten eines CNN sind aufgrund ihrer Stärke als Klassifikator vollständig miteinander verbunden. Diese beiden Architekturen konkurrieren jedoch nicht, wie Sie vielleicht denken, wenn CNNs FC-Schichten enthalten.
+		\item Die vollständig verbundenen Schichten des CNN bieten ihm die Möglichkeit, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann.
+	\end{itemize}}
+\begin{itemize}
+	\item Netzwerke mit einer großen Anzahl von Parametern stehen vor mehreren Problemen, z.B. langsamere Trainingszeit, Überhitzungsgefahr.
+\end{itemize}
 \section{Backforward }
 \subsection{Fehlerfunktion}
 \textbf{Was wird hier gemacht}

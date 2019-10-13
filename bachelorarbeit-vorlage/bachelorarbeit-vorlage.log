@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  12 OCT 2019 16:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  13 OCT 2019 07:02
 entering extended mode
 **./bachelorarbeit-vorlage.tex
 (bachelorarbeit-vorlage.tex
@@ -1184,6 +1184,10 @@ decorations\pgflibrarydecorations.pathmorphing.code.tex"))
 \pgfplots@zmax@reg=\dimen264
 ))
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\frontendla
+yer\tikz\libraries\tikzlibrarymatrix.code.tex"
+File: tikzlibrarymatrix.code.tex 2019/04/04 v3.1.2 (3.1.2)
+)
+("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\frontendla
 yer\tikz\libraries\tikzlibraryautomata.code.tex"
 File: tikzlibraryautomata.code.tex 2019/04/04 v3.1.2 (3.1.2)
 
@@ -1216,29 +1220,25 @@ File: pgflibraryshapes.multipart.code.tex 2019/04/04 v3.1.2 (3.1.2)
 \pgfnodepartfivebox=\box63
 )))
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\frontendla
-yer\tikz\libraries\tikzlibrarymatrix.code.tex"
-File: tikzlibrarymatrix.code.tex 2019/04/04 v3.1.2 (3.1.2)
-)
-("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\frontendla
 yer\tikz\libraries\tikzlibrarychains.code.tex"
 File: tikzlibrarychains.code.tex 2019/04/04 v3.1.2 (3.1.2)
 ) (bachelorarbeit-vorlage.aux)
 \openout1 = `bachelorarbeit-vorlage.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\context\base\mkii\supp
 -pdf.mkii"
@@ -1271,7 +1271,7 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 \AtBeginShipoutBox=\box65
-Package hyperref Info: Link coloring OFF on input line 56.
+Package hyperref Info: Link coloring OFF on input line 57.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nameref
 .sty"
@@ -1283,9 +1283,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count198
 )
-LaTeX Info: Redefining \ref on input line 56.
-LaTeX Info: Redefining \pageref on input line 56.
-LaTeX Info: Redefining \nameref on input line 56.
+LaTeX Info: Redefining \ref on input line 57.
+LaTeX Info: Redefining \pageref on input line 57.
+LaTeX Info: Redefining \nameref on input line 57.
  (bachelorarbeit-vorlage.out) (bachelorarbeit-vorlage.out)
 \@outlinefile=\write4
 \openout4 = `bachelorarbeit-vorlage.out'.
@@ -1296,7 +1296,7 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           You can avoid loading `bookmark' with KOMA-Script option
 (scrartcl)           `bookmarkpackage=false' before \begin{document} and
 (scrartcl)           you can avoid this message with `\usepackage{bookmark}'
-(scrartcl)           before \begin{document} on input line 56.
+(scrartcl)           before \begin{document} on input line 57.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\bookmar
 k.sty"
@@ -1317,18 +1317,18 @@ Package caption Info: End \AtBeginDocument code.
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.16} into 
 your preamble.
- on input line 56.
+ on input line 57.
 
 <./images/logo_uni.png, id=6, 1204.5pt x 1586.92876pt>
 File: ./images/logo_uni.png Graphic file (type png)
 <use ./images/logo_uni.png>
-Package pdftex.def Info: ./images/logo_uni.png  used on input line 63.
+Package pdftex.def Info: ./images/logo_uni.png  used on input line 64.
 (pdftex.def)             Requested size: 60.22852pt x 79.35107pt.
 [1
 
 {C:/Users/TEMKENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./images/
 logo_uni.png>]
-LaTeX Font Info:    Try loading font information for T1+aess on input line 90.
+LaTeX Font Info:    Try loading font information for T1+aess on input line 91.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ae\t1aess.fd"
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
@@ -1365,9 +1365,9 @@ although it is yet undefined on input line 31.
 
  [3] [4]
 Package acronym Info: Label `acro:KNN' newly defined as it shall be overridden
-although it is yet undefined on input line 114.
+although it is yet undefined on input line 115.
 
-Overfull \hbox (8.66187pt too wide) in paragraph at lines 142--142
+Overfull \hbox (8.66187pt too wide) in paragraph at lines 143--143
  []\T1/aer/m/n/12 Aktivierungs 
  []
 
@@ -1375,144 +1375,152 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 
-Overfull \hbox (5.90398pt too wide) in paragraph at lines 224--224
+Overfull \hbox (5.90398pt too wide) in paragraph at lines 225--225
  [][]\T1/aer/m/n/12 Versteckte 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 272.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 273.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ae\omsaer.fd"
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 272.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 273.
 
 [5]
+\dumbox=\box66
+ [6] [7]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6]
+[8]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[7] [8]
-
-LaTeX Warning: Command \^ invalid in math mode on input line 471.
+LaTeX Warning: Command \^ invalid in math mode on input line 549.
 
 Missing character: There is no ê in font cmr8!
-[9] [10]
+[9]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[10]
 Package acronym Info: Label `acro:FCL' newly defined as it shall be overridden
-although it is yet undefined on input line 618.
- [11] [12]
-Overfull \hbox (15.3425pt too wide) in paragraph at lines 691--693
+although it is yet undefined on input line 696.
+ [11] [12] [13]
+Overfull \hbox (15.3425pt too wide) in paragraph at lines 779--781
 \T1/aer/m/n/12 Trai-nings-an-fang.Dann wer-den die Ein-gang-da-ten in das [][] 
 ein-ge-speist(\T1/aer/m/it/12 Forwardpropogation\T1/aer/m/n/12 )
  []
 
-[13]
-Overfull \hbox (3.51895pt too wide) in paragraph at lines 718--719
+
+Overfull \hbox (3.51895pt too wide) in paragraph at lines 806--807
 [][][][] 
  []
 
 
-Overfull \hbox (0.92793pt too wide) in paragraph at lines 720--724
+Overfull \hbox (0.92793pt too wide) in paragraph at lines 808--812
  [] 
  []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 [14] [15]
 
 LaTeX Font Warning: Font shape `T1/aess/bx/it' undefined
-(Font)              using `T1/aess/bx/n' instead on input line 763.
+(Font)              using `T1/aess/bx/n' instead on input line 851.
 
-[16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 839--840
-
- []
-
-[18] [19]
-Underfull \hbox (badness 10000) in paragraph at lines 879--880
+[16] [17] [18]
+Underfull \hbox (badness 10000) in paragraph at lines 927--928
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 887--888
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[19] [20]
+Underfull \hbox (badness 10000) in paragraph at lines 967--968
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 887--888
+Underfull \hbox (badness 10000) in paragraph at lines 975--976
 
  []
 
-[20]
-<./images/ImageDataAugmaentation.png, id=322, 374.39874pt x 251.94125pt>
-File: ./images/ImageDataAugmaentation.png Graphic file (type png)
-<use ./images/ImageDataAugmaentation.png>
-Package pdftex.def Info: ./images/ImageDataAugmaentation.png  used on input lin
-e 901.
-(pdftex.def)             Requested size: 374.39783pt x 251.94063pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 894--906
+Underfull \hbox (badness 10000) in paragraph at lines 975--976
 
  []
 
 [21]
-Underfull \hbox (badness 10000) in paragraph at lines 908--909
+<./images/ImageDataAugmaentation.png, id=329, 374.39874pt x 251.94125pt>
+File: ./images/ImageDataAugmaentation.png Graphic file (type png)
+<use ./images/ImageDataAugmaentation.png>
+Package pdftex.def Info: ./images/ImageDataAugmaentation.png  used on input lin
+e 989.
+(pdftex.def)             Requested size: 374.39783pt x 251.94063pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 982--994
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 996--997
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 911--918
+Underfull \hbox (badness 10000) in paragraph at lines 999--1006
 
  []
 
-[22 <./images/ImageDataAugmaentation.png>]
+[23 <./images/ImageDataAugmaentation.png>]
 Package acronym Info: Label `acro:KI' newly defined as it shall be overridden
-although it is yet undefined on input line 919.
-<./images/dropout1.png, id=343, 208.52907pt x 185.19188pt>
+although it is yet undefined on input line 1007.
+<./images/dropout1.png, id=350, 208.52907pt x 185.19188pt>
 File: ./images/dropout1.png Graphic file (type png)
 <use ./images/dropout1.png>
-Package pdftex.def Info: ./images/dropout1.png  used on input line 927.
+Package pdftex.def Info: ./images/dropout1.png  used on input line 1015.
 (pdftex.def)             Requested size: 417.0571pt x 370.38281pt.
-<./images/dropout2.png, id=344, 322.20375pt x 281.05pt>
+<./images/dropout2.png, id=351, 322.20375pt x 281.05pt>
 File: ./images/dropout2.png Graphic file (type png)
 <use ./images/dropout2.png>
-Package pdftex.def Info: ./images/dropout2.png  used on input line 933.
+Package pdftex.def Info: ./images/dropout2.png  used on input line 1021.
 (pdftex.def)             Requested size: 644.40591pt x 562.0986pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[23]
-<./images/dropout_.png, id=356, 1007.765pt x 381.425pt>
+[24]
+<./images/dropout_.png, id=364, 1007.765pt x 381.425pt>
 File: ./images/dropout_.png Graphic file (type png)
 <use ./images/dropout_.png>
-Package pdftex.def Info: ./images/dropout_.png  used on input line 950.
+Package pdftex.def Info: ./images/dropout_.png  used on input line 1038.
 (pdftex.def)             Requested size: 448.12341pt x 134.43777pt.
 
 
-LaTeX Warning: Citation `LeCun' on page 24 undefined on input line 958.
+LaTeX Warning: Citation `LeCun' on page 25 undefined on input line 1046.
 
-[24 <./images/dropout1.png> <./images/dropout2.png>] [25 <./images/dropout_.png
->] [26] [27]
-Underfull \hbox (badness 10000) in paragraph at lines 1059--1061
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1062--1064
+[25 <./images/dropout1.png> <./images/dropout2.png>] [26 <./images/dropout_.png
+>] [27] [28]
+Underfull \hbox (badness 10000) in paragraph at lines 1147--1149
 
  []
 
-[28]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1069.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1069.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1150--1152
+
+ []
+
+[29]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1157.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1157.
  (bachelorarbeit-vorlage.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1069.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1069.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1157.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1157.
 
 Package rerunfilecheck Info: File `bachelorarbeit-vorlage.out' has not changed.
 
@@ -1524,13 +1532,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1069.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1157.
  ) 
 Here is how much of TeX's memory you used:
- 37374 strings out of 492970
- 876666 string characters out of 3125707
- 1216233 words of memory out of 3000000
- 40400 multiletter control sequences out of 15000+200000
+ 37623 strings out of 492970
+ 880939 string characters out of 3125707
+ 1216232 words of memory out of 3000000
+ 40647 multiletter control sequences out of 15000+200000
  54227 words of font info for 118 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,24n,100p,9103b,2177s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1556,9 +1564,9 @@ EMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.
 pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
 onts/cm/cmsy8.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/cm/cmti12.pfb>
-Output written on bachelorarbeit-vorlage.pdf (28 pages, 639401 bytes).
+Output written on bachelorarbeit-vorlage.pdf (29 pages, 645710 bytes).
 PDF statistics:
- 621 PDF objects out of 1000 (max. 8388607)
- 125 named destinations out of 1000 (max. 500000)
+ 629 PDF objects out of 1000 (max. 8388607)
+ 127 named destinations out of 1000 (max. 500000)
  350 words of extra memory for PDF output out of 10000 (max. 10000000)
 
