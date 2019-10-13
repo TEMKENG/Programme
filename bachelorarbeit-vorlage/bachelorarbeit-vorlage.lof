@@ -1,0 +1,17 @@
+\babel@toc {ngerman}{}
+\babel@toc {ngerman}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Funktionsweise eines k\IeC {\"u}nstlichen Neurons \relax }}{5}{figure.caption.6}
+\contentsline {figure}{\numberline {2}{\ignorespaces Darstellung eines k\IeC {\"u}nstlichen neuronalen Netzes \relax }}{6}{figure.caption.7}
+\contentsline {figure}{\numberline {3}{\ignorespaces Bin\IeC {\"a}re Treppenfunktion\relax }}{7}{figure.caption.8}
+\contentsline {figure}{\numberline {5}{\ignorespaces Lineare Funktion\relax }}{7}{figure.caption.9}
+\contentsline {figure}{\numberline {7}{\ignorespaces Logistische Aktivierungsfunktion:$ sigmoid(x) $.\relax }}{8}{figure.caption.10}
+\contentsline {figure}{\numberline {9}{\ignorespaces Tangens Hyperbolicus.\relax }}{8}{figure.caption.11}
+\contentsline {figure}{\numberline {11}{\ignorespaces ReLU Aktivierungsfunktion\relax }}{8}{figure.caption.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Leaky ReLU Funktion\relax }}{9}{figure.caption.13}
+\contentsline {figure}{\numberline {15}{\ignorespaces Funktionsweise eines Max-Pooling-Layer\relax }}{10}{figure.caption.14}
+\contentsline {figure}{\numberline {16}{\ignorespaces Funktionsweise eines Average-Pooling-Layer \relax }}{10}{figure.caption.15}
+\contentsline {figure}{\numberline {17}{\ignorespaces Ablauf der Backpropagation\relax }}{14}{figure.caption.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Ablauf der Netzbeschneidung (\textit {Pruning Network})\relax }}{19}{figure.caption.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{22}{figure.caption.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces Neuronales Netz mit Dropout \cite {3}\relax }}{24}{figure.caption.21}
+\contentsline {figure}{\numberline {21}{\ignorespaces \textbf {Links}: Ein Neuron zur Trainingszeit, die mit Wahrscheinlichkeit $ p $ vorhanden ist und mit Neuronen in der n\IeC {\"a}chsten Schicht mit Gewichten w verbunden ist. \textbf {Recht}: Zur Testzeit ist das Neuron immer vorhanden und die Gewichte werden mit $ p $ multipliziert. Die Ausgabe zur Testzeit ist identisch mit der erwarteten Ausgabe zur Trainingszeit\cite {3}.\relax }}{25}{figure.caption.22}
