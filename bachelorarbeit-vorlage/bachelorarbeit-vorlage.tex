@@ -282,17 +282,12 @@ Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer})
 Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W\times H\times D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
 
 
+\subsection{Faltungsschicht(\textit{Convolution Layer})}
 
+Die Faltungsschicht (\textit{\ac{ConvL}}) ist der Kernbaustein eines \ac{CNN} und der Namensgeber für das \ac{CNN}.Ein \ac{ConvL} besteht aus einer Menge von Filtern und Bias, die während des Trainings gelernt werden. Filtern haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$ und erstrecken sich aber über die gesamte Tiefe des Ausgang des vorherigen Layers.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnehmen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ X_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ X_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
 
-
-\subsection{Convolution Layer}
-%\subsubsection{Depthwise Separable Convolution Layer}
-Kombination von Depthwise und Pointwise Convolution. 
-Verringerung der Anzahl von Parametern und Berechnungen.
 \begin{figure}[h]
 	\centering
-	%%%%%%%%%%%%%%%%%%% Local functions %%%%%%%%%%%%%%%%%%%
-	%% -- Draw marks
 	\newbox\dumbox
 	\newcommand{\mymark}[2]{%
 		\setbox\dumbox=\hbox{#2}%
@@ -304,18 +299,17 @@ Verringerung der Anzahl von Parametern und Berechnungen.
 \newcommand*{\putunder}[2]{%
 	{\mathop{#1}_{\textstyle #2}}%
 }
-	%%%%%%%%%%%%%%%%%%% Local functions %%%%%%%%%%%%%%%%%%%
 	
 	
 		
 		\[
 		\putunder{\left(\begin{matrix}
 		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
-		0 & 0 & 1 &               1 & 1 &               0 & 0\\
+		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
 		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
 		0 & 0 & 0 & 1 & 1 & 0 & 0\\
 		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
-		0 & 1 & 1 & 0 & 0 & 0 & 0\\
+		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
 		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
 		\end{matrix}\right)}{X}
 		\times
@@ -342,7 +336,7 @@ Verringerung der Anzahl von Parametern und Berechnungen.
 		\draw[red, fill=red, opacity=.2]   (TL1.north west) rectangle (BR1.south east);
 		\draw[blue, fill=blue, opacity=.2]   (A.north west) rectangle (A1.south east);
 		\draw[yellow, fill=yellow, opacity=.2]   (B.north west) rectangle (B1.south east);
-%		\draw[black]   (K.north west) rectangle (K1.south east);
+		\draw[red]   (M.north west) rectangle (M1.south east);
 		\draw[green, fill=green, opacity=.2]   (T1.north west) rectangle (B11.south east);
 %		\draw[blue, fill=blue, fill opacity=.1] (TL2.north west) rectangle (BR2.south east);
 		\draw[red, fill=red, opacity=.2] (C.north west) rectangle (C.south east);
@@ -364,9 +358,28 @@ Verringerung der Anzahl von Parametern und Berechnungen.
 %		\draw[myedge2] (TR2) -- (C.north east);
 %		\draw[myedge2] (BR2) -- (C.south east);
 		\end{tikzpicture}
+		\begin{center}
+			\begin{tabular}{r@{: }l r@{: }l r@{: }l}
+				$X$ & Conv-Layer Eingabedaten. & $K$ & Kernel/Filter& $ X\times K $ &Conv-Layer Output.
+			\end{tabular}
+		\end{center}
 		\caption{Faltungsoperation }
 		\label{Faltungsoperation}
 \end{figure}
+
+
+\textbf{\ac{ConvL} Vorteile}\\
+Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL}    \\
+Die Verwendung von Conv-Layern bieten mehrere Vorteile.
+
+
+\begin{itemize}
+	\item Die Verwendung von CNNs ist motiviert durch die Tatsache, dass sie relevante Merkmale von einem Bild / Video auf verschiedenen Ebenen, ähnlich einem menschlichen Gehirn, erfassen / lernen können. Dies ist eine Funktion zum Lernen! Herkömmliche neuronale Netze können dies nicht tun.
+	\item Ein weiteres Hauptmerkmal von CNNs ist die Gewichtsverteilung.
+	\item CNN ist effizienter in Bezug auf Speicher und Komplexität.
+	\item In Bezug auf die Leistung übertreffen CNNs bei vielen Aufgaben die NNs. 
+	\item CNNs sind sehr gute Feature-Extraktoren.
+\end{itemize}
 
 \subsection{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während dem Training mit sehr vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
@@ -697,7 +710,7 @@ Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merk
 
 
 
-\subsection{Multi-layer Perzeptron (Fully Connected Layer)}
+\subsection{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
 \textcolor{blue}{
 	\begin{itemize}
 		\item In einer vollständig verbundenen Schicht ist jedes Neuron mit jedem Neuron in der vorherigen Schicht verbunden, und jede Verbindung hat ihr eigenes Gewicht. Dies ist ein völlig universelles Verbindungsmuster und macht keine Annahmen über die Merkmale der Daten. Es ist auch sehr teuer in Bezug auf Speicher (Gewichte) und Berechnung (Verbindungen).
