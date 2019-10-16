@@ -283,8 +283,13 @@ Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten
 
 
 \subsection{Faltungsschicht(\textit{Convolution Layer})}
+Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte das Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt. Dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ X_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
 
-Die Faltungsschicht (\textit{\ac{ConvL}}) ist der Kernbaustein eines \ac{CNN} und der Namensgeber für das \ac{CNN}.Ein \ac{ConvL} besteht aus einer Menge von Filtern und Bias, die während des Trainings gelernt werden. Filtern haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$ und erstrecken sich aber über die gesamte Tiefe des Ausgang des vorherigen Layers.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnehmen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ X_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ X_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
+\begin{center}
+	\begin{tabular}{r@{: }l r@{: }l r@{: }l}
+		$I$ & Conv-Layer Eingabedaten. & $K$ & Kernel/Filter& $ O $ &Conv-Layer Output.
+	\end{tabular}
+\end{center}
 
 \begin{figure}[h]
 	\centering
@@ -311,7 +316,7 @@ Die Faltungsschicht (\textit{\ac{ConvL}}) ist der Kernbaustein eines \ac{CNN} un
 		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
 		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
 		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
-		\end{matrix}\right)}{X}
+		\end{matrix}\right)}{I}
 		\times
 		\putunder{\left(\begin{array}{ccc}
 		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
@@ -325,7 +330,7 @@ Die Faltungsschicht (\textit{\ac{ConvL}}) ist der Kernbaustein eines \ac{CNN} un
 		1 & 2 & \mymark{E}{3} & 4 & 1\\
 		1 & 3 & 3 & 1 & 1\\
 		\mymark{A2}{3} & 3 & 1 & 1 & \mymark{B2}{0}
-		\end{array}\right)}{X\times K}
+		\end{array}\right)}{ O=I\times K}
 		\]
 		
 		\begin{tikzpicture}[overlay, remember picture,
@@ -346,29 +351,82 @@ Die Faltungsschicht (\textit{\ac{ConvL}}) ist der Kernbaustein eines \ac{CNN} un
 		\draw[blue, fill=blue, opacity=.5]   (B11.north west) rectangle (B.south east);
 		\draw[blue, fill=blue, opacity=.5] (E.north west) rectangle (E.south east) ;
 		
-		%% Draw blue lines
-%		\draw[myedge1] (TL1) -- (TL2);
-%		\draw[myedge1] (BL1) -- (BL2);
-%		\draw[myedge1] (TR1) -- (TR2);
-%		\draw[myedge1] (BR1) -- (BR2);
-%%		
-%%		%% Draw green lines
-%		\draw[myedge2] (TL2) -- (C.north west);
-%		\draw[myedge2] (BL2) -- (C.south west);
-%		\draw[myedge2] (TR2) -- (C.north east);
-%		\draw[myedge2] (BR2) -- (C.south east);
+
 		\end{tikzpicture}
-		\begin{center}
-			\begin{tabular}{r@{: }l r@{: }l r@{: }l}
-				$X$ & Conv-Layer Eingabedaten. & $K$ & Kernel/Filter& $ X\times K $ &Conv-Layer Output.
-			\end{tabular}
-		\end{center}
-		\caption{Faltungsoperation }
+	
+		\caption{Faltungsoperation mit einem $ 3\times 3 -$Filter und Schrittgröße $ =1 $}
 		\label{Faltungsoperation}
 \end{figure}
 
+Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{Stride}), die  sagt, wie das Filter über das Input bewegt werden muss und je nach der Schrittgröße hat das Output eine unterschiedliche räumliche Dimension. Die Standardschrittgröße ist eins und ein größere Schrittgröße($ >1 $) ermöglicht die Reduktion der Größe der Eingabedaten um mindestens die Hälfte. Vergleiche Abbildungen \ref{Faltungsoperation} und \ref{Faltungsoperation2}. 
+\begin{figure}[h]
+	\centering
+	\newbox\dumbox
+	\newcommand{\mymark}[2]{%
+		\setbox\dumbox=\hbox{#2}%
+		\hbox to \wd\dumbox{\hss%
+			\tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
+			\hss}%
+	}
+	
+	\newcommand*{\putunder}[2]{%
+		{\mathop{#1}_{\textstyle #2}}%
+	}
+	
+	
+	
+	\[
+	\putunder{\left(\begin{matrix}
+		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
+		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
+		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
+		0 & 0 & 0 & 1 & 1 & 0 & 0\\
+		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
+		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
+		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
+		\end{matrix}\right)}{I}
+	\times
+	\putunder{\left(\begin{array}{ccc}
+		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
+		0  & 1 &              0 \\
+		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
+		\end{array}\right)}{K}
+	=
+	\putunder{\left(\begin{array}{ccc}
+		\mymark{T}{1} & 3 &\mymark{C}{1}\\
+		1  & \mymark{E}{3} & 1\\
+		\mymark{A2}{3}  & 1  & \mymark{B2}{0}
+		\end{array}\right)}{ O=I\times K}
+	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,
+	myedge1/.style={dashed, black},
+	myedge2/.style={dashed,  red}]
+	
+	%% Draw boxes
+	\draw[red, fill=red, opacity=.2]   (TL1.north west) rectangle (BR1.south east);
+	\draw[blue, fill=blue, opacity=.2]   (A.north west) rectangle (A1.south east);
+	\draw[yellow, fill=yellow, opacity=.2]   (B.north west) rectangle (B1.south east);
+%	\draw[red]   (M.north west) rectangle (M1.south east);
+	\draw[green, fill=green, opacity=.2]   (T1.north west) rectangle (B11.south east);
+	%		\draw[blue, fill=blue, fill opacity=.1] (TL2.north west) rectangle (BR2.south east);
+	\draw[red, fill=red, opacity=.2] (C.north west) rectangle (C.south east);
+	\draw[green, fill=green, opacity=.2] (T.north west) rectangle (T.south east);
+	\draw[blue, fill=blue, opacity=.2] (A2.north west) rectangle (A2.south east);
+	\draw[yellow, fill=yellow, opacity=.2] (B2.north west) rectangle (B2.south east) ;
+	\draw[blue, fill=blue, opacity=.5]   (B11.north west) rectangle (B.south east);
+	\draw[blue, fill=blue, opacity=.5] (E.north west) rectangle (E.south east) ;
 
-\textbf{\ac{ConvL} Vorteile}\\
+	\end{tikzpicture}
+	
+	\caption{Faltungsoperation mit einem $ 3\times 3 -$Filter und Schrittgröße $ =2 $}
+	\label{Faltungsoperation2}
+\end{figure}
+
+In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale 
+
+
+\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
 Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL}    \\
 Die Verwendung von Conv-Layern bieten mehrere Vorteile.
 
@@ -378,7 +436,7 @@ Die Verwendung von Conv-Layern bieten mehrere Vorteile.
 	\item Ein weiteres Hauptmerkmal von CNNs ist die Gewichtsverteilung.
 	\item CNN ist effizienter in Bezug auf Speicher und Komplexität.
 	\item In Bezug auf die Leistung übertreffen CNNs bei vielen Aufgaben die NNs. 
-	\item CNNs sind sehr gute Feature-Extraktoren.
+
 \end{itemize}
 
 \subsection{Aktivierungsfunktion}
