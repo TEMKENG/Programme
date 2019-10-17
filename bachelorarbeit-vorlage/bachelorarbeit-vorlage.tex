@@ -25,7 +25,7 @@
 \usepackage{ae,aecompl}
 \usepackage{blindtext}
 \setcounter{secnumdepth}{5}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 \graphicspath{ {./images/} }
 \usepackage{hyperref}
 \usepackage{acronym}
@@ -35,7 +35,7 @@
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
 \usetikzlibrary{matrix, positioning}
-
+%\usepackage[demo]{graphicx}
 \usetikzlibrary{arrows,automata, matrix,chains,positioning,decorations.pathreplacing,arrows}
 
 % Abstand obere Blattkante zur Kopfzeile ist 2.54cm - 15mm
@@ -51,7 +51,7 @@
 \newcommand{\Q}{\mathbb{Q}} % rationale
 \newcommand{\Z}{\mathbb{Z}} % ganze
 \newcommand{\N}{\mathbb{N}} % natuerliche
-
+\def\Arrow{\raisebox{1.3\height}{\scalebox{2}{$\xRightarrow[Stride=2]{pool\_size =(2,2)}$}}}
 
 
 \begin{document}
@@ -109,6 +109,8 @@
 \section{Grundlagen}
 \subsection{Entwicklung von Künstlichen Neuronalen Netzen }
 
+\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
+Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
 \paragraph{künstliches Neuron}.\\
 Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion
 % \textcolor{red}{$f: \R^n $ x $ \R^n $ x $\R\rightarrow \R$ der Form $ f(x, w, b) = \sigma(w.x +b) $  (wobei $ \sigma : \R \rightarrow \R $ die Aktivierungsfunktion)}
@@ -184,53 +186,6 @@ zu sehen.
 
 Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer}) zu bilden.Ein \ac{KNN} besteht aus einer oder mehreren Schichten und je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des neuronalen Netzes darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
 
-\def\layersep{2.5cm}
-\begin{figure}[h]
-	\centering
-	\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
-	\tikzstyle{every pin edge}=[<-,shorten <=1pt]
-	\tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
-	\tikzstyle{input neuron}=[neuron, fill=green];
-	\tikzstyle{output neuron}=[neuron, fill=yellow];
-	\tikzstyle{hidden neuron}=[neuron, fill=red];
-	\tikzstyle{annot} = [text width=4em, text centered]
-	
-	% Draw the input layer nodes
-	\foreach \name / \y in {1,...,4}
-	% This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
-	\node[input neuron, pin=left:Eingabe \y] (I-\name) at (0,-\y) {};
-	
-	% Draw the hidden layer nodes
-	\foreach \name / \y in {1,...,5}
-	\path[yshift=0.5cm]
-	node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
-	
-	% Draw the output layer node
-	\node[output neuron,pin={[pin edge={->}]right:Ausgabe 1}, right of=H-2, yshift=-0.5cm] (0) {};
-	\node[output neuron,pin={[pin edge={->}]right:Ausgabe 2}, right of=H-3, yshift=-0.5cm] (1) {};
-	
-	% Connect every node in the input layer with every node in the
-	% hidden layer.
-	\foreach \source in {1,...,4}
-	\foreach \dest in {1,...,5}
-	\path (I-\source) edge (H-\dest);
-	
-	% Connect every node in the hidden layer with the output layer
-	\foreach \x in {0,1}
-	\foreach \source in {1,...,5}
-	\path (H-\source) edge (\x);
-	
-	
-	% Annotate the layers
-	\node[annot,above of=H-1, node distance=1cm] (hl) {Versteckte Schicht};
-	\node[annot,left of=hl] {Eingabe- schicht};
-	\node[annot,right of=hl] {Ausgabe schicht};
-	\end{tikzpicture}
-	
-	\caption{Darstellung eines künstlichen neuronalen Netzes }
-	\label{KNN}
-\end{figure}
-
 
  \begin{itemize}
 %- formalisierte Entsprechung der Nervenzelle besteht aus\\
@@ -283,7 +238,7 @@ Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten
 
 
 \subsection{Faltungsschicht(\textit{Convolution Layer})}
-Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte das Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt. Dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ X_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
+Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte dieses Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt und dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ I_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
 
 \begin{center}
 	\begin{tabular}{r@{: }l r@{: }l r@{: }l}
@@ -308,7 +263,7 @@ Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus ei
 	
 		
 		\[
-		\putunder{\left(\begin{matrix}
+		\putunder{\left[\begin{matrix}
 		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
 		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
 		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
@@ -316,21 +271,21 @@ Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus ei
 		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
 		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
 		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
-		\end{matrix}\right)}{I}
+		\end{matrix}\right]}{I}
 		\times
-		\putunder{\left(\begin{array}{ccc}
+		\putunder{\left[ \begin{array}{ccc}
 		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
 		0  & 1 &              0 \\
 		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
-		\end{array}\right)}{K}
+		\end{array}\right]}{K}
 		=
-		\putunder{\left(\begin{array}{ccccccc}
+		\putunder{\left[\begin{array}{ccccccc}
 		\mymark{T}{1} & 4 & 3 & 4 &\mymark{C}{1}\\
 		1 & 2 & 4 & 3 & 3\\
 		1 & 2 & \mymark{E}{3} & 4 & 1\\
 		1 & 3 & 3 & 1 & 1\\
 		\mymark{A2}{3} & 3 & 1 & 1 & \mymark{B2}{0}
-		\end{array}\right)}{ O=I\times K}
+		\end{array}\right]}{ O=I\times K}
 		\]
 		
 		\begin{tikzpicture}[overlay, remember picture,
@@ -376,7 +331,7 @@ Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{St
 	
 	
 	\[
-	\putunder{\left(\begin{matrix}
+	\putunder{\left[\begin{matrix}
 		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
 		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
 		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
@@ -384,19 +339,19 @@ Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{St
 		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
 		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
 		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
-		\end{matrix}\right)}{I}
+		\end{matrix}\right]}{I}
 	\times
-	\putunder{\left(\begin{array}{ccc}
+	\putunder{\left[\begin{array}{ccc}
 		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
 		0  & 1 &              0 \\
 		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
-		\end{array}\right)}{K}
+		\end{array}\right]}{K}
 	=
-	\putunder{\left(\begin{array}{ccc}
+	\putunder{\left[\begin{array}{ccc}
 		\mymark{T}{1} & 3 &\mymark{C}{1}\\
 		1  & \mymark{E}{3} & 1\\
 		\mymark{A2}{3}  & 1  & \mymark{B2}{0}
-		\end{array}\right)}{ O=I\times K}
+		\end{array}\right]}{ O=I\times K}
 	\]
 	
 	\begin{tikzpicture}[overlay, remember picture,
@@ -423,21 +378,9 @@ Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{St
 	\label{Faltungsoperation2}
 \end{figure}
 
-In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale 
+In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale.Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
 
 
-\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
-Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL}    \\
-Die Verwendung von Conv-Layern bieten mehrere Vorteile.
-
-
-\begin{itemize}
-	\item Die Verwendung von CNNs ist motiviert durch die Tatsache, dass sie relevante Merkmale von einem Bild / Video auf verschiedenen Ebenen, ähnlich einem menschlichen Gehirn, erfassen / lernen können. Dies ist eine Funktion zum Lernen! Herkömmliche neuronale Netze können dies nicht tun.
-	\item Ein weiteres Hauptmerkmal von CNNs ist die Gewichtsverteilung.
-	\item CNN ist effizienter in Bezug auf Speicher und Komplexität.
-	\item In Bezug auf die Leistung übertreffen CNNs bei vielen Aufgaben die NNs. 
-
-\end{itemize}
 
 \subsection{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während dem Training mit sehr vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
@@ -622,87 +565,75 @@ Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
 In allgemein wird die ReLU aufgrund des Problems der toten Neurone nur in versteckte Schichten und die Softmax-Funktion bei Klassifikationsproblemen und Sigmoid-Funktion bei Regressionsproblemen in Ausgabeschicht verwenden.
 
 \subsection{Pooling Layer}
-Die Funktionsweise von Pooling-Schichten ist sehr ähnlich zu der von Convolutional-Layers.
-Pooling-Schichten besitzen einen Filter(\textit{pool\_size}) und eine Schrittgröße(\textit{stride}).
-Der Filter gibt nur die Große der Blocks, der zusammengefasst wird und die Schrittgröße sagt wie der Filter über die Daten bewegen werden sollte.In die Praxis werden in den meisten Fällen einen 2 x 2 Filter und eine 2 x 2 Schrittgröße verwenden.
-
- Durch die Pooling-Schichten wird die räumliche Dimension verringert und durch weniger räumliche Informationen haben wir nicht nur einen Gewinn an Rechenleistung, sondern auch eine wesentliche Netzparameterreduzierung, was die Wahrscheinlichkeit einer Überpassung(\textit{Overfitting}) verkleinert.In allen Fällen hilft das Pooling, dass die Darstellung etwa invariant gegenüber kleinen Parallelverschiebung der Eingabe wird\cite{4}, d.h. Das Pooling-Layer gibt genau die gleiche Antwort unabhängig davon, wie seine Eingabe ein Bisschen verschoben wird.
- 
- Wir unterscheidet momentan vier Forme von Pooling-Schichten:
-Max-Pooling-Layer, Average-Pooling-Layer, Global-Average-Pooling-Layer und Global-Max-Pooling-Layer.
-
-
- und somit auch die Anzahl von Netzparametern reduziert.Nach einem Convolutional-Layer haben wir sehr oft eine hohe Anzahl an Feature-Map, die das Netz versucht, zu lernen, aber all diese Merkmale sind für die Klassifizierung nicht immer wichtig. z.B Die Farbe eines Tellers mit Hähnchenflügel, wenn man Essen klassifizieren möchte.
-
-
-
-\subsubsection{Max-Pooling-Layer}
-Bei Max-Pooling-Layer lässt sich der Max(imum)-Operator auf den Filter anwenden, das heißt es wird nur der maximale Wert im Filter betrachtet.In Abbildung\ref{fig:MPL} wird ein Beispiel der Funktionsweise des Max-Pooling-Layer.Im grünen Bereich liegt 16,3,5 und 10, deshalb steht 16 = $ max\{16,3,5,10\} $ nach dem Max-Pooling-Layer im grünen Bereich.
+Die Funktionsweise von Pooling-Schichten ist sehr ähnlich zu der von \acsp{ConvL}. Das Filter wird über die Inputdaten bewegen und dabei anstatt die Faltungsoperation durchzuführen, werden die Inputdaten Blockweise zusammengefasst. Ein Pooling-Layer besitzt nur ein Filter, das nicht wie in \acsp{ConvL} lernbar ist, sondern gibt nur an, wie groß der Block, der zusammengefasst wird, sein muss.
+Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgröße verwendet, was die Dimension der Inputdaten um die Hälfte reduziert. Interessanter dabei ist ,dass die wichtigen Informationen oder Muster nach der Pooling-Layer vorhanden bleiben und damit haben wir nicht nur eine Erhöhung der Rechengeschwindigkeit, sondern auch eine wesentliche Reduzierung der Netzparameter, was die Wahrscheinlichkeit einer Modelüberanpassung(\textit{Overfitting}) reduziert. Pooling-Schichten sind etwa invariant gegenüber kleiner Veränderung wie Parallelverschiebung\cite{4}.
 \begin{figure}[h]
 	\centering
-\begin{tabular}{ccc}	
-	\begin{tikzpicture}
 	
-	\tikzset{square matrix/.style={
-			matrix of nodes,
-			column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-			nodes={draw,
-				minimum height=#1,
-				anchor=center,
-				text width=#1,
-				align=center,
-				inner sep=0pt
+	\begin{tabular}{c}	
+
+	
+		\begin{tikzpicture}
+		
+			\tikzset{square matrix/.style={
+				matrix of nodes,
+				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+				nodes={draw,
+					minimum height=#1,
+					anchor=center,
+					text width=#1,
+					align=center,
+					inner sep=0pt
+				},
 			},
-		},
-		square matrix/.default=.75cm
-	}
-	
-	\matrix[square matrix]
-	{
-		|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
-		|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
-		|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
-		|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
-	};
-	
-	\end{tikzpicture}
-	\qquad
-	&\huge $\xRightarrow[Stride=2]{pool\_size =(2,2)}$&
-	
-	\begin{tikzpicture}
-	
-	\tikzset{square matrix/.style={
-			matrix of nodes,
-			column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-			nodes={draw,
-				minimum height=#1,
-				anchor=center,
-				text width=#1,
-				align=center,
-				inner sep=0pt
+			square matrix/.default=.75cm
+		}
+		\matrix[square matrix]
+		{
+			|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
+			|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
+			|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
+			|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
+		};
+		
+		\end{tikzpicture}\Arrow%
+		
+		
+		\begin{tikzpicture}
+		\centering
+		
+		\tikzset{square matrix/.style={
+				matrix of nodes,
+				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+				nodes={draw,
+					minimum height=#1,
+					anchor=center,
+					text width=#1,
+					align=center,
+					inner sep=0pt
+				},
 			},
-		},
-		square matrix/.default=.75cm
-	}
-	
-	\matrix[square matrix]
-	{
-		|[fill=green]|	16 & |[fill=yellow]| 13 \\
-		|[fill=red]|	15 & 14 \\
-	};
-	
-	\end{tikzpicture}
-\end{tabular}
-\caption{Funktionsweise eines Max-Pooling-Layer}
-\label{fig:MPL}
+			square matrix/.default=1.5cm
+		}
+		\matrix[square matrix]
+		{
+			|[fill=green]|	16 & |[fill=yellow]| 13 \\
+			|[fill=red]|	15 & 14 \\
+		};
+		
+		\end{tikzpicture}
+	\end{tabular}
+	\caption{Funktionsweise eines Max-Pooling-Layer}
+	\label{fig:MPL}
 \end{figure}
 
-\subsubsection{Average-Pooling-Layer}
-Funktioniert so ähnlich wie das Max-Pooling-Layer, außer dass der Durchschnittswert anstatt das Maximum hier berechnet wird.Dies ist beispielhaft in Abbildung \ref{fig:APL} dargestellt. Hier ergibt sich für den gelben Bereich folgende Rechnung: $ \frac{9+6+4+15}{4}=8.5 $
+Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{PooL} unterschiedliche Namen. Werden die Werte eines Blockes durch den Maximalwert des Blocks, dann sprechen wir von Max-Pooling-Layer (siehe Abbildung \ref{fig:MPL}), wenn sie durch den Mittelwert  des Blocks ersetzt, wird von Average-Pooling-Layer (siehe Abbildung \ref{fig:APL} ) und wenn die Filtergröße gleich die räumliche Dimension der Eingangdaten ist, sprechen wir von Global-Max-Pooling-Layer und Global-Average-Pooling-Layer, es wird also alle Neurone in einem Kanal zu einem Neuron, die Ausgabedimension solche Schicht entspricht der Anzahl der Kanäle bzw. Tiefe der Inputdaten.
+ 
+ Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
+
 \begin{figure}[h]
 	\centering
-	\begin{tabular}{ccc}
-		
+	\begin{tabular}{c}
 		
 		\begin{tikzpicture}
 		
@@ -728,9 +659,7 @@ Funktioniert so ähnlich wie das Max-Pooling-Layer, außer dass der Durchschnitt
 			|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
 		};
 		
-		\end{tikzpicture}
-		\qquad
-		&\huge $\xRightarrow[Stride=2]{pool\_size =(2,2)}$&
+		\end{tikzpicture}\Arrow
 		
 		\begin{tikzpicture}
 		
@@ -745,7 +674,7 @@ Funktioniert so ähnlich wie das Max-Pooling-Layer, außer dass der Durchschnitt
 					inner sep=0pt
 				},
 			},
-			square matrix/.default=.75cm
+			square matrix/.default=1.5cm
 		}
 		
 		\matrix[square matrix]
@@ -761,32 +690,66 @@ Funktioniert so ähnlich wie das Max-Pooling-Layer, außer dass der Durchschnitt
 \end{figure}
 
 
-\subsubsection{Global Pooling Layer}
-Eine Variante  des Max-Pooling-Layer bzw. Average-Pooling-Layer ist das Global-Max-Pooling-Layer bzw. Global-Average-Pooling-Layer.Für Global-Pooling-Layer wird die Berechnung des Maximums bzw. des Mittelwerts  nicht Blockweise über die Daten durchgeführt, sondern über die gesamten Daten, das heißt es gilt immer pool\_size= Stride=(Höhe,Breite)=räumliche Dimension der Daten. Wenn die oben ausgeführten Beispiele für Global-Pooling-Layer betrachtet, ergibt sich folgende Ergebnisse:\\$ \hspace*{3cm}\text{Global-Max-Pooling:} 16 $ \hspace*{2cm} $ \text{Global-Average-Pooling:}8.5 $
-
-Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Verwendung einer vollständig verbundenen Schicht(\ac{FCL}) oder Flatten-Schicht beim Übergang von Feature-Maps zu einem verborgenen FCL oder einer Ausgabeschicht verwendet.
-
 
 
 \subsection{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
-\textcolor{blue}{
-	\begin{itemize}
-		\item In einer vollständig verbundenen Schicht ist jedes Neuron mit jedem Neuron in der vorherigen Schicht verbunden, und jede Verbindung hat ihr eigenes Gewicht. Dies ist ein völlig universelles Verbindungsmuster und macht keine Annahmen über die Merkmale der Daten. Es ist auch sehr teuer in Bezug auf Speicher (Gewichte) und Berechnung (Verbindungen).
-		\item Vollständig verbundene neuronale Netze sind gut genug, aber sie sind nicht gut für die Extraktion von Merkmalen. Vor der Entstehung von CNNs war der Stand der Technik, explizite Merkmale aus Bildern zu extrahieren und diese Merkmale dann zu klassifizieren.
-		\item CNNs werden geschult, um die besten Merkmale aus den Bildern für das jeweilige Problem zu identifizieren und zu extrahieren. Das ist ihre größte Stärke. Die letztgenannten Schichten eines CNN sind aufgrund ihrer Stärke als Klassifikator vollständig miteinander verbunden. Diese beiden Architekturen konkurrieren jedoch nicht, wie Sie vielleicht denken, wenn CNNs FC-Schichten enthalten.
-		\item Die vollständig verbundenen Schichten des CNN bieten ihm die Möglichkeit, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann.
-	\end{itemize}}
-\begin{itemize}
-	\item Netzwerke mit einer großen Anzahl von Parametern stehen vor mehreren Problemen, z.B. langsamere Trainingszeit, Überhitzungsgefahr.
-\end{itemize}
+Nachdem die relevanten lokalen Merkmale durch die Wiederholung von Conv und Pooling-Schichten extrahiert werden sind, wenden sie in einem \ac{FCL} kombiniert, um das Ergebnis jeder Klasse zu berechnen. Die \acsp{FCL} des \ac{CNN} bieten sie die Möglichkeit, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann. Die \acsp{FCL} funktionieren eigentlich genau wie \acsp{ConvL}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur \acsp{FCL} sieht wie in Abbildung\ref{KNN} aus.
+
+\def\layersep{2.5cm}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+	\tikzstyle{every pin edge}=[<-,shorten <=1pt]
+	\tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+	\tikzstyle{input neuron}=[neuron, fill=green];
+	\tikzstyle{output neuron}=[neuron, fill=yellow];
+	\tikzstyle{hidden neuron}=[neuron, fill=red];
+	\tikzstyle{annot} = [text width=4em, text centered]
+	
+	% Draw the input layer nodes
+	\foreach \name / \y in {1,...,4}
+	% This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+	\node[input neuron, pin=left:Eingabe \y] (I-\name) at (0,-\y) {};
+	
+	% Draw the hidden layer nodes
+	\foreach \name / \y in {1,...,5}
+	\path[yshift=0.5cm]
+	node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
+	
+	% Draw the output layer node
+	\node[output neuron,pin={[pin edge={->}]right:Ausgabe 1}, right of=H-2, yshift=-0.5cm] (0) {};
+	\node[output neuron,pin={[pin edge={->}]right:Ausgabe 2}, right of=H-3, yshift=-0.5cm] (1) {};
+	
+	% Connect every node in the input layer with every node in the
+	% hidden layer.
+	\foreach \source in {1,...,4}
+	\foreach \dest in {1,...,5}
+	\path (I-\source) edge (H-\dest);
+	
+	% Connect every node in the hidden layer with the output layer
+	\foreach \x in {0,1}
+	\foreach \source in {1,...,5}
+	\path (H-\source) edge (\x);
+	
+	
+	% Annotate the layers
+	\node[annot,above of=H-1, node distance=1cm] (hl) {Versteckte Schicht};
+	\node[annot,left of=hl] {Eingabe- schicht};
+	\node[annot,right of=hl] {Ausgabe schicht};
+	\end{tikzpicture}
+	
+	\caption{Darstellung eines  neuronalen Netzes }
+	\label{KNN}
+\end{figure}
+
+
+Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} wird viel Speicher und Rechenleistung benötigt und verlangsamt auch das Training, es ist auch einer der Gründe, weshalb die \acsp{FCL} meist nur in der letzten Schicht von \ac{CNN} zur Klassifizierung verwendet werden und die Anzahl der Neuronen in letzter Schicht entspricht der Anzahl von Klassen.
+
+
+
 \section{Backforward }
 \subsection{Fehlerfunktion}
-\textbf{Was wird hier gemacht}
-\begin{itemize}
-	\item Definition von Fehlerfunktion
-	\item Warum wird die Fehlerfunktion berechnet.
-	\item  Anwendungsbeispiel.
-\end{itemize}
+
 Das Training von \acsp{KNN} besteht darin, den vom \ac{NN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
 Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird \textcolor{blue}{mit oder von} der Fehlerfunktion auch Kostenfunktion genannt quantifiziert oder angegeben.
 Die Kostenfunktion bringt die Ausgabewerte des neuronalen Netzes mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des\acsp{NN}.
@@ -824,20 +787,7 @@ Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \e
 \end{itemize}
 In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
 \textcolor{RubineRed}{\textbf{Kleine Experiment} mit Größe und kleine Lernrate}
-\begin{itemize}
-	\item Definition von GA
-	\item Funktionsweise von GA
-		\begin{itemize}
-			\item Irgendwo anfangen
-			\item Richtung der steilsten Abstieg finden.
-			\item In Richtung der steilsten Abstieg laufen.
-		\end{itemize}
-	\item  Problem
-		\begin{itemize}
-			\item Sattelpunkt ->Plateau 
-			\item Ineffizient, wenn über den ganzen Trainingssatz(Berechnungszeit, Speicherplatzbedarf) -> lieber über Mini-Batch
-		\end{itemize}
-\end{itemize}
+
 \subsection{Backpropagation: Optimizer}
 
 Das Ziel des Trainings tiefer neuronaler Netze ist, den Unterschied bzw. den Fehler zwischen Netzvorhersagen und tatsächlichen erwarteten Werten zu reduzieren ,also die Kostenfunktion zu minimieren und für jedes Maschine Lernen Problem gibt es Werte für Netzparameter(Gewichte und Bias) auch optimale Werte genannt, sodass das \ac{NN} die Eingangdaten auf die gewünschten Werte korrekt abbildet. Mit korrekt wird gemeint, dass der Wert der Fehlerfunktion mit dieser optimalen Werten verschwindend klein oder sogar gleich null sei.
@@ -982,9 +932,41 @@ Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Imp
  % \newpage 
  \section{Model mit geringerer Rechenzeit und Speicherplatzbedarf}
  \subsection{AlexNet}
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=\textwidth ]{AlexNet}
+ 	\caption{ AlexNet Architektur \href{https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{Link zum Bild} }
+ 	\label{fig:AlexNet}
+ \end{figure}
  \subsection{SqueezeNet}
+ \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=\textwidth ]{squeezenet}
+ 	\caption{ SqueezeNet Architektur \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+ 	\label{fig:SqueezeNet}
+ \end{figure}
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{fire_module}
+	\caption{ fire\_module \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+	\label{fig:fire_module}
+\end{figure}
+
+
  \subsection{Xception}
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=\textwidth ]{Xception}
+ 	\caption{ ff }
+ 	\label{fig:Xception}
+ \end{figure}
  \subsection{MobileNet}
+   \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
+ 	\caption{ Xception Architektur }
+ 	\label{fig:MobileNet}
+ \end{figure}
 
  
 \section{Effizienter Nutzung tiefer neuronaler Netze}
@@ -1151,6 +1133,7 @@ Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekom
 	\acro{NN}{neuronales Netz}
 	\acro{ConvL}{Convolutional Layer}
 	\acro{FCL}{Fully Connected Layer}
+	\acro{PooL}{Pooling Layer}
 \end{acronym}
 \bibliographystyle{agsm}
 \begin{thebibliography}{lem00}

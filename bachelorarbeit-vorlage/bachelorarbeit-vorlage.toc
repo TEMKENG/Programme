@@ -4,39 +4,36 @@
 \contentsline {section}{\numberline {2}Grundlagen}{5}{section.2}
 \contentsline {subsection}{\numberline {2.1}Entwicklung von K\IeC {\"u}nstlichen Neuronalen Netzen}{5}{subsection.2.1}
 \contentsline {paragraph}{\numberline {2.1.0.1}k\IeC {\"u}nstliches Neuron}{5}{paragraph.2.1.0.1}
-\contentsline {section}{\numberline {3}Feedforward}{5}{section.3}
-\contentsline {section}{\numberline {4}Layer in \ac {CNN}}{5}{section.4}
-\contentsline {subsection}{\numberline {4.1}Input Layer}{5}{subsection.4.1}
+\contentsline {section}{\numberline {3}Feedforward}{6}{section.3}
+\contentsline {section}{\numberline {4}Layer in \ac {CNN}}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}Input Layer}{6}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Faltungsschicht(\textit {Convolution Layer})}{6}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Aktivierungsfunktion}{8}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Pooling Layer}{11}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}Max-Pooling-Layer}{11}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}Average-Pooling-Layer}{12}{subsubsection.4.4.2}
-\contentsline {subsubsection}{\numberline {4.4.3}Global Pooling Layer}{12}{subsubsection.4.4.3}
-\contentsline {subsection}{\numberline {4.5}Multi-layer Perzeptron (Fully Connected Layer)}{12}{subsection.4.5}
-\contentsline {section}{\numberline {5}Backforward}{13}{section.5}
-\contentsline {subsection}{\numberline {5.1}Fehlerfunktion}{13}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Gradientenabstieg}{14}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Backpropagation: Optimizer}{15}{subsection.5.3}
-\contentsline {subsubsection}{\numberline {5.3.1}Adaptive Gradient Algorithm :\textit {AdaGrad}}{18}{subsubsection.5.3.1}
-\contentsline {subsubsection}{\numberline {5.3.2}\textit {Root Mean Square Propagation:}RMSProp}{18}{subsubsection.5.3.2}
-\contentsline {subsubsection}{\numberline {5.3.3}Adam \textit {Adaptive Moment Estimation:Adam}}{19}{subsubsection.5.3.3}
-\contentsline {section}{\numberline {6}Model mit geringerer Rechenzeit und Speicherplatzbedarf}{19}{section.6}
-\contentsline {subsection}{\numberline {6.1}AlexNet}{19}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}SqueezeNet}{19}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Xception}{19}{subsection.6.3}
-\contentsline {subsection}{\numberline {6.4}MobileNet}{19}{subsection.6.4}
-\contentsline {section}{\numberline {7}Effizienter Nutzung tiefer neuronaler Netze}{19}{section.7}
+\contentsline {subsection}{\numberline {4.3}Aktivierungsfunktion}{7}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Pooling Layer}{10}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Multi-layer Perzeptron (Fully Connected Layer)}{11}{subsection.4.5}
+\contentsline {section}{\numberline {5}Backforward}{12}{section.5}
+\contentsline {subsection}{\numberline {5.1}Fehlerfunktion}{12}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Gradientenabstieg}{13}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Backpropagation: Optimizer}{13}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}Adaptive Gradient Algorithm :\textit {AdaGrad}}{16}{subsubsection.5.3.1}
+\contentsline {subsubsection}{\numberline {5.3.2}\textit {Root Mean Square Propagation:}RMSProp}{17}{subsubsection.5.3.2}
+\contentsline {subsubsection}{\numberline {5.3.3}Adam \textit {Adaptive Moment Estimation:Adam}}{17}{subsubsection.5.3.3}
+\contentsline {section}{\numberline {6}Model mit geringerer Rechenzeit und Speicherplatzbedarf}{18}{section.6}
+\contentsline {subsection}{\numberline {6.1}AlexNet}{18}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}SqueezeNet}{18}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Xception}{18}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}MobileNet}{18}{subsection.6.4}
+\contentsline {section}{\numberline {7}Effizienter Nutzung tiefer neuronaler Netze}{18}{section.7}
 \contentsline {subsection}{\numberline {7.1}Pruning Network}{20}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}Quantisierung von \ac {NN}}{21}{subsection.7.2}
-\contentsline {subsection}{\numberline {7.3}Huffman Codierung}{23}{subsection.7.3}
-\contentsline {section}{\numberline {8}overfitting in neuronale Netzwerke}{23}{section.8}
-\contentsline {subsection}{\numberline {8.1}Was ist Overfitting}{23}{subsection.8.1}
-\contentsline {subsection}{\numberline {8.2}Strategie gegen Overfitting}{23}{subsection.8.2}
-\contentsline {subsubsection}{\numberline {8.2.1}Data Augmentation}{23}{subsubsection.8.2.1}
-\contentsline {subsubsection}{\numberline {8.2.2}Dropout}{25}{subsubsection.8.2.2}
-\contentsline {subsubsection}{\numberline {8.2.3}Vor- und Nachteile von Dropout}{25}{subsubsection.8.2.3}
-\contentsline {subsubsection}{\numberline {8.2.4}Vergleich Ergebnisse}{26}{subsubsection.8.2.4}
-\contentsline {subsection}{\numberline {8.3}Batch-Normalisierung}{26}{subsection.8.3}
-\contentsline {section}{\numberline {9}Experiment}{28}{section.9}
-\contentsline {section}{\numberline {10}Abk\IeC {\"u}rzungsverzeichnis}{28}{section.10}
+\contentsline {subsection}{\numberline {7.3}Huffman Codierung}{24}{subsection.7.3}
+\contentsline {section}{\numberline {8}overfitting in neuronale Netzwerke}{24}{section.8}
+\contentsline {subsection}{\numberline {8.1}Was ist Overfitting}{24}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Strategie gegen Overfitting}{24}{subsection.8.2}
+\contentsline {subsubsection}{\numberline {8.2.1}Data Augmentation}{24}{subsubsection.8.2.1}
+\contentsline {subsubsection}{\numberline {8.2.2}Dropout}{26}{subsubsection.8.2.2}
+\contentsline {subsubsection}{\numberline {8.2.3}Vor- und Nachteile von Dropout}{26}{subsubsection.8.2.3}
+\contentsline {subsubsection}{\numberline {8.2.4}Vergleich Ergebnisse}{27}{subsubsection.8.2.4}
+\contentsline {subsection}{\numberline {8.3}Batch-Normalisierung}{27}{subsection.8.3}
+\contentsline {section}{\numberline {9}Experiment}{29}{section.9}
+\contentsline {section}{\numberline {10}Abk\IeC {\"u}rzungsverzeichnis}{29}{section.10}
