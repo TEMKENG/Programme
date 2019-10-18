@@ -27,13 +27,14 @@
 \contentsline {subsection}{\numberline {7.1}Pruning Network}{20}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}Quantisierung von \ac {NN}}{21}{subsection.7.2}
 \contentsline {subsection}{\numberline {7.3}Huffman Codierung}{24}{subsection.7.3}
-\contentsline {section}{\numberline {8}overfitting in neuronale Netzwerke}{24}{section.8}
+\contentsline {section}{\numberline {8}Overfitting in Convolutional neuronale Netzwerke}{24}{section.8}
 \contentsline {subsection}{\numberline {8.1}Was ist Overfitting}{24}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Strategie gegen Overfitting}{24}{subsection.8.2}
-\contentsline {subsubsection}{\numberline {8.2.1}Data Augmentation}{24}{subsubsection.8.2.1}
-\contentsline {subsubsection}{\numberline {8.2.2}Dropout}{26}{subsubsection.8.2.2}
-\contentsline {subsubsection}{\numberline {8.2.3}Vor- und Nachteile von Dropout}{26}{subsubsection.8.2.3}
-\contentsline {subsubsection}{\numberline {8.2.4}Vergleich Ergebnisse}{27}{subsubsection.8.2.4}
+\contentsline {paragraph}{\numberline {8.2.0.1}Data Augmentation}{24}{paragraph.8.2.0.1}
+\contentsline {paragraph}{\numberline {8.2.0.2}TEMKENG}{25}{paragraph.8.2.0.2}
+\contentsline {subsubsection}{\numberline {8.2.1}Dropout}{25}{subsubsection.8.2.1}
+\contentsline {subsubsection}{\numberline {8.2.2}Vor- und Nachteile von Dropout}{26}{subsubsection.8.2.2}
+\contentsline {subsubsection}{\numberline {8.2.3}Vergleich Ergebnisse}{27}{subsubsection.8.2.3}
 \contentsline {subsection}{\numberline {8.3}Batch-Normalisierung}{27}{subsection.8.3}
-\contentsline {section}{\numberline {9}Experiment}{29}{section.9}
-\contentsline {section}{\numberline {10}Abk\IeC {\"u}rzungsverzeichnis}{29}{section.10}
+\contentsline {section}{\numberline {9}Experiment}{28}{section.9}
+\contentsline {section}{\numberline {10}Abk\IeC {\"u}rzungsverzeichnis}{28}{section.10}

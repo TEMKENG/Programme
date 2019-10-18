@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  17 OCT 2019 18:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  18 OCT 2019 05:46
 entering extended mode
 **./bachelorarbeit-vorlage.tex
 (bachelorarbeit-vorlage.tex
@@ -1456,12 +1456,12 @@ Overfull \hbox (0.92793pt too wide) in paragraph at lines 829--833
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [14] [15] [16] [17]
-<./images/AlexNet.png, id=337, 963.6pt x 542.025pt>
+<./images/AlexNet.png, id=328, 963.6pt x 542.025pt>
 File: ./images/AlexNet.png Graphic file (type png)
 <use ./images/AlexNet.png>
 Package pdftex.def Info: ./images/AlexNet.png  used on input line 937.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
-<./images/squeezenet.png, id=340, 1024.82875pt x 758.835pt>
+<./images/squeezenet.png, id=331, 1024.82875pt x 758.835pt>
 File: ./images/squeezenet.png Graphic file (type png)
 <use ./images/squeezenet.png>
 Package pdftex.def Info: ./images/squeezenet.png  used on input line 944.
@@ -1470,7 +1470,7 @@ Package pdftex.def Info: ./images/squeezenet.png  used on input line 944.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./images/fire_module.png, id=343, 614.295pt x 381.425pt>
+<./images/fire_module.png, id=334, 614.295pt x 381.425pt>
 File: ./images/fire_module.png Graphic file (type png)
 <use ./images/fire_module.png>
 Package pdftex.def Info: ./images/fire_module.png  used on input line 950.
@@ -1478,7 +1478,7 @@ Package pdftex.def Info: ./images/fire_module.png  used on input line 950.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./images/Xception.png, id=346, 1221.56375pt x 382.42876pt>
+<./images/Xception.png, id=337, 1221.56375pt x 382.42876pt>
 File: ./images/Xception.png Graphic file (type png)
 <use ./images/Xception.png>
 Package pdftex.def Info: ./images/Xception.png  used on input line 959.
@@ -1486,7 +1486,7 @@ Package pdftex.def Info: ./images/Xception.png  used on input line 959.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./images/MobileNet.png, id=347, 516.93124pt x 602.25pt>
+<./images/MobileNet.png, id=338, 516.93124pt x 602.25pt>
 File: ./images/MobileNet.png Graphic file (type png)
 <use ./images/MobileNet.png>
 Package pdftex.def Info: ./images/MobileNet.png  used on input line 966.
@@ -1519,72 +1519,56 @@ Underfull \hbox (badness 10000) in paragraph at lines 1028--1029
 
  []
 
-[23]
-<./images/ImageDataAugmaentation.png, id=396, 374.39874pt x 251.94125pt>
+[23] [24]
+<./images/ImageDataAugmaentation.png, id=395, 374.39874pt x 251.94125pt>
 File: ./images/ImageDataAugmaentation.png Graphic file (type png)
 <use ./images/ImageDataAugmaentation.png>
 Package pdftex.def Info: ./images/ImageDataAugmaentation.png  used on input lin
 e 1042.
 (pdftex.def)             Requested size: 374.39783pt x 251.94063pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1035--1047
-
- []
-
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 1049--1050
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1048
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1052--1059
+Underfull \hbox (badness 10000) in paragraph at lines 1050--1051
 
  []
 
-[25 <./images/ImageDataAugmaentation.png>]
 Package acronym Info: Label `acro:KI' newly defined as it shall be overridden
-although it is yet undefined on input line 1060.
-<./images/dropout1.png, id=418, 208.52907pt x 185.19188pt>
+although it is yet undefined on input line 1052.
+[25 <./images/ImageDataAugmaentation.png>]
+<./images/dropout1.png, id=415, 208.52907pt x 185.19188pt>
 File: ./images/dropout1.png Graphic file (type png)
 <use ./images/dropout1.png>
-Package pdftex.def Info: ./images/dropout1.png  used on input line 1068.
+Package pdftex.def Info: ./images/dropout1.png  used on input line 1060.
 (pdftex.def)             Requested size: 417.0571pt x 370.38281pt.
-<./images/dropout2.png, id=419, 322.20375pt x 281.05pt>
+<./images/dropout2.png, id=416, 322.20375pt x 281.05pt>
 File: ./images/dropout2.png Graphic file (type png)
 <use ./images/dropout2.png>
-Package pdftex.def Info: ./images/dropout2.png  used on input line 1074.
+Package pdftex.def Info: ./images/dropout2.png  used on input line 1066.
 (pdftex.def)             Requested size: 644.40591pt x 562.0986pt.
+ [26 <./images/dropout1.png> <./images/dropout2.png>]
 
+LaTeX Warning: Citation `LeCun' on page 27 undefined on input line 1083.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[26]
-<./images/dropout_.png, id=431, 1007.765pt x 381.425pt>
-File: ./images/dropout_.png Graphic file (type png)
-<use ./images/dropout_.png>
-Package pdftex.def Info: ./images/dropout_.png  used on input line 1091.
-(pdftex.def)             Requested size: 448.12341pt x 134.43777pt.
-
-
-LaTeX Warning: Citation `LeCun' on page 27 undefined on input line 1099.
-
-[27 <./images/dropout1.png> <./images/dropout2.png>] [28 <./images/dropout_.png
->] [29] [30]
-Underfull \hbox (badness 10000) in paragraph at lines 1201--1203
+[27] [28] [29]
+Underfull \hbox (badness 10000) in paragraph at lines 1185--1187
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1204--1206
+Underfull \hbox (badness 10000) in paragraph at lines 1188--1190
 
  []
 
-[31]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1211.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1211.
+[30]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1195.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1195.
  (bachelorarbeit-vorlage.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1211.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1211.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1195.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1195.
 
 Package rerunfilecheck Info: File `bachelorarbeit-vorlage.out' has not changed.
 
@@ -1596,41 +1580,40 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1211.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1195.
  ) 
 Here is how much of TeX's memory you used:
- 37724 strings out of 492970
- 882942 string characters out of 3125707
- 1229233 words of memory out of 3000000
- 40736 multiletter control sequences out of 15000+200000
- 50035 words of font info for 105 fonts, out of 3000000 for 9000
+ 37717 strings out of 492970
+ 882803 string characters out of 3125707
+ 1228232 words of memory out of 3000000
+ 40731 multiletter control sequences out of 15000+200000
+ 51453 words of font info for 105 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,24n,100p,9103b,2177s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmbx12.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/TEMKENG/AppData/Loca
-l/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/T
-EMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.
-pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
-onts/cm/cmmi12.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmmi6.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/TEMKENG/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/TEMKENG/
-AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/
-Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmr17.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/TEMKENG/AppData/Local/Programs/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Users/TEMKENG/AppData/Lo
-cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Users/T
-EMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.
-pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsf
-onts/cm/cmsy8.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmti12.pfb>
-Output written on bachelorarbeit-vorlage.pdf (31 pages, 1069286 bytes).
+1/public/amsfonts/cm/cmex10.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/TEMKENG/AppData/Lo
+cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/TEM
+KENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pf
+b><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmmi6.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/TEMKENG/AppData/Local/Pro
+grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/TEMKENG/App
+Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Use
+rs/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
+6.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmr8.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmsl12.pfb><C:/Users/TEMKENG/AppData/Local/Programs/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Users/TEMKENG/AppData/Lo
+cal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/TEM
+KENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmti12.pfb>
+Output written on bachelorarbeit-vorlage.pdf (30 pages, 1039610 bytes).
 PDF statistics:
- 688 PDF objects out of 1000 (max. 8388607)
- 135 named destinations out of 1000 (max. 500000)
- 351 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 671 PDF objects out of 1000 (max. 8388607)
+ 134 named destinations out of 1000 (max. 500000)
+ 338 words of extra memory for PDF output out of 10000 (max. 10000000)
 

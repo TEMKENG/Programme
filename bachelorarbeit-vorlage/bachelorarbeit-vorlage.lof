@@ -20,5 +20,4 @@
 \contentsline {figure}{\numberline {24}{\ignorespaces Xception Architektur \relax }}{22}{figure.caption.26}
 \contentsline {figure}{\numberline {25}{\ignorespaces Ablauf der Netzbeschneidung (\textit {Pruning Network})\relax }}{23}{figure.caption.27}
 \contentsline {figure}{\numberline {26}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{25}{figure.caption.28}
-\contentsline {figure}{\numberline {27}{\ignorespaces Neuronales Netz mit Dropout \cite {3}\relax }}{27}{figure.caption.30}
-\contentsline {figure}{\numberline {28}{\ignorespaces \textbf {Links}: Ein Neuron zur Trainingszeit, die mit Wahrscheinlichkeit $ p $ vorhanden ist und mit Neuronen in der n\IeC {\"a}chsten Schicht mit Gewichten w verbunden ist. \textbf {Recht}: Zur Testzeit ist das Neuron immer vorhanden und die Gewichte werden mit $ p $ multipliziert. Die Ausgabe zur Testzeit ist identisch mit der erwarteten Ausgabe zur Trainingszeit\cite {3}.\relax }}{28}{figure.caption.31}
+\contentsline {figure}{\numberline {27}{\ignorespaces Neuronales Netz mit Dropout \cite {3}\relax }}{26}{figure.caption.30}
