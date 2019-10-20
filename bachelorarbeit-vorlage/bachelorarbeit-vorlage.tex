@@ -109,9 +109,9 @@
 \section{Grundlagen}
 \subsection{Entwicklung von Künstlichen Neuronalen Netzen }
 
-\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
-Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
-\paragraph{künstliches Neuron}.\\
+%\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
+%Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
+%\\textbf{künstliches Neuron}.\\
 Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion
 % \textcolor{red}{$f: \R^n $ x $ \R^n $ x $\R\rightarrow \R$ der Form $ f(x, w, b) = \sigma(w.x +b) $  (wobei $ \sigma : \R \rightarrow \R $ die Aktivierungsfunktion)}
 , die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines \ac{KNN} ist in Abbildung \ref{fig:Fneuron}
@@ -793,11 +793,11 @@ In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trai
 Das Ziel des Trainings tiefer neuronaler Netze ist, den Unterschied bzw. den Fehler zwischen Netzvorhersagen und tatsächlichen erwarteten Werten zu reduzieren ,also die Kostenfunktion zu minimieren und für jedes Maschine Lernen Problem gibt es Werte für Netzparameter(Gewichte und Bias) auch optimale Werte genannt, sodass das \ac{NN} die Eingangdaten auf die gewünschten Werte korrekt abbildet. Mit korrekt wird gemeint, dass der Wert der Fehlerfunktion mit dieser optimalen Werten verschwindend klein oder sogar gleich null sei.
 
 \textbf{Gradientenverfahren}\\
-\textcolor{magenta}{Warum wird Gradientenverfahren gebraucht}\\
+\paragraph{Warum wird Gradientenverfahren gebraucht}.\\
 Zum Finden dieser optimalen Netzparameter können wir einfach mehrmals zufällige Werte versuchen. Aber dieser Lösungsansatz weist ein großes Problem auf: Angenommen soll das NN zehn optimale Netzparameter aus dem Intervall  $ ]-1,1[ $ finden und der Computer nur zwei Nachkommastelle (z.B 0.08) darstellen kann. Für den Wert eines Netzparameters bzw. die Werte der zehn Netzparameter gibt es also $ 2*10^2 - 1 $ bzw. $ (2*10^2 - 1)^{10} $ Möglichkeiten. also maximale  $ (2*10^2 - 1)^10 $ Iterationen, um die optimalen Werte zu finden, was einfach zu viel und nicht akzeptabel ist. In die Praxis haben \acsp{NN} Millionen von Parametern.
 Statt eines zufälligen Einsetzen von Netzparametern wird lieber ein Gradientenabstiegsverfahren(\textit{Gradient Descent}) angewendet. Das Gradientenabstiegsverfahren ist ein Verfahren, bei dem die Richtung des Gradienten zu Nutze gemacht wird,um der globale Extremwert einer ableitbaren Funktion zu erreichen.Im Maschinen Lernen wird Gradientenabstiegsverfahren verwendet, um an die optimalen Netzparameter anzunähern, besser gesagt die Fehlerfunktion zu minimieren.
 
-\textcolor{magenta}{Gradientenverfahren Funktionsweise}\\
+\paragraph{Funktionieren von Gradientenverfahren }.\\
 Das Gradientenabstiegverfahren funktioniert wie folgt:Es wird einen zufälligen Punkt aus dem Parameterraum ausgewählt, diese entspricht der Netzparameterinitialisierung am Trainingsanfang.Dann werden die Eingangdaten in das \ac{NN} eingespeist(\textit{Forwardpropogation}) und danach wird der Fehler zwischen den Netzvorhersagen und den korrekten Werten berechnet. Ein Fehler gibt es (fast) immer, denn die Initialisierung wird zufällig gemacht und die Wahrscheinlichkeit, dass wir von Anfang an die optimalen Werte finden, ist verschwindend klein.Der Gradient der Kostenfunktion wird in abhängig von den gegebenen Eingangdaten und den erwarteten Werten berechnet.wir orientieren die Netzparameter dem Gradienten entgegen(\textit{Backward-Pass}), also in Richtung des Minimums, denn der Gradient zeigt immer in Richtung der höchsten Punkt einer Funktion an. Die Abbildung \ref{fig:Backprop} stellt das Backpropagation-Verfahren bildlich dar.
 
 \begin{figure}[h]
@@ -838,15 +838,7 @@ Das Gradientenabstiegverfahren funktioniert wie folgt:Es wird einen zufälligen 
 
 Pfeile in Abbildung \ref{fig:Backprop} weisen nur den Prozessablauf hin.
 
-\textbf{Porblem}
-\begin{itemize}
-	\item Wahl der Lernrate: groß oder klein ?
-	\item \textit{Learning rate schedules:}Anpassung der Lernrate während des Trainings.Wahl der Hyperparameter vor Trainingsanfang
-	\item gleiche Lernrate für alle Parameter. effizienter?
-	\item in lokale Minima stecken bleiben	
-\end{itemize}
-
-\textbf{Type von Gradientenverfahren}\\
+\paragraph{Type von Gradientenverfahren}.\\
 Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur mit der Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.Zum Aktualisierung der Netzwerkparameter nutzen sie jeweils die Gleichung \eqref{GD} 
 
 \begin{equation}\label{GD}
@@ -858,14 +850,13 @@ Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur mit
 	 $ \theta_{t} $& Netzwerkparameter zum Zeitpunkt $ t $
 	\end{tabular}
 \end{center}
-\begin{itemize}
-	\item \textbf{Stochastic Gradient Descent:}\textit{SGD}\\
+\subparagraph{\textbf{Stochastic Gradient Descent:}\textit{SGD}}.\\
 		Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft \textit{online \textcolor{blue}{training oder Verfahren}} genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationsschritte sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
-	\item \textbf{Batch Gradient Descent:}\textit{BGD}\\
+\subparagraph{\textbf{Batch Gradient Descent:}\textit{BGD}} .\\
 		BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz genutzt wird, um die Netzwerkparameter zu aktualisieren.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung der Minimum der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
-	\item \textbf{Mini-batch Stochastic Gradient Descent:}\textit{MSGD}\\
+\subparagraph{\textbf{Mini-batch Stochastic Gradient Descent:}\textit{MSGD}}.\\
 		MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.
-\end{itemize}
+
 Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
 Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 
@@ -895,18 +886,6 @@ RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur 
 	\end{split}
 \end{equation}
 Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
-\begin{itemize}
-	\item Vorteile
-	\begin{itemize}
-		\item moving average of gradient
-		\item Es reduziert die radikal sinkenden Lernraten von Adagrad
-	\end{itemize}
-	\item Nachteile
-	\begin{itemize}
-		\item 
-		\item 
-	\end{itemize}
-\end{itemize}
 
 \subsubsection{Adam \textit{Adaptive Moment Estimation:Adam}}
 Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
@@ -1025,13 +1004,13 @@ Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer gering
 Vor kurzem haben \cite[Yoni et al]{quantizationYoni} einen neue Ansatz für die Quantisierung vorgeschlagen,der das lineare Quantisierungsproblem als \textit{Minimum Mean Squared Error} (MMSE) Problem löst und der nicht nur die 4-Bit(INT4) Quantisierung von schon trainierten Modellen ohne ein neues Training des Modells, sondern auch die Einsparung von Chipfläche (\textit{chip area}) ermöglicht. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.
 
 \subsection{Huffman Codierung}
-Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. \\ \\ jj\\g\\
+Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. 
 
  \section{Overfitting in Convolutional   neuronale Netzwerke}
- \subsection{Was ist Overfitting}
+ \subsection{Overfitting Definition}
  Wenn ein von der Maschine gelerntes Modell zu gut auf die Trainingsdaten abgestimmt ist und sehr schlechte Vorhersagen über Daten macht, die es bisher nicht gesehen hat, wird gesagt, dass das Modell an Überanpassung(Overfitting) leidet, anders gesagt, das Modell war nicht in der Lage, die relevanten Merkmale aus den Trainingsdaten zu verallgemeinern, sondern die ganzen Trainingsdaten auswendig zu lernen.Die irrelevanten Informationen aus den Trainingsdaten können z.B die Position des Tellers in einem Bild sein, wenn man Essen klassifizieren sollte. Im folgenden werden einige Mittels vorgestellt, um mit Overfitting umzugehen.
  \subsection{Strategie gegen Overfitting}
- \paragraph{Data Augmentation}.\\
+ \subsubsection{{Data Augmentation}}
  Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netze.Dass ein Datensatz groß oder ausreichend für das Training eines \ac{NN}s ist, hängt nur von der Größe des \ac{NN}s ab und da die \acsp{NN}, die die besten Leistungen aufweisen, Millionen von Parametern haben, ist fast unmöglich für jedes  Problem von Maschine Lernen ausreichende Daten zu finden.Anstatt immer neue Daten zur Verbesserung der Netzleistung zu sammeln, können wir die Leistung des Modells verbessern, indem wir neue Daten von den bereits vorhandenen Daten aus erzeugen.\\
  Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden, Parallelverschiebungen und die Gauß'sches Rauschen.
  Für diese Arbeit habe ich zwei Ansätze im Gebrauch gehabt, um den Datensatz zu erhöhen:
@@ -1047,12 +1026,11 @@ Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie 
 Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Daten durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.\\
  
 
- \paragraph{TEMKENG}:\\
-\subsubsection{Dropout}
+\subsubsection{Dropout}  
 Künstliche Neurone sind von biologischen Neuronen inspiriert, aber die Beiden unterscheidet sich sehr voneinander und einer der wichtigen Unterschiede ist, dass biologische Neuronen unvollkommene Maschinen sind, die sehr oft nicht richtig funktioniert und das ist a priori nie den Fall bei  künstlichen Neuronen. Wir könnten also glauben, dass \ac{KNN} die biologische übertreffen könnten.Es sei denn, dass diese Funktionsstörung von biologischen Neuronen nicht eine Schwäche ist, sondern eher eine Stärke ist.Eine der verblüffenden Entdeckungen in \ac{KI} Bereich ist, dass es wünschenswert ist, künstliche Neuronen von Zeit zu Zeit zu Fehlfunktionen zu bringen\cite{1}. \textcolor{blue}{Jetzt können wir uns fragen, wie Dysfunktion von Neuronen die Performances \acsp{CNN} verbessern kann}.Die zufällige Hinzufügen von Dysfunktionen in einer Schicht der \ac{CNN} wird \textit{Dropout} benannt und wurde von \cite[Geoffrey E. et al]{2} eingeführt.\\
-\textbf{Wie funktioniert Dropout}\\
-Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen in einer Schicht der \ac{KNN}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
-In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von andren Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis des Neurons teilnehmen.
+\paragraph{Funktionsweise von Dropout}.\\
+Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen(versteckt und sichtbar)  in einem  \ac{NN} \cite{3}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
+In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von anderen Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis der Schicht teilnehmen. Während der Testphase  werden alle Verbindungen zurückgesetzt, die während des Trainings gelöscht wurden und die ausgehenden Verbindungen gelöschter Neurone mit $ p $   multipliziert.
 
 	\begin{figure}[h]
 	\begin{subfigure}{.5\textwidth}
@@ -1067,19 +1045,27 @@ In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von andren N
 		\caption{Netze nach Dropout}
 		\label{fig:dropout2}
 	\end{subfigure}
-	\caption{Neuronales Netz mit Dropout \cite{3}}
+	\caption{Neuronales Netz mit Dropout ausgestattet \cite{3}.}
 	\label{fig:Dropout}
 \end{figure}
 
-\subsubsection{Vor- und Nachteile von Dropout}
-\textbf{Automatische Erhöhung von Training Data }\\
-Die Ausschaltung von Neuronen führt nicht nur dazu, dass jedes Neuron unabhängig von Anderen Mustern korrekt lernt, sondern auch dazu, dass neue Trainingsdaten automatisch erzeugt werden.\textcolor{red}{sollte ich auch die mathematische Formel Hinzufügen?}.Nehmen wir an, dass wir eine Dropout-Schicht $ D $  zwischen zwei \acsp{ConvL}  $ C1 $ und $ C2 $, so wird die Outputs $ O_{c1} $ von $ C1 $ zuerst von $ D $ umgewandelt, bevor sie in $ C2 $ einmünden.Die von $ D $ ausgeführte Transformation ergibt $ O_d = O'_{c1} +R $, wobei $ O'_{c1} $ Teilinformationen aus $ O_{c1} $  und $ R $  Informationen, die als Rauschen interpretieren werden können, bezeichnet. $ C2 $ soll also aus       $ O'_{c1} $ $ O_{c1} $ trotz $ R $ gut interpretieren können.
-Für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, haben wir durch Dropout $ 2^n $ mögliche Modelle. Das am Ende der Trainingszeit enthaltene Netz ist also eine durchschnittliche Approximation der $ 2^n $ mögliche verschiedene Modellen. In der Testphase wird das gesamte Netzwerk betrachtet und jede Aktivierung um einen Faktor p reduziert.
-Durch die Anwendung von Dropout wird die Trainingszeit für jede Epoche geringer, aber die Anzahl der Iterationen, die für die Konvergenz notwendig sind, wird leider mindestens verdoppelt.
-Dropout wendet also automatisch eine robuste Optimierung der neuronalen Netzwerkparameter an, die auch der Implementierung des \textit{Ockhams} Rasiermessers entspricht.
+\paragraph{Verhinderung der Koadaptationen zwischen Neuronen}.\\
+Während des Trainings können mehrere Neurone zur Minimierung der Fehlerfunktion so gut zusammenarbeiten, dass die Erkennung bestimmter Merkmale ohne diese Zusammenarbeit nicht mehr möglich ist, aber solche komplexe Koadaptationen  können zu einer Überanpassung führen, denn diese komplexe Koadaptationen existieren nicht immer in Testdaten. Da die am Training teilnehmenden Neuronen nach dem Zufallsprinzip nach jeder Epoche ausgewählt werden, haben wir für jedes Training ein neues Modell, was die Neuronen zur Zusammenarbeit zwingt, ohne jedoch voneinander abhängig zu sein, anders gesagt, wird jedes Neuron unabhängig von anderen Neuronen die Muster korrekt lernen können.  
 
-\subsubsection{Vergleich Ergebnisse}
-\subsection{Batch-Normalisierung}
+\paragraph{Automatische Erhöhung von Training Data und Regelung }.\\
+Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:DropoutDataAugmentation} angezeigt ist, zu einer automatische Erzeugung neuer Trainingsdaten. Die verwendeten Daten in ausgedünnten Modellen sind also nur eine Abstraktion von echten Daten bzw. Rauschdaten und da wir für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, $ 2^n $ mögliche Modelle haben, haben wir $ 2^n $ mögliche Abstraktion von unseren Daten und das sollte einer der Gründe sein, warum Dropout effektiver als andere rechnerisch kostengünstige Regler ist \cite{3} und warum die Trainingszeit von \acsp{NN} mit Dropout mindestens verdoppelt wird. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics{model}
+	\caption{Erhöhung des Trainingsdaten durch Dropout}
+	\label{fig:DropoutDataAugmentation}
+\end{figure}
+
+Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
+%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
+
+\subsubsection{Batch-Normalisierung}
 Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür ist zum Beispiel die Tatsache, dass die Parameter einer Schicht während des Trainings tiefer neuronaler Netze immer unter der Annahme, dass sich die Parameter anderer Schichten nicht ändern, aktualisiert werden und da alle Schichten während des Updates geändert werden, verfolgt das Optimierungsverfahren ein Minimum, das sich ständig bewegt. Ein anderer Grund dafür ist die ständigen Veränderungen im Laufe des Trainings in die Verteilung des Netzinputs, diese Veränderung wird von \cite{bactchnormalisation} als interne kovariate Verschiebung(\textit{Internal Covariate Shift}) genannt.Zur Lösung dieser Probleme schlagen \textit{LeCunn et al}\cite{LeCun} vor dem Training das Netzinput zu normalisieren. Aber dieser Ansatz bringt nicht so viel, wenn das \ac{NN} wirklich tief ist, denn nur der Netzinput profitiert von der Normalisierung und die kleinen Veränderungen in versteckte Schichten werden sich immer mehr verstärken, je tiefer man das Netz durchläuft. Mit der Ausbreitung tiefer \acsp{NN} dehnt Batch-Normalisierung(BN)\cite{bactchnormalisation} diese Idee der Datennormalisierung auf versteckte Schichten tiefer \acsp{NN} aus. Bei der BN werden die Eingaben in einem Netzwerk standardisiert, die entweder auf die Aktivierungen einer vorherigen Schicht oder auf direkte Eingaben angewendet wird, so standardisiert, dass der Mittelwert in der Nähe von null liegt und die Standardabweichung in der Nähe von eins liegt. Die BN wird über Mini-Batches und nicht über den gesamten Trainingssatz durchgeführt, daher enthalten wir nur Näherungen an tatsächliche Werte der Standardabweichung und des Mittelwerts über das Trainingssatzes, aber wir gewinnen an Geschwindigkeit und an Speicherplatzverbrauch.Die Gleichung \eqref{BNA} gibt die formale Beschreibung des BN Algorithmus an.
 \begin{center}
 	 Batch-Normalisierungstransformation, angewendet auf Aktivierung x über einen Mini-Batch
@@ -1098,7 +1084,6 @@ Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür i
 	\end{align}
 	\label{BNA}
 \end{subequations}
-
 Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekommen wir die gleiche Verteilung wie vor der Batch-Normalisierung, d.h die Eingabe war also schon normalisiert. Interessanterweise kann das Netz während des Trainings eine bessere Verteilung als die erwünschte finden, denn $\gamma$ und $\beta$ sind lernbare Parameter.
 
  Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
