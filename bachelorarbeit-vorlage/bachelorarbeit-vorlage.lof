@@ -19,6 +19,6 @@
 \contentsline {figure}{\numberline {23}{\ignorespaces ff \relax }}{21}{figure.caption.25}
 \contentsline {figure}{\numberline {24}{\ignorespaces Xception Architektur \relax }}{22}{figure.caption.26}
 \contentsline {figure}{\numberline {25}{\ignorespaces Ablauf der Netzbeschneidung (\textit {Pruning Network})\relax }}{23}{figure.caption.27}
-\contentsline {figure}{\numberline {26}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{25}{figure.caption.28}
+\contentsline {figure}{\numberline {26}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{26}{figure.caption.28}
 \contentsline {figure}{\numberline {27}{\ignorespaces Neuronales Netz mit Dropout ausgestattet \cite {3}.\relax }}{27}{figure.caption.30}
 \contentsline {figure}{\numberline {28}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{28}{figure.caption.31}

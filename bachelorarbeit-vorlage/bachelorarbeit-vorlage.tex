@@ -917,17 +917,23 @@ Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Imp
  	
  	\item \textbf{Überlappendes Pooling}: Die normalen \acsp{PooL} funktioniert wie in \ref{Pooling Layer} ($ pool\_size = stride$), aber die Überlappenden verwenden einfach ein $ stride $ kleiner als das $ pool\_size $.Nach \cite{AlexNet} verbessern die überlappenden \ac{PooL}  die Netzgenauigkeit und macht das Netz gegenüber Overfitting robuster.
  	\item \textbf{Dropout und Data Augmentation }: Ein anderer Vorteil von AlexNet ist die Verwendung von Dropout in \acsp{FCL}, das sich heute als die beste oder eine der besten Regulierungsmethoden erweist und der Vermehrung der Daten durch Spiegelung, die die Wahrscheinlichkeit von Overfitting reduziert.
- 	
- 	
  \end{itemize}
- 
   \begin{figure}[h]
  	\centering
  	\includegraphics[width=\textwidth ]{AlexNet}
  	\caption{ AlexNet Architektur \href{https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ zum Bild} }
  	\label{fig:AlexNet}
  \end{figure}
+
+
+AlexNet kann aufgrund seiner Größe($\sim240MB$) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen oder übertreffen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden.\\
+
+kleinere \acsp{CNN}-Architekturen weisen mehrere Vorteile auf wie \\
+Kurze Trainingszeit\\
+
+
  \subsection{SqueezeNet}
+ SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Abbildung\ref{fig:fire_module}) erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5MB$. 
  \begin{figure}[h]
  	\centering
  	\includegraphics[width=\textwidth ]{squeezenet}
@@ -940,6 +946,7 @@ Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Imp
 	\caption{ fire\_module \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
 	\label{fig:fire_module}
 \end{figure}
+%verzögerte Downsampling zu einer höheren Genauigkeit von classiﬁcation 
 
 
  \subsection{Xception}
@@ -1167,8 +1174,11 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville
 	\bibitem{kneuron}
 	wikipedia:\href{https://en.wikipedia.org/wiki/Artificial_neuron}{ Artificial neuron}
 	\bibitem{AlexNet}Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton
-		\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet Classification with Deep Convolutional Neural Networks
-}
+		\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet Classification with Deep Convolutional Neural Networks}
+  
+  \bibitem{SqueezeNet}
+  	Forrest N. Iandola, Song Han, Matthew W. Moskewicz, Khalid Ashraf, William J. Dally, Kurt Keutzer
+  	\href{https://arxiv.org/abs/1602.07360}{SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size}
 \end{thebibliography}
 
  
