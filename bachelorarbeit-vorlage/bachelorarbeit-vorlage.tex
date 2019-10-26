@@ -110,12 +110,8 @@
  \newpage  % neuer Abschnitt auf neue Seite, kann auch entfallen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
-\section{Grundlagen}
-\subsection{Entwicklung von Künstlichen Neuronalen Netzen } \label{Entwicklung}
-
-%\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
-%Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
-%\\textbf{künstliches Neuron}.\\
+\section{Grundlagen}\label{Grundlaagen}
+\subsection{Neuron}
 Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines \ac{KNN} ist in Abbildung \ref{fig:Fneuron}
 zu sehen.
 
@@ -189,46 +185,53 @@ zu sehen.
 Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer}) zu bilden.Ein \ac{KNN} besteht aus einer oder mehreren Schichten und je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des neuronalen Netzes darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
 
 
- \begin{itemize}
-%- formalisierte Entsprechung der Nervenzelle besteht aus\\
-
-%	\item \textbf{Aktivierungszustand} (\textit{Activation state}) Er gibt oder definiert den aktuellen Zustand eines Neurons.
-%	\item \textbf{Propagierungsfunktion} (\textit{propagation function}) Sie bestimmt den gesamten Input(auch Netto-Input) des Neurons.\textcolor{red}{Sie legt fest, wie die Eingabe des Neuron aufzuarbeiten ist} Die häufigste verwendete Propagierungsfunktion ist die summe der gewichteten Eingaben, die das Neuron von anderen Neuronen erhält.
-%	\item \textbf{Aktivierungsfunktion} ( \textit{activation function}) Sie legt fest, wie der nächste Aktivierungszustand des Neurons aus dem Netto-Input und dem aktuellen Aktivierungszustand berechnet wird. Es gibt  zahlreiche Aktivierungsfunktionen(zB. ELU, LeakyReLU, Sigmoid, Softmax, Maxout, tanh), die auch unterschiedliche Einflüsse auf die Ausgabe eines Neurons. Die verbreitetsten Aktivierungsfunktionen sind die Logistische(Sigmoid, Gleichung \ref{Sigmoid}, Graph \ref{fig:sigmoid}), \textbf{Re}ctified \textbf{l}inear \textbf{u}nit(ReLU, Gleichung \ref{Relu}, Graph\ref{fig:relu},) Relu und Softmax(Gleichung \ref{Sotfmax})  Funktion. 
-%	
-%		\begin{equation}
-%	\label{Relu}
-%	ReLU = max(x, 0)
-%	\end{equation}
-%	
-%	\begin{equation}
-%	\label{Sigmoid}
-%	Sigmoid(x) =  \frac{\mathrm{e^x} }{\mathrm{e^x +1} }
-%	\end{equation}
-%	
-%	\begin{equation}
-%	\label{Sotfmax}
-%	Softmax(x_1, x_2, \cdots, x_n) = \frac{(e^{x_1}, ê^{x_2}, \cdots, e^{x_n})}{\sum_{i =1}^{n}{e^{x_i}}}
-%	\end{equation}
-%	
-%	
-%	Nach \cite{9} sollten die Aktivierungsfunktionen vorgezogen werden, die mehr von folgenden Eigenschaften aufweisen:	
-%	
-%	\textbf{Nichtlinearität:} Bei einem mehrschichtigen Netz ist es nicht sinnvoll eine lineare Aktivierungsfunktion zu benutzen, denn ein solches Netz in ein einschichtiges Netz immer überführt werden kann und es ist bekannt, dass ein mehrschichtiges Netz mehr als ein einschichtiges Netz leisten kann.
-%
-%	\textbf{Überall differenzierbar:} Diese Eigenschaft ermöglicht, gradientenbasierende Optimierungsverfahren zu verwenden.
-%	
-%	\textbf{Wertebereich:} Die gradientenbasierende Lernmethode ist stabiler, wenn der Wertebereich der Aktivierungsfunktion endlich ist und wenn es dagegen unendlich ist, ist das Lernen im Allgemeinen effektiver.
-%	
-%	\textbf{Monotonie:} Wenn die Aktivierungsfunktion monoton ist, so ist die Fehleroberfläche eines einschichtigen Netz immer konvex,\textcolor{red}{was bedeutet, dass es nur ein optimales Minimum gibt und das Optimierungsverfahren immer besser wird}.
-%	
-%	\textbf{Identität in 0} ( $ {\displaystyle f(x)\approx x} $ wenn  $ {\displaystyle x\approx 0} $): Diese Eigenschaft ermöglicht einen schnellen Training, wenn die Gewichte zufällig initialisiert sind und wenn die Aktivierungsfunktion in der Nähe von Null nicht gegen die Identität konvergiert, muss bei der Initialisierung der Gewichte besonders sorgfältig vorgegangen werden.
-%	
-%	
-%	\textbf{ Sigmoid-Aktivierungsfunktion} Obwohl die Sigmoid-Funktion leicht anwendbar und differenzierbar ist, wird sie nach und nach auch nicht mehr verwendet, denn sie zum Beispiel das Problem des verschwindenden Gradienten(\textit{vanishing gradient problem}) nicht löst, was die Leistung tiefer neuronaler Netze stark beeinträchtigt und sie konvergiert sehr langsam.
-\item  
+\begin{itemize}
+	%- formalisierte Entsprechung der Nervenzelle besteht aus\\
+	
+	%	\item \textbf{Aktivierungszustand} (\textit{Activation state}) Er gibt oder definiert den aktuellen Zustand eines Neurons.
+	%	\item \textbf{Propagierungsfunktion} (\textit{propagation function}) Sie bestimmt den gesamten Input(auch Netto-Input) des Neurons.\textcolor{red}{Sie legt fest, wie die Eingabe des Neuron aufzuarbeiten ist} Die häufigste verwendete Propagierungsfunktion ist die summe der gewichteten Eingaben, die das Neuron von anderen Neuronen erhält.
+	%	\item \textbf{Aktivierungsfunktion} ( \textit{activation function}) Sie legt fest, wie der nächste Aktivierungszustand des Neurons aus dem Netto-Input und dem aktuellen Aktivierungszustand berechnet wird. Es gibt  zahlreiche Aktivierungsfunktionen(zB. ELU, LeakyReLU, Sigmoid, Softmax, Maxout, tanh), die auch unterschiedliche Einflüsse auf die Ausgabe eines Neurons. Die verbreitetsten Aktivierungsfunktionen sind die Logistische(Sigmoid, Gleichung \ref{Sigmoid}, Graph \ref{fig:sigmoid}), \textbf{Re}ctified \textbf{l}inear \textbf{u}nit(ReLU, Gleichung \ref{Relu}, Graph\ref{fig:relu},) Relu und Softmax(Gleichung \ref{Sotfmax})  Funktion. 
+	%	
+	%		\begin{equation}
+	%	\label{Relu}
+	%	ReLU = max(x, 0)
+	%	\end{equation}
+	%	
+	%	\begin{equation}
+	%	\label{Sigmoid}
+	%	Sigmoid(x) =  \frac{\mathrm{e^x} }{\mathrm{e^x +1} }
+	%	\end{equation}
+	%	
+	%	\begin{equation}
+	%	\label{Sotfmax}
+	%	Softmax(x_1, x_2, \cdots, x_n) = \frac{(e^{x_1}, ê^{x_2}, \cdots, e^{x_n})}{\sum_{i =1}^{n}{e^{x_i}}}
+	%	\end{equation}
+	%	
+	%	
+	%	Nach \cite{9} sollten die Aktivierungsfunktionen vorgezogen werden, die mehr von folgenden Eigenschaften aufweisen:	
+	%	
+	%	\textbf{Nichtlinearität:} Bei einem mehrschichtigen Netz ist es nicht sinnvoll eine lineare Aktivierungsfunktion zu benutzen, denn ein solches Netz in ein einschichtiges Netz immer überführt werden kann und es ist bekannt, dass ein mehrschichtiges Netz mehr als ein einschichtiges Netz leisten kann.
+	%
+	%	\textbf{Überall differenzierbar:} Diese Eigenschaft ermöglicht, gradientenbasierende Optimierungsverfahren zu verwenden.
+	%	
+	%	\textbf{Wertebereich:} Die gradientenbasierende Lernmethode ist stabiler, wenn der Wertebereich der Aktivierungsfunktion endlich ist und wenn es dagegen unendlich ist, ist das Lernen im Allgemeinen effektiver.
+	%	
+	%	\textbf{Monotonie:} Wenn die Aktivierungsfunktion monoton ist, so ist die Fehleroberfläche eines einschichtigen Netz immer konvex,\textcolor{red}{was bedeutet, dass es nur ein optimales Minimum gibt und das Optimierungsverfahren immer besser wird}.
+	%	
+	%	\textbf{Identität in 0} ( $ {\displaystyle f(x)\approx x} $ wenn  $ {\displaystyle x\approx 0} $): Diese Eigenschaft ermöglicht einen schnellen Training, wenn die Gewichte zufällig initialisiert sind und wenn die Aktivierungsfunktion in der Nähe von Null nicht gegen die Identität konvergiert, muss bei der Initialisierung der Gewichte besonders sorgfältig vorgegangen werden.
+	%	
+	%	
+	%	\textbf{ Sigmoid-Aktivierungsfunktion} Obwohl die Sigmoid-Funktion leicht anwendbar und differenzierbar ist, wird sie nach und nach auch nicht mehr verwendet, denn sie zum Beispiel das Problem des verschwindenden Gradienten(\textit{vanishing gradient problem}) nicht löst, was die Leistung tiefer neuronaler Netze stark beeinträchtigt und sie konvergiert sehr langsam.
+	\item  
 \end{itemize}
 
+
+\subsection{Feature-Maps}
+\subsection{Entwicklung von Künstlichen Neuronalen Netzen } \label{Entwicklung}
+
+%\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
+%Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
+%\\textbf{künstliches Neuron}.\\
 
 
 \section{\ac{CNN}}
@@ -861,57 +864,10 @@ Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte
 Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 
 
-\paragraph{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}
-\subparagraph{Adaptive Gradient Algorithm (AdaGrad):}
-AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
-	\begin{equation}\label{adagrad}
-		\begin{aligned}
-		\alpha_{t}=&\sum_{i = 1}^{t}{(g_{i-1})^2} &
-			\theta_{t+1} =& \theta_{t} -\eta_{t} g_t \\ \eta_{t} =& \frac{\eta}{\sqrt{\alpha_{t}}+\epsilon}
-		\end{aligned}
-	\end{equation}
-\begin{center}
-	Voreingestellte Parameter(\textit{KERAS}) :
-	\begin{tabular}{r@{= }l c@{= }c r@{= }l}
-		$ \alpha_{0} $& 0.0 & $ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
-	\end{tabular}
-\end{center}
-Dabei wird am Trainingsanfang eine Lernrate für jeden Parameter definiert und im Trainingsverlauf separat angepasst. 
- Dieses Verfahren eignet sich gut für spärliche Daten, denn es gibt häufig auftretende Merkmale sehr niedrige Lernraten und seltene Merkmale hohe Lernraten, wobei die Intuition ist, dass jedes Mal, wenn eine seltene Eigenschaft gesehen wird, sollte der Lernende mehr aufpassen. Somit erleichtert die Anpassung das Auffinden und Identifizieren sehr voraussehbarer, aber vergleichsweise seltener Merkmale.\cite{AdaGrad}.Wie in der Gleichung \eqref{adagrad} festzustellen,nach einer bestimmten Anzahl von Iterationen haben wir keine Verbesserung der Netzleistung, denn je größer $ t $ wird, desto kleiner $ \eta_{t} $ wird und irgendwann wird $ \eta_{t} $ so klein, dass $ \eta_{t}g_{t} $ fast gleich null ist.
 
-\subparagraph{\textit{Root Mean Square Propagation:}RMSProp}
-RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur Anpassung der Netzparameter basiert der RMSProp Optimizer auf den Durchschnitt der aktuellen Größen der Gradienten statt auf der Summe der ersten Moment wie in AdaGrad.Da $ E[g^2]_t $ nicht schneller als $ \alpha_{t} $\eqref{adagrad} ansteigt, wird die radikal sinkenden Lernraten von Adagrad deutlich verlangsamt.Die Parameteranpassungen richten sich nach der folgenden Gleichung:
-\begin{equation}\label{RMSProp}
-	\begin{split}
-	E[g^2]_t =\alpha E[g^2]_{t-1} +(1-\alpha)g^2_{t}\\
-	\theta_{t+1} = \theta_{t} -\frac{\eta}{\sqrt{E[g^2]_t}+\epsilon} g_t, \quad  \epsilon \approx 0
-	\end{split}
-\end{equation}
-Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
-
-\subparagraph{Adam \textit{Adaptive Moment Estimation:Adam}}
-Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
- Adam weist die Hauptvorteile von AdaGrad, das mit spärlichen Gradienten gut funktioniert, und RMSProp, das einige Probleme von AdaGrad löst und das für nicht-konvexe Optimierung geeignet ist,auf.Wie die Parameteranpassung von Adam Optimizer genau funktioniert, ergibt sich aus der folgenden Gleichung: 
-\begin{equation}\label{ADAM}
-		\begin{aligned}
-				m_{t}=& \beta_{1}m_{t-1}+(1-\beta_{1})g_{t}, &  \widehat{m}_{t} =& \dfrac{m_{t}}{1-\beta_{1}^t}\\
-				v_{t}=& \beta_{2}v_{t-1}+(1-\beta_{2})g^2_t,&\widehat{v}_{t} =&\dfrac{v_t}{1-\beta_{2}^t}\\
-				\theta_{t+1} =& \theta_{t} -\dfrac{\eta}{\sqrt{\widehat{v}_{t}}+\epsilon}\widehat{m}_{t}
-			\end{aligned}
-\end{equation}
-\begin{center}
-	Voreingestellte Parameter(\textit{KERAS}) :
-	\begin{tabular}{r@{: }l r@{: }l}
-		 $ \beta_{1}$ & 0.9 &$ \beta_{2} $& 0.999\\
-		 $ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
-	\end{tabular}
-\end{center}
-
-Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Implementierung, effizienter Nutzung der Speicherplatz und seine Invarianz zur diagonalen Neuskalierung der Gradienten.
-\\ \textcolor{purple}{Kleines Experiment}
   % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
  % \newpage 
-\section{Effizienter Nutzung tiefer neuronaler Netze}
+\section{Kompression von \ac{DNN}}
   Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik in verschiedenen Bereichen zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen.Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Netzparameter entfernt.Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren.Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als 32 Bits nutzt.Im folgenden werden nur die Beschneidung und Quantisierung von \ac{NN} mehr eingegangen werden.
 
   Neuronale Netze sind sowohl rechenintensiv als auch speicherintensiv, was ihre Bereitstellung auf eingebetteten Systemen mit begrenzten Hardware-Ressourcen erschwert\cite{5}. 
@@ -1060,19 +1016,12 @@ Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekom
 
 
 \section{Experiment} \label{Experiment}
-\subsection{Lernrate}\label{Experiment:Lernrate}
-
-\begin{itemize}
-	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
-	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
-\end{itemize}
-In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
 
 
 
- \section{Besondere \acsp{CNN}}
-\subsection{AlexNet}
-Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}.Das Besondere an AlexNet ist aber nicht die Anzahl der Schichten, sondern der Einsatz bestimmter Methoden oder Techniken:
+ \subsection{Besondere \acsp{CNN}}
+\subsubsection{AlexNet}
+Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und etwas $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}.Das Besondere an AlexNet ist aber nicht die Anzahl der Schichten, sondern der Einsatz bestimmter Methoden oder Techniken:
 \begin{itemize}
 	\item \textbf{ReLU}: Vor AlexNet waren $ tanh $ und $ sigmoid $ die Standard Aktivierungsfunktionen, aber wegen ihrer Sättigung bei hohen oder sehr niedrigen Werten und der Tatsache, das sie in diesen Bereichen eine Steigung nahe bei null haben, verlangsamen sie stark die Gewichtsanpassungen, was nicht der Fall bei $ ReLU $ ist, das eine Steigung gleich null nur bei negativen Werten und bei positiven höheren Werte  eine Steigung nicht nahe bei null hat. Das Training von \ac{CNN} wird durch $ ReLU $  um ein Vielfaches schneller als ein Äquivalent mit $ tanh $ beschleunigt\cite{AlexNet}.
 	
@@ -1087,38 +1036,49 @@ Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevs
 \end{figure}
 
 
-AlexNet kann aufgrund seiner Größe($\sim240MB$) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen oder übertreffen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden.\\
+AlexNet kann aufgrund seiner Größe($\sim240MB$) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man seit AlexNet ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden sind.\\
 
 
-kleinere \acsp{CNN}-Architekturen weisen mehrere Vorteile auf wie \\
-Kurze Trainingszeit\\
+\subsubsection{SqueezeNet}
+$ SqueezeNet $ von \cite[Song Han et al]{SqueezeNet} erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5MB$. Die $ SqueezeNet $ Architektur und einige Variante davon können in Abbildung \ref{fig:SqueezeNet} entnehmen. Zum Erreichen einer solchen Architektur werden drei Hauptstrategien und ein spezieller Block verwendet.Bezüglich dieser Strategien wurde zuerst die meisten $ 3\times3 $ Filter durch $ 1\times1 $ Filter ersetzt, was die Parameteranzahl stark reduziert, denn ein $ 1\times1 $ Filter nimmt $ 9\times $ weniger Parameter als ein $ 3\times3 $ Filter in Anspruch, dann wird die Anzahl der Eingangkanäle auf $ 3\times3 $ Filter verringern, denn die Tiefe eines Filters in einem \ac{ConvL} ist gleich die Tiefe vom \ac{ConvL} Input und ein Input mit einer großen Tiefe wird die Parameteranzahl deutlich zunehmen, obwohl Filter mit kleiner räumlicher Dimension benutzt werden. Die letzte Strategie besteht darin, die Reduzierung der räumlichen Dimension im Netzwerk zu verzögern, so werden Feature-Maps mit größerer Raumauflösung am Ende enthalten. \cite[Song Han et al]{SqueezeNet} sind der Meinung, dass größere Feature-Maps zu einer höheren Klassifizierungsgenauigkeit führen. 
 
-
-\subsection{SqueezeNet}
-SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Abbildung\ref{fig:fire_module}) erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5MB$. 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth ]{squeezenet}
-	\caption{ SqueezeNet Architektur \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+	\caption{ SqueezeNet Architekturen \cite{SqueezeNet} }
 	\label{fig:SqueezeNet}
 \end{figure}
+
+Um die Ziele der ersten und zweiten Strategien zu erreichen, wird ein neuer Baustein(\textit{fire module})(FM) eingeführt. Das FM besteht aus einem \textit{Squeeze}-(mit $ 1\times1 $ Filtern) und einem \textit{Expand}(mit $ 1\times1 $ und $ 3\times3 $ Filtern)-Block(siehe Abbildung\ref{fig:fire_module}). Der \textit{Squeeze} Block ermöglicht der Reduzierung der Dimensionalität, indem die Anzahl Feature-Maps verringert wird, während die wichtigsten Features erhalten bleiben und die Anwendung von $ ReLU $ nach dem \textit{Squeeze} Block ermöglicht dem Netzwerk, komplexere Features zu lernen.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth ]{fire_module}
-	\caption{ fire\_module \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+	\caption{ fire\_module \cite{SqueezeNet} }
 	\label{fig:fire_module}
 \end{figure}
-%verzögerte Downsampling zu einer höheren Genauigkeit von classiﬁcation 
 
+Was der \textit{Expand} Block angeht, funktioniert der Block mit $ 1\times1 $ Filtern genauso wie der \textit{Squeeze} Block und der Block mit $ 3\times3 $ Filtern ermöglicht der Erlangung von Empfangsfelder(\textit{receptive field}), die in der Lage sind, lokale räumliche Informationen zu erfassen, was $ 1\times1 $ Filter nicht schaffen können.
 
-\subsection{Xception}
+Wie es in Abbildung \ref{fig:SqueezeNet} zu sehen ist, kann eine Verbindung zwischen zwei Layers über eine oder mehrere Schichte überspringen.Solche Verbindungen werden \textit{Residual connections}(RC) genannt und Netze mit RCs gehören zu der Klasse von Residual Netzwerke (mehr dazu siehe \cite{ResNet}).
+Wie die Abbildung ?? zeigt, liefert \textit{SqueezeNet} mit Simple RCs  als die anderen Varianten
+
+\subsubsection{Xception}
+\textit{Xception} ist eine Variante von \textit{InceptionV3}
+\textbf{Related work}
+\begin{itemize}
+	\item Inception Familly
+	\item Depthwise separable convolutions
+	\item Residual Connection
+	
+\end{itemize}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth ]{Xception}
 	\caption{ ff }
 	\label{fig:Xception}
 \end{figure}
-\subsection{MobileNet}
+\subsubsection{MobileNet}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
@@ -1126,6 +1086,64 @@ SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Ab
 	\label{fig:MobileNet}
 \end{figure}
 
+
+\subsection{Lernrate}\label{Experiment:Lernrate}
+Wie in \ref{Lernrate} gesehen, die Lernrate sagt uns, wie schnell wir ans Ziel kommen möchten.
+\begin{itemize}
+	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
+	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
+\end{itemize}
+In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
+
+\subsection{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}
+Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.
+\subsubsection{Adaptive Gradient Algorithm (AdaGrad)}
+AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
+\begin{equation}\label{adagrad}
+\begin{aligned}
+\alpha_{t}=&\sum_{i = 1}^{t}{(g_{i-1})^2} &
+\theta_{t+1} =& \theta_{t} -\eta_{t} g_t \\ \eta_{t} =& \frac{\eta}{\sqrt{\alpha_{t}}+\epsilon}
+\end{aligned}
+\end{equation}
+\begin{center}
+	Voreingestellte Parameter(\textit{KERAS}) :
+	\begin{tabular}{r@{= }l c@{= }c r@{= }l}
+		$ \alpha_{0} $& 0.0 & $ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
+	\end{tabular}
+\end{center}
+Dabei wird am Trainingsanfang eine Lernrate für jeden Parameter definiert und im Trainingsverlauf separat angepasst. 
+Dieses Verfahren eignet sich gut für spärliche Daten, denn es gibt häufig auftretende Merkmale sehr niedrige Lernraten und seltene Merkmale hohe Lernraten, wobei die Intuition ist, dass jedes Mal, wenn eine seltene Eigenschaft gesehen wird, sollte der Lernende mehr aufpassen. Somit erleichtert die Anpassung das Auffinden und Identifizieren sehr voraussehbarer, aber vergleichsweise seltener Merkmale.\cite{AdaGrad}.Wie in der Gleichung \eqref{adagrad} festzustellen,nach einer bestimmten Anzahl von Iterationen haben wir keine Verbesserung der Netzleistung, denn je größer $ t $ wird, desto kleiner $ \eta_{t} $ wird und irgendwann wird $ \eta_{t} $ so klein, dass $ \eta_{t}g_{t} $ fast gleich null ist.
+
+\subsubsection{Root Mean Square Propagation(RMSProp)}
+RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur Anpassung der Netzparameter basiert der RMSProp Optimizer auf den Durchschnitt der aktuellen Größen der Gradienten statt auf der Summe der ersten Moment wie in AdaGrad.Da $ E[g^2]_t $ nicht schneller als $ \alpha_{t} $\eqref{adagrad} ansteigt, wird die radikal sinkenden Lernraten von Adagrad deutlich verlangsamt.Die Parameteranpassungen richten sich nach der folgenden Gleichung:
+\begin{equation}\label{RMSProp}
+\begin{split}
+E[g^2]_t =\alpha E[g^2]_{t-1} +(1-\alpha)g^2_{t}\\
+\theta_{t+1} = \theta_{t} -\frac{\eta}{\sqrt{E[g^2]_t}+\epsilon} g_t, \quad  \epsilon \approx 0
+\end{split}
+\end{equation}
+Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
+
+\subsubsection{Adaptive Moment Estimation(Adam)}
+Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
+Adam weist die Hauptvorteile von AdaGrad, das mit spärlichen Gradienten gut funktioniert, und RMSProp, das einige Probleme von AdaGrad löst und das für nicht-konvexe Optimierung geeignet ist,auf.Wie die Parameteranpassung von Adam Optimizer genau funktioniert, ergibt sich aus der folgenden Gleichung: 
+\begin{equation}\label{ADAM}
+\begin{aligned}
+m_{t}=& \beta_{1}m_{t-1}+(1-\beta_{1})g_{t}, &  \widehat{m}_{t} =& \dfrac{m_{t}}{1-\beta_{1}^t}\\
+v_{t}=& \beta_{2}v_{t-1}+(1-\beta_{2})g^2_t,&\widehat{v}_{t} =&\dfrac{v_t}{1-\beta_{2}^t}\\
+\theta_{t+1} =& \theta_{t} -\dfrac{\eta}{\sqrt{\widehat{v}_{t}}+\epsilon}\widehat{m}_{t}
+\end{aligned}
+\end{equation}
+\begin{center}
+	Voreingestellte Parameter(\textit{KERAS}) :
+	\begin{tabular}{r@{: }l r@{: }l}
+		$ \beta_{1}$ & 0.9 &$ \beta_{2} $& 0.999\\
+		$ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
+	\end{tabular}
+\end{center}
+
+Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Implementierung, effizienter Nutzung der Speicherplatz und seine Invarianz zur diagonalen Neuskalierung der Gradienten.
+\\ \textcolor{purple}{Kleines Experiment}
 
 \section{Abkürzungsverzeichnis}
 \begin{acronym}[THIBAUT]
@@ -1144,13 +1162,13 @@ SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Ab
 
 \begin{thebibliography}{lem00}
  \bibitem{1}
-	P. Kerlirzin, and F. Vallet \href{ https://www.mitpressjournals.org/doi/abs/10.1162/neco.1993.5.3.473?journalCode=neco} {Robustness in Multilayer Perceptrons}
+	P. Kerlirzin, and F. Vallet: \href{ https://www.mitpressjournals.org/doi/abs/10.1162/neco.1993.5.3.473?journalCode=neco} {Robustness in Multilayer Perceptrons}
  \bibitem{2}
- 	Geoffrey E. Hinton and Nitish Srivastava and Alex Krizhevsky and Ilya Sutskever and Ruslan R. Salakhutdinov \href{https://arxiv.org/abs/1207.0580}{Improving neural networks by preventing co-adaptation of feature detectors}
+ 	Geoffrey E. Hinton and Nitish Srivastava and Alex Krizhevsky and Ilya Sutskever and Ruslan R. Salakhutdinov: \href{https://arxiv.org/abs/1207.0580}{Improving neural networks by preventing co-adaptation of feature detectors}
  \bibitem{3}
- 	Srivastava, Hinton, Krizhevsky, Sutskever and Salakhutdinov \href{http://jmlr.org/papers/volume15/srivastava14a.old/srivastava14a.pdf}{Dropout: A Simple Way to Prevent Neural Networks from Overfitting}
+ 	Srivastava, Hinton, Krizhevsky, Sutskever and Salakhutdinov: \href{http://jmlr.org/papers/volume15/srivastava14a.old/srivastava14a.pdf}{Dropout: A Simple Way to Prevent Neural Networks from Overfitting}
 \bibitem{4}
-Ian Goodfellow, Yoshua Bengio, Aaron Courville
+Ian Goodfellow, Yoshua Bengio, Aaron Courville:
 \href{https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?ieTF8&qid=1548018253&sr=8-3&keywords=deep+learning&linkCode=sl1&tag=inspiredalgor-20&linkId=49b3b1cce7e04bb3c9b99f2d878bf805&language=en_US}{Adaptive Computation and Machine Learning series} Page 342
  
  \bibitem{5}
@@ -1173,11 +1191,11 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville
 	\bibitem{LearningRate}Wikipedia:
 		\href{https://en.wikipedia.org/wiki/Learning_rate}{Learning Rate}
 	\bibitem{AdaGrad}
-		John Duchi,Elad Hazan, Yoram Singer,
+		John Duchi,Elad Hazan, Yoram Singer:
 		\href{http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf}{Adaptive Subgradient Methods for
 			Online Learning and Stochastic Optimization}
 	\bibitem{adam}
-		Diederik P. Kingma, Jimmy Ba
+		Diederik P. Kingma, Jimmy Ba:
 		\href{https://arxiv.org/abs/1412.6980}{Adam: A Method for Stochastic Optimization}
 		
 	\bibitem{quantization1}
@@ -1191,8 +1209,11 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville
 		\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet Classification with Deep Convolutional Neural Networks}
   
   \bibitem{SqueezeNet}
-  	Forrest N. Iandola, Song Han, Matthew W. Moskewicz, Khalid Ashraf, William J. Dally, Kurt Keutzer
+  	Forrest N. Iandola, Song Han, Matthew W. Moskewicz, Khalid Ashraf, William J. Dally, Kurt Keutzer:
   	\href{https://arxiv.org/abs/1602.07360}{SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size}
+  	\bibitem{ResNet}
+  		Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun:
+  		\href{https://arxiv.org/pdf/1512.03385.pdf}{Deep Residual Learning for Image Recognition}
 \end{thebibliography}
 
  
