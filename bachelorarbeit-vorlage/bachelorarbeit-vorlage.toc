@@ -3,43 +3,45 @@
 \contentsline {section}{\numberline {1}Einleitung}{4}{section.1}
 \contentsline {section}{\numberline {2}Grundlagen}{5}{section.2}
 \contentsline {subsection}{\numberline {2.1}Entwicklung von K\IeC {\"u}nstlichen Neuronalen Netzen}{5}{subsection.2.1}
-\contentsline {section}{\numberline {3}Feedforward}{5}{section.3}
-\contentsline {section}{\numberline {4}Layer in \ac {CNN}}{5}{section.4}
-\contentsline {subsection}{\numberline {4.1}Input Layer}{5}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Faltungsschicht(\textit {Convolution Layer})}{6}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Aktivierungsfunktion}{7}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Pooling Layer}{10}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Multi-layer Perzeptron (Fully Connected Layer)}{11}{subsection.4.5}
-\contentsline {section}{\numberline {5}Backforward}{12}{section.5}
-\contentsline {subsection}{\numberline {5.1}Fehlerfunktion}{12}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Gradientenabstieg}{13}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Backpropagation: Optimizer}{13}{subsection.5.3}
-\contentsline {paragraph}{\numberline {5.3.0.1}Warum wird Gradientenverfahren gebraucht}{13}{paragraph.5.3.0.1}
-\contentsline {paragraph}{\numberline {5.3.0.2}Funktionieren von Gradientenverfahren}{14}{paragraph.5.3.0.2}
-\contentsline {paragraph}{\numberline {5.3.0.3}Type von Gradientenverfahren}{14}{paragraph.5.3.0.3}
-\contentsline {subparagraph}{\numberline {5.3.0.3.1}\textbf {Stochastic Gradient Descent:}\textit {SGD}}{14}{subparagraph.5.3.0.3.1}
-\contentsline {subparagraph}{\numberline {5.3.0.3.2}\textbf {Batch Gradient Descent:}\textit {BGD}}{15}{subparagraph.5.3.0.3.2}
-\contentsline {subparagraph}{\numberline {5.3.0.3.3}\textbf {Mini-batch Stochastic Gradient Descent:}\textit {MSGD}}{15}{subparagraph.5.3.0.3.3}
-\contentsline {subsubsection}{\numberline {5.3.1}Adaptive Gradient Algorithm :\textit {AdaGrad}}{16}{subsubsection.5.3.1}
-\contentsline {subsubsection}{\numberline {5.3.2}\textit {Root Mean Square Propagation:}RMSProp}{16}{subsubsection.5.3.2}
-\contentsline {subsubsection}{\numberline {5.3.3}Adam \textit {Adaptive Moment Estimation:Adam}}{17}{subsubsection.5.3.3}
-\contentsline {section}{\numberline {6}Besondere \acsp {CNN}}{17}{section.6}
-\contentsline {subsection}{\numberline {6.1}AlexNet}{17}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}SqueezeNet}{19}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Xception}{19}{subsection.6.3}
-\contentsline {subsection}{\numberline {6.4}MobileNet}{19}{subsection.6.4}
-\contentsline {section}{\numberline {7}Effizienter Nutzung tiefer neuronaler Netze}{19}{section.7}
-\contentsline {subsection}{\numberline {7.1}Pruning Network}{20}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Quantisierung von \ac {NN}}{22}{subsection.7.2}
-\contentsline {subsection}{\numberline {7.3}Huffman Codierung}{24}{subsection.7.3}
-\contentsline {section}{\numberline {8}Overfitting in Convolutional neuronale Netzwerke}{24}{section.8}
-\contentsline {subsection}{\numberline {8.1}Overfitting Definition}{24}{subsection.8.1}
-\contentsline {subsection}{\numberline {8.2}Strategie gegen Overfitting}{25}{subsection.8.2}
-\contentsline {subsubsection}{\numberline {8.2.1}Data Augmentation}{25}{subsubsection.8.2.1}
-\contentsline {subsubsection}{\numberline {8.2.2}Dropout}{26}{subsubsection.8.2.2}
-\contentsline {paragraph}{\numberline {8.2.2.1}Funktionsweise von Dropout}{26}{paragraph.8.2.2.1}
-\contentsline {paragraph}{\numberline {8.2.2.2}Verhinderung der Koadaptationen zwischen Neuronen}{27}{paragraph.8.2.2.2}
-\contentsline {paragraph}{\numberline {8.2.2.3}Automatische Erh\IeC {\"o}hung von Training Data und Regelung}{27}{paragraph.8.2.2.3}
-\contentsline {subsubsection}{\numberline {8.2.3}Batch-Normalisierung}{28}{subsubsection.8.2.3}
-\contentsline {section}{\numberline {9}Experiment}{29}{section.9}
-\contentsline {section}{\numberline {10}Abk\IeC {\"u}rzungsverzeichnis}{29}{section.10}
+\contentsline {section}{\numberline {3}\ac {CNN}}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}Feedforward}{5}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Input Layer}{5}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Faltungsschicht(\textit {Convolution Layer})}{6}{subsubsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.3}Aktivierungsfunktion}{7}{subsubsection.3.1.3}
+\contentsline {subsubsection}{\numberline {3.1.4}Pooling Layer}{10}{subsubsection.3.1.4}
+\contentsline {subsubsection}{\numberline {3.1.5}Multi-layer Perzeptron (Fully Connected Layer)}{11}{subsubsection.3.1.5}
+\contentsline {subsection}{\numberline {3.2}Backforward}{12}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Fehlerfunktion}{12}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Gradient}{12}{subsubsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.3}Lernrate}{13}{subsubsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.4}Gradientenabstiegsverfahren}{13}{subsubsection.3.2.4}
+\contentsline {paragraph}{\numberline {3.2.4.1}Ablauf eines Gradientenverfahrens im \ac {DNN}}{13}{paragraph.3.2.4.1}
+\contentsline {paragraph}{\numberline {3.2.4.2}Variante des Gradientenverfahrens}{14}{paragraph.3.2.4.2}
+\contentsline {subparagraph}{\nonumberline Stochastic Gradient Descent (SGD):}{15}{section*.23}
+\contentsline {subparagraph}{\nonumberline Batch Gradient Descent (BGD):}{15}{section*.24}
+\contentsline {subparagraph}{\nonumberline Mini-batch Stochastic Gradient Descent(MSGD):}{15}{section*.25}
+\contentsline {paragraph}{\numberline {3.2.4.3}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{15}{paragraph.3.2.4.3}
+\contentsline {subparagraph}{\nonumberline Adaptive Gradient Algorithm (AdaGrad):}{15}{section*.26}
+\contentsline {subparagraph}{\nonumberline \textit {Root Mean Square Propagation:}RMSProp}{16}{section*.27}
+\contentsline {subparagraph}{\nonumberline Adam \textit {Adaptive Moment Estimation:Adam}}{16}{section*.28}
+\contentsline {section}{\numberline {4}Effizienter Nutzung tiefer neuronaler Netze}{17}{section.4}
+\contentsline {subsection}{\numberline {4.1}Pruning Network}{17}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Quantisierung von \ac {NN}}{19}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Huffman Codierung}{20}{subsection.4.3}
+\contentsline {section}{\numberline {5}Overfitting in Convolutional neuronale Netzwerke}{20}{section.5}
+\contentsline {subsection}{\numberline {5.1}Overfitting Definition}{20}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Strategie gegen Overfitting}{21}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Data Augmentation}{21}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Dropout}{21}{subsubsection.5.2.2}
+\contentsline {paragraph}{\numberline {5.2.2.1}Funktionsweise von Dropout}{22}{paragraph.5.2.2.1}
+\contentsline {paragraph}{\numberline {5.2.2.2}Verhinderung der Koadaptationen zwischen Neuronen}{23}{paragraph.5.2.2.2}
+\contentsline {paragraph}{\numberline {5.2.2.3}Automatische Erh\IeC {\"o}hung von Training Data und Regelung}{23}{paragraph.5.2.2.3}
+\contentsline {subsubsection}{\numberline {5.2.3}Batch-Normalisierung}{24}{subsubsection.5.2.3}
+\contentsline {section}{\numberline {6}Experiment}{25}{section.6}
+\contentsline {subsection}{\numberline {6.1}Lernrate}{25}{subsection.6.1}
+\contentsline {section}{\numberline {7}Besondere \acsp {CNN}}{26}{section.7}
+\contentsline {subsection}{\numberline {7.1}AlexNet}{26}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}SqueezeNet}{27}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Xception}{27}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}MobileNet}{27}{subsection.7.4}
+\contentsline {section}{\numberline {8}Abk\IeC {\"u}rzungsverzeichnis}{27}{section.8}

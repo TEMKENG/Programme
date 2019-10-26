@@ -1,8 +1,3 @@
-% Vorlage für eine Bachelorarbeit
-% Siehe auch LaTeX-Kurs von Mathematik-Online
-% www.mathematik-online.org/kurse
-% Anpassungen für die Fakultät für Mathematik
-% am KIT durch Klaus Spitzmüller und Roland Schnaubelt Dezember 2011
 
 \documentclass[12pt,a4paper]{scrartcl}
 
@@ -16,7 +11,7 @@
 % \usepackage[latin1]{inputenc} %  Alternativ unter Windows
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-
+\usepackage{url}
 
 \usepackage[pdftex]{graphicx}
 \usepackage{latexsym}
@@ -54,6 +49,15 @@
 \def\Arrow{\raisebox{1.3\height}{\scalebox{2}{$\xRightarrow[Stride=2]{pool\_size =(2,2)}$}}}
 
 
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+	{-2.5ex\@plus -1ex \@minus -.25ex}%
+	{1.25ex \@plus .25ex}%
+	{\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{4} % how many sectioning levels to assign numbers to
+\setcounter{tocdepth}{4}    % how many sectioning levels to show in ToC
+
 \begin{document}
   % Keine Seitenzahlen im Vorspann
   \pagestyle{empty}
@@ -81,7 +85,7 @@
 
     Betreuung: Name der Betreuer/ des Betreuers:Shou Liu \\[1cm]
     Fakultät für Embedded Intelligence for Health Care and Wellbeing \\[1cm]
-%		Karlsruher Institut für Technologie
+
   \end{center}
 \end{titlepage}
 
@@ -112,9 +116,7 @@
 %\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
 %Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
 %\\textbf{künstliches Neuron}.\\
-Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion
-% \textcolor{red}{$f: \R^n $ x $ \R^n $ x $\R\rightarrow \R$ der Form $ f(x, w, b) = \sigma(w.x +b) $  (wobei $ \sigma : \R \rightarrow \R $ die Aktivierungsfunktion)}
-, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines \ac{KNN} ist in Abbildung \ref{fig:Fneuron}
+Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines \ac{KNN} ist in Abbildung \ref{fig:Fneuron}
 zu sehen.
 
 \begin{figure}[h]
@@ -229,15 +231,15 @@ Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer})
 
 
 
+\section{\ac{CNN}}
 
-
-\section{Feedforward }
-\section{Layer in \ac{CNN}}
-\subsection{Input Layer}
+\subsection{Feedforward }
+%\paragraph{Layer in \ac{CNN}}
+\subsubsection{Input Layer}
 Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W\times H\times D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
 
 
-\subsection{Faltungsschicht(\textit{Convolution Layer})}
+\subsubsection{Faltungsschicht(\textit{Convolution Layer})}
 Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte dieses Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt und dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ I_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
 
 \begin{center}
@@ -382,7 +384,7 @@ In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL
 
 
 
-\subsection{Aktivierungsfunktion}
+\subsubsection{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während dem Training mit sehr vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
 Die Aktivierungsfunktion auch Transferfunktion oder Aktivitätsfunktion genannt, hilf dem \ac{NN} bei der Durchführung dieser Trennung. Es gibt sehr viele Aktivierungsfunktionen und in folgenden werden wir sehen, dass eine Aktivierungsfunktion je nach zu lösende Aufgaben  vorzuziehen ist.\[\begin{cases}
 Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
@@ -564,7 +566,7 @@ Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
 
 In allgemein wird die ReLU aufgrund des Problems der toten Neurone nur in versteckte Schichten und die Softmax-Funktion bei Klassifikationsproblemen und Sigmoid-Funktion bei Regressionsproblemen in Ausgabeschicht verwenden.
 
-\subsection{Pooling Layer}\label{Pooling Layer}
+\subsubsection{Pooling Layer}\label{Pooling Layer}
 Die Funktionsweise von Pooling-Schichten ist sehr ähnlich zu der von \acsp{ConvL}. Das Filter wird über die Inputdaten bewegen und dabei anstatt die Faltungsoperation durchzuführen, werden die Inputdaten Blockweise zusammengefasst. Ein Pooling-Layer besitzt nur ein Filter, das nicht wie in \acsp{ConvL} lernbar ist, sondern gibt nur an, wie groß der Block, der zusammengefasst wird, sein muss.
 Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgröße verwendet, was die Dimension der Inputdaten um die Hälfte reduziert. Interessanter dabei ist ,dass die wichtigen Informationen oder Muster nach der Pooling-Layer vorhanden bleiben und damit haben wir nicht nur eine Erhöhung der Rechengeschwindigkeit, sondern auch eine wesentliche Reduzierung der Netzparameter, was die Wahrscheinlichkeit einer Modelüberanpassung(\textit{Overfitting}) reduziert. Pooling-Schichten sind etwa invariant gegenüber kleiner Veränderung wie Parallelverschiebung\cite{4}.
 \begin{figure}[h]
@@ -692,7 +694,7 @@ Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{
 
 
 
-\subsection{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
+\subsubsection{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
 Nachdem die relevanten lokalen Merkmale durch die Wiederholung von Conv und Pooling-Schichten extrahiert werden sind, wenden sie in einem \ac{FCL} kombiniert, um das Ergebnis jeder Klasse zu berechnen. Die \acsp{FCL} des \ac{CNN} bieten sie die Möglichkeit, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann. Die \acsp{FCL} funktionieren eigentlich genau wie \acsp{ConvL}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur \acsp{FCL} sieht wie in Abbildung\ref{KNN} aus.
 
 \def\layersep{2.5cm}
@@ -747,19 +749,17 @@ Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} w
 
 
 
-\section{Backforward }
-\subsection{Fehlerfunktion}
+\subsection{Backforward }
 
-Das Training von \acsp{KNN} besteht darin, den vom \ac{NN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
-Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird \textcolor{blue}{mit oder von} der Fehlerfunktion auch Kostenfunktion genannt quantifiziert oder angegeben.
-Die Kostenfunktion bringt die Ausgabewerte des neuronalen Netzes mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des\acsp{NN}.
-Der Gradient sagt wie die Netzparameter geeignet angepasst werden sollen und er wird durch die Berechnung aktueller Netzvorhersagen und der Fehlerfunktion berechnet. Basiert auf diesen Gradienten konvergiert die Kostenfunktion nach einigen Epochen gegen sein globales Minimum, sodass der Netzfehler bei Vorhersagen geringer ist.
+\subsubsection{Fehlerfunktion}\label{Fehlerfunktion}
 
-Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). \textcolor{red}{muss noch hinweisen wo die Formeln herkommen?}
-\begin{align*}
-	Y:=\{Y_1,\cdots, Y_n\} :&\text{die tatsächlichen Werte} \\
-	\widehat{Y}:=\{\widehat{Y}_1,\cdots, \widehat{Y}_n\} :&\text{die Ausgabeweerte des neuronalen Netzes}
-\end{align*}
+Das Training von \acsp{CNN} besteht darin, den vom \ac{CNN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
+Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird durch eine Fehlerfunktion auch Kostenfunktion genannt quantifiziert oder angegeben.
+Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des \acsp{CNN}.Es wird in Laufe des Trainings von \acsp{CNN} versucht, diese Kostenfunktion mit Gradient basierten Verfahren zu minimieren(siehe Absatz \ref{Gradientenabstieg})
+
+
+Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). 
+
 \begin{align}
 	\label{MSE}	
 	MSE(Y, \widehat{Y}) =&\frac{1}{n}\sum_{i = 1}^{n}(Y_i - \widehat{Y}_i)^2\\
@@ -767,79 +767,79 @@ Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-ent
 	CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}(Y_i\log(\widehat{Y}_i) +(1-Y_i)\log(1- \widehat{Y}_i))
 \end{align}
 
-Im Gegenteil zu CE Fehlerfunktionen,die sich nur auf Wahrscheinlichkeitsverteilungen anwenden lassen, können die MSE auf beliebige Werte angewendet werden. Nach Pavel et al.\cite{7} ermöglicht die CE-Verlustfunktion besseres lokales Optimum zu finden als die MSE-Verlustfunktion und das soll daran liegen, dass das Training des MSE Systems schnell in einem schlechteren lokalen Optimum stecken bleibt, in dem der Gradient verschwand und somit keine weitere Reduzierung der Klassifizierungsfehler möglich ist.Im Allgemein ist die CE Kostenfunktion für die Klassifikationsprobleme und die MSE Fehlerfunktion für die lineare Regression-Probleme besser.
-\textcolor{green}{kleine Experiment}
+\begin{align*}
+Y:=\{Y_1,\cdots, Y_n\} :&\text{Die tatsächlichen Werte} \\
+\widehat{Y}:=\{\widehat{Y}_1,\cdots, \widehat{Y}_n\} :&\text{Die Ausgabeweerte des neuronalen Netzes}
+\end{align*}
+Im Gegenteil zu CE Fehlerfunktionen,die sich nur auf Wahrscheinlichkeitsverteilungen anwenden lassen, können die MSE auf beliebige Werte angewendet werden. Nach \cite[Pavel et al]{7} ermöglicht die CE-Verlustfunktion ein besseres Finden lokaler Optima als die MSE-Verlustfunktion und das soll daran liegen, dass das Training des MSE Systems schneller in einem schlechten lokalen Optimum stecken bleibt, in dem der Gradient fast null ist und damit keine weitere Reduzierung der Netzfehler ermöglicht.Im Allgemein ist die CE Kostenfunktion für die Klassifikationsprobleme und die MSE Fehlerfunktion für die lineare Regression-Probleme besser.
 
+\subsubsection{ Gradient}\label{Gradient}
+Der Gradient einer Funktion ist die erste Ableitung einer Funktion und in mehrdimensionalem Raum ist der Gradient einer Funktion der Vektor, dessen Einträge  die ersten partiellen Ableitungen der Funktion sind. Der Gradient an einem Punkt gibt die Richtung der steilsten Anstieg der Funktion an diesem Punkt.  Also da wir die Kostenfunktion minimieren möchten, sollen wir lieber immer in die Gegenrichtung des Gradienten gehen.In auf dem Gradient basierten Optimierungsverfahren wird der Gradient benutzt, um die lokalen oder globalen Extremwerte(hier das Minimum) zu erreichen.
+Da wir jetzt die Richtung des Minimums herausgefunden haben, bleibt noch zu bestimmen ,wie wir in diese Richtung gehen  sollen.
 
-
-
-
-\subsection{Gradientenabstieg}
-\textbf{Lernrate}\\
-Die Lernrate oder Schrittweite beim maschinellen Lernen ist ein Hyperparameter, der bestimmt, inwieweit neu gewonnene Informationen alte Informationen überschreiben\cite{LearningRate}.
-%Da wir jetzt die Richtung des Minimums herausgefunden haben, bleibt noch zu bestimmen wie groß die Schritte in diese Richtung sein sollen.  Aus der Abbildung \ref{fig:Backprop} kann entnehmen, dass um die neuen Netzparameter zu berechnen, wird die Kostenfunktionsableitung mit der Lernrate $ \eta $ multipliziert und dann von den alten Wert der Netzparameter abgezogen.Die Lernrate sagt uns also wie schnell wir ans Ziel kommen.
-Je nachdem wie die Lernrate gesetzt wird, werden bestimmte Verhalten beobachtet und sie nimmt sehr oft Werte zwischen $ 0.0001 $ und $ 0.4 $:
+\subsubsection{Lernrate}\label{Lernrate}
+Die Lernrate oder Schrittweite beim maschinellen Lernen ist ein Hyperparameter, der bestimmt, inwieweit neue gewonnene Informationen alte Informationen überschreiben sollen\cite{LearningRate}, in anderen Worten wie schnell wir ans Ziel Kommen.
+Je nachdem wie die Lernrate gesetzt wird, werden bestimmte Verhalten beobachtet (Siehe Absatz \ref{Experiment:Lernrate}) und sie nimmt sehr oft Werte zwischen $ 0.0001 $ und $ 0.5 $:
 Die Lernrate muss allerdings im Intervall  $]0,1[$ Werte annehmen, sonst ist das Verhalten des \ac{NN} nicht vorhersehbar bzw. konvergiert das Verfahren einfach nicht.
-Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \eta_{opt}(x) $, sodass das globale oder lokale Minimum sofort nach der Parameteranpassung erreicht wird und da $ \eta_{opt}(x) $ am Trainingsanfang leider nicht bekannt ist, wird die Lernrate in die Praxis vom Anwender basiert auf seine Kenntnisse mit \acsp{NN} oder einfach zufällig gesetzt.
-\begin{itemize}
-	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
-	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
-\end{itemize}
-In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
-\textcolor{RubineRed}{\textbf{Kleine Experiment} mit Größe und kleine Lernrate}
+Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \eta_{opt}(x) $, sodass das globale oder lokale Minimum sofort nach der Parameteranpassung erreicht wird. Da $ \eta_{opt}(x) $ am Trainingsanfang leider nicht bekannt ist, wird die Lernrate in die Praxis vom Programmierer basiert auf seine Kenntnisse mit \acsp{NN} oder einfach zufällig gesetzt.
 
-\subsection{Backpropagation: Optimizer}
+\subsubsection{Gradientenabstiegsverfahren}\label{Gradientenabstiegsverfahren}
+Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein \ac{DNN} als eine Gleichung mit Millionen von Variablen(lernbare Parameter) vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Daten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
+Die Gradientenabstiegsverfahren sind Verfahren, die auf dem Gradient basieren, um Optimierungsprobleme zu lösen.Hier wird Gradientenabstiegsverfahren verwendet, die optimalen Parametern zu finden oder anzunähern.
 
-Das Ziel des Trainings tiefer neuronaler Netze ist, den Unterschied bzw. den Fehler zwischen Netzvorhersagen und tatsächlichen erwarteten Werten zu reduzieren ,also die Kostenfunktion zu minimieren und für jedes Maschine Lernen Problem gibt es Werte für Netzparameter(Gewichte und Bias) auch optimale Werte genannt, sodass das \ac{NN} die Eingangdaten auf die gewünschten Werte korrekt abbildet. Mit korrekt wird gemeint, dass der Wert der Fehlerfunktion mit dieser optimalen Werten verschwindend klein oder sogar gleich null sei.
+\paragraph{Ablauf eines Gradientenverfahrens im \ac{DNN} }
+Das Gradientenabstiegsverfahren kann in drei Hauptschritte aufgeteilt werden.Die Abbildung \ref{fig:Backprop} stellt das Backpropagation-Verfahren bildlich dar.
+Beim ersten Schritt  wird ein zufälliger Punkt aus dem Parameterraum ausgewählt und davon ausgehend wird der Parameterraum exploriert. Das entspricht der Netzparameterinitialisierung am Trainingsanfang.
+Der zweite Schritt besteht darin, die Abstiegsrichtung zu bestimmen.Dazu werden zuerst die Eingangdaten in das \ac{NN} eingespeist(\textit{Forwardpropogation}), danach wird der Fehler zwischen den Netzvorhersagen und den korrekten Werten berechnet und ein Fehler gibt es (fast) immer, denn die Initialisierung wird zufällig gemacht und die Wahrscheinlichkeit, dass wir von Anfang an die optimalen Werte finden, ist verschwindend klein und zuletzt wird der Gradient(\ref{Gradient}) der Kostenfunktion in abhängig von den gegebenen Eingangdaten und den erwarteten Werten berechnet. 
+ Beim letzten Schritt wird die Schrittweite bestimmen.Die Lernrate (\ref{Lernrate}) oder die Schrittweite wird vor Trainingsbeginn festgelegt oder während des Trainings abhängig von aktuellem Netzzustand allmählich adaptiert.
 
-\textbf{Gradientenverfahren}\\
-\paragraph{Warum wird Gradientenverfahren gebraucht}.\\
-Zum Finden dieser optimalen Netzparameter können wir einfach mehrmals zufällige Werte versuchen. Aber dieser Lösungsansatz weist ein großes Problem auf: Angenommen soll das NN zehn optimale Netzparameter aus dem Intervall  $ ]-1,1[ $ finden und der Computer nur zwei Nachkommastelle (z.B 0.08) darstellen kann. Für den Wert eines Netzparameters bzw. die Werte der zehn Netzparameter gibt es also $ 2*10^2 - 1 $ bzw. $ (2*10^2 - 1)^{10} $ Möglichkeiten. also maximale  $ (2*10^2 - 1)^10 $ Iterationen, um die optimalen Werte zu finden, was einfach zu viel und nicht akzeptabel ist. In die Praxis haben \acsp{NN} Millionen von Parametern.
-Statt eines zufälligen Einsetzen von Netzparametern wird lieber ein Gradientenabstiegsverfahren(\textit{Gradient Descent}) angewendet. Das Gradientenabstiegsverfahren ist ein Verfahren, bei dem die Richtung des Gradienten zu Nutze gemacht wird,um der globale Extremwert einer ableitbaren Funktion zu erreichen.Im Maschinen Lernen wird Gradientenabstiegsverfahren verwendet, um an die optimalen Netzparameter anzunähern, besser gesagt die Fehlerfunktion zu minimieren.
-
-\paragraph{Funktionieren von Gradientenverfahren }.\\
-Das Gradientenabstiegverfahren funktioniert wie folgt:Es wird einen zufälligen Punkt aus dem Parameterraum ausgewählt, diese entspricht der Netzparameterinitialisierung am Trainingsanfang.Dann werden die Eingangdaten in das \ac{NN} eingespeist(\textit{Forwardpropogation}) und danach wird der Fehler zwischen den Netzvorhersagen und den korrekten Werten berechnet. Ein Fehler gibt es (fast) immer, denn die Initialisierung wird zufällig gemacht und die Wahrscheinlichkeit, dass wir von Anfang an die optimalen Werte finden, ist verschwindend klein.Der Gradient der Kostenfunktion wird in abhängig von den gegebenen Eingangdaten und den erwarteten Werten berechnet.wir orientieren die Netzparameter dem Gradienten entgegen(\textit{Backward-Pass}), also in Richtung des Minimums, denn der Gradient zeigt immer in Richtung der höchsten Punkt einer Funktion an. Die Abbildung \ref{fig:Backprop} stellt das Backpropagation-Verfahren bildlich dar.
 
 \begin{figure}[h]
 	\fcolorbox{blue}{white}{
-	\centering
-	\begin{tikzpicture}[->,>=stealth',shorten >=3pt,auto,node distance=3cm,semithick]
-	\tikzstyle{every state}=[rectangle, rounded corners, draw=purple, fill=gray!50,text=black, ultra thick]
-	\tikzstyle{every edge}=[draw=blue,text=blue, ultra thick]
+		\centering
+		\begin{tikzpicture}[->,>=stealth',shorten >=3pt,auto,node distance=3cm,semithick]
+		\tikzstyle{every state}=[rectangle, rounded corners, draw=purple, fill=gray!50,text=black, ultra thick]
+		\tikzstyle{every edge}=[draw=blue,text=blue, ultra thick]
+		
+		
+		\node[state] 		 (1)                    {\parbox{3cm}{\centering Eingangdaten:\\$ x=x_1, \cdots,x_n $}};
+		\node[state]         (2) [below, fill=yellow,xshift=3cm, yshift=-2cm] 		{\parbox{3cm}{\centering Neuronale Netze\\ (Forward-Pass)\\$ y =f(x,w,b)  $}};
+		\node[state]         (3) [right,xshift=3cm] {\parbox{5cm}{\centering Netzparameter\\Gewichte:$w= w_1, \cdots, w_n $\\Bias:b}};
+		\node[state]         (4) [below of=2] 		{\parbox{4cm}{\centering Netzvorhersagen:\\$y= y_1, \cdots,y_n $}};
+		\node[state]         (5) [right of=2, xshift=3cm, fill=yellow] 		{ \parbox{4cm}{\centering Fehlerstimmung:\\$ kost(y,\widehat{y}) $}};
+		\node[state]         (6) [right of=3, xshift=3cm]       {\parbox{4cm}{\centering Tatsächliche Werte:\\  $ \widehat{y}=\widehat{y}_1, \cdots,\widehat{y}_n $}};
+		\node[state]		 (7) [below of=5, fill=yellow]		{\parbox{5cm}{\centering Netzparameter Anpassen\\$ w_i = w_i -\eta \frac{\delta kost(y, \widehat{y})}{\delta w_i} $\\$ b = b -\eta \frac{\delta kost(y, \widehat{y})}{\delta b} $}};
+		
+		\path (1)edge node{}(2);
+		\path (3)edge node{}(2);
+		\path (2)edge node{}(4);
+		\path (4)edge node{}(5);
+		\path (6)edge node{}(5);
+		\path (5)edge node{}(7);
+		\path (7)edge[bend left, draw=red] node[rotate=100, xshift=8ex, text=red]{Backward-Pass}(3);
+		
+		\end{tikzpicture}}
+	\begin{center}
+		\begin{tabular}{r@{: }l r@{: }l}
+			$f(x,w,b)$ & Netzfunktion. & $kost(y,\widehat{y})$ & Kostenfunktion. \\ 
+			$ \eta $& Lernrate &$ \frac{\delta kost(y, \widehat{y})}{\delta w_i} $ & Ableitung der Kostenfunktion abhängig von $ w_i $.
+		\end{tabular}
+	\end{center}
 	
-	
-	\node[state] 		 (1)                    {\parbox{3cm}{\centering Eingangdaten:\\$ x=x_1, \cdots,x_n $}};
-	\node[state]         (2) [below, fill=yellow,xshift=3cm, yshift=-2cm] 		{\parbox{3cm}{\centering Neuronale Netze\\ (Forward-Pass)\\$ y =f(x,w,b)  $}};
-	\node[state]         (3) [right,xshift=3cm] {\parbox{5cm}{\centering Netzparameter\\Gewichte:$w= w_1, \cdots, w_n $\\Bias:b}};
-	\node[state]         (4) [below of=2] 		{\parbox{4cm}{\centering Netzvorhersagen:\\$y= y_1, \cdots,y_n $}};
-	\node[state]         (5) [right of=2, xshift=3cm, fill=yellow] 		{ \parbox{4cm}{\centering Fehlerstimmung:\\$ kost(y,\widehat{y}) $}};
-	\node[state]         (6) [right of=3, xshift=3cm]       {\parbox{4cm}{\centering Tatsächliche Werte:\\  $ \widehat{y}=\widehat{y}_1, \cdots,\widehat{y}_n $}};
-	\node[state]		 (7) [below of=5, fill=yellow]		{\parbox{5cm}{\centering Netzparameter Anpassen\\$ w_i = w_i -\eta \frac{\delta kost(y, \widehat{y})}{\delta w_i} $\\$ b = b -\eta \frac{\delta kost(y, \widehat{y})}{\delta b} $}};
-	
-	\path (1)edge node{}(2);
-	\path (3)edge node{}(2);
-	\path (2)edge node{}(4);
-	\path (4)edge node{}(5);
-	\path (6)edge node{}(5);
-	\path (5)edge node{}(7);
-	\path (7)edge[bend left] node[]{}(3);
-	
-	\end{tikzpicture}}
-\begin{center}
-	\begin{tabular}{r@{: }l r@{: }l}
-		$f(x,w,b)$ & Netzfunktion. & $kost(y,\widehat{y})$ & Kostenfunktion. \\ 
-		$ \eta $& Lernrate &$ \frac{\delta kost(y, \widehat{y})}{\delta w_i} $ & Ableitung der Kostenfunktion abhängig von $ w_i $.
-	\end{tabular}
-\end{center}
-
 	\caption{Ablauf der Backpropagation}
 	\label{fig:Backprop}
 \end{figure}
 
 Pfeile in Abbildung \ref{fig:Backprop} weisen nur den Prozessablauf hin.
 
-\paragraph{Type von Gradientenverfahren}.\\
-Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur mit der Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.Zum Aktualisierung der Netzwerkparameter nutzen sie jeweils die Gleichung \eqref{GD} 
+
+
+
+
+
+
+\paragraph{Variante des Gradientenverfahrens}
+Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur durch die Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.Zum Aktualisierung der Netzwerkparameter nutzen sie jeweils die Gleichung \eqref{GD}.
 
 \begin{equation}\label{GD}
 	\theta_{t+1} = \theta_{t} -\eta g_{t}, \quad g_t=\frac{\delta E}{\delta \theta_{t}}
@@ -850,17 +850,19 @@ Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur mit
 	 $ \theta_{t} $& Netzwerkparameter zum Zeitpunkt $ t $
 	\end{tabular}
 \end{center}
-\subparagraph{\textbf{Stochastic Gradient Descent:}\textit{SGD}}.\\
-		Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft \textit{online \textcolor{blue}{training oder Verfahren}} genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationsschritte sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
-\subparagraph{\textbf{Batch Gradient Descent:}\textit{BGD}} .\\
-		BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz genutzt wird, um die Netzwerkparameter zu aktualisieren.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung der Minimum der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
-\subparagraph{\textbf{Mini-batch Stochastic Gradient Descent:}\textit{MSGD}}.\\
+\subparagraph{Stochastic Gradient Descent (SGD):}
+		Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft online Training  genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationen sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
+\subparagraph{Batch Gradient Descent (BGD):}
+		BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz zur Netzwerkparameteraktualisierung genutzt wird.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung des Minimums der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
+\subparagraph{Mini-batch Stochastic Gradient Descent(MSGD): }
 		MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.
 
 Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
 Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 
-\subsubsection{Adaptive Gradient Algorithm :\textit{AdaGrad}}
+
+\paragraph{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}
+\subparagraph{Adaptive Gradient Algorithm (AdaGrad):}
 AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
 	\begin{equation}\label{adagrad}
 		\begin{aligned}
@@ -877,7 +879,7 @@ AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernra
 Dabei wird am Trainingsanfang eine Lernrate für jeden Parameter definiert und im Trainingsverlauf separat angepasst. 
  Dieses Verfahren eignet sich gut für spärliche Daten, denn es gibt häufig auftretende Merkmale sehr niedrige Lernraten und seltene Merkmale hohe Lernraten, wobei die Intuition ist, dass jedes Mal, wenn eine seltene Eigenschaft gesehen wird, sollte der Lernende mehr aufpassen. Somit erleichtert die Anpassung das Auffinden und Identifizieren sehr voraussehbarer, aber vergleichsweise seltener Merkmale.\cite{AdaGrad}.Wie in der Gleichung \eqref{adagrad} festzustellen,nach einer bestimmten Anzahl von Iterationen haben wir keine Verbesserung der Netzleistung, denn je größer $ t $ wird, desto kleiner $ \eta_{t} $ wird und irgendwann wird $ \eta_{t} $ so klein, dass $ \eta_{t}g_{t} $ fast gleich null ist.
 
-\subsubsection{\textit{Root Mean Square Propagation:}RMSProp}
+\subparagraph{\textit{Root Mean Square Propagation:}RMSProp}
 RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur Anpassung der Netzparameter basiert der RMSProp Optimizer auf den Durchschnitt der aktuellen Größen der Gradienten statt auf der Summe der ersten Moment wie in AdaGrad.Da $ E[g^2]_t $ nicht schneller als $ \alpha_{t} $\eqref{adagrad} ansteigt, wird die radikal sinkenden Lernraten von Adagrad deutlich verlangsamt.Die Parameteranpassungen richten sich nach der folgenden Gleichung:
 \begin{equation}\label{RMSProp}
 	\begin{split}
@@ -887,7 +889,7 @@ RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur 
 \end{equation}
 Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
 
-\subsubsection{Adam \textit{Adaptive Moment Estimation:Adam}}
+\subparagraph{Adam \textit{Adaptive Moment Estimation:Adam}}
 Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
  Adam weist die Hauptvorteile von AdaGrad, das mit spärlichen Gradienten gut funktioniert, und RMSProp, das einige Probleme von AdaGrad löst und das für nicht-konvexe Optimierung geeignet ist,auf.Wie die Parameteranpassung von Adam Optimizer genau funktioniert, ergibt sich aus der folgenden Gleichung: 
 \begin{equation}\label{ADAM}
@@ -909,62 +911,6 @@ Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Imp
 \\ \textcolor{purple}{Kleines Experiment}
   % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
  % \newpage 
- \section{Besondere \acsp{CNN}}
- \subsection{AlexNet}
- Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}.Das Besondere an AlexNet ist aber nicht die Anzahl der Schichten, sondern der Einsatz bestimmter Methoden oder Techniken:
- \begin{itemize}
- 	\item \textbf{ReLU}: Vor AlexNet waren $ tanh $ und $ sigmoid $ die Standard Aktivierungsfunktionen, aber wegen ihrer Sättigung bei hohen oder sehr niedrigen Werten und der Tatsache, das sie in diesen Bereichen eine Steigung nahe bei null haben, verlangsamen sie stark die Gewichtsanpassungen, was nicht der Fall bei $ ReLU $ ist, das eine Steigung gleich null nur bei negativen Werten und bei positiven höheren Werte  eine Steigung nicht nahe bei null hat. Das Training von \ac{CNN} wird durch $ ReLU $  um ein Vielfaches schneller als ein Äquivalent mit $ tanh $ beschleunigt\cite{AlexNet}.
- 	
- 	\item \textbf{Überlappendes Pooling}: Die normalen \acsp{PooL} funktioniert wie in \ref{Pooling Layer} ($ pool\_size = stride$), aber die Überlappenden verwenden einfach ein $ stride $ kleiner als das $ pool\_size $.Nach \cite{AlexNet} verbessern die überlappenden \ac{PooL}  die Netzgenauigkeit und macht das Netz gegenüber Overfitting robuster.
- 	\item \textbf{Dropout und Data Augmentation }: Ein anderer Vorteil von AlexNet ist die Verwendung von Dropout in \acsp{FCL}, das sich heute als die beste oder eine der besten Regulierungsmethoden erweist und der Vermehrung der Daten durch Spiegelung, die die Wahrscheinlichkeit von Overfitting reduziert.
- \end{itemize}
-  \begin{figure}[h]
- 	\centering
- 	\includegraphics[width=\textwidth ]{AlexNet}
- 	\caption{ AlexNet Architektur \href{https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ zum Bild} }
- 	\label{fig:AlexNet}
- \end{figure}
-
-
-AlexNet kann aufgrund seiner Größe($\sim240MB$) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen oder übertreffen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden.\\
-
-kleinere \acsp{CNN}-Architekturen weisen mehrere Vorteile auf wie \\
-Kurze Trainingszeit\\
-
-
- \subsection{SqueezeNet}
- SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Abbildung\ref{fig:fire_module}) erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5MB$. 
- \begin{figure}[h]
- 	\centering
- 	\includegraphics[width=\textwidth ]{squeezenet}
- 	\caption{ SqueezeNet Architektur \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
- 	\label{fig:SqueezeNet}
- \end{figure}
- \begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth ]{fire_module}
-	\caption{ fire\_module \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
-	\label{fig:fire_module}
-\end{figure}
-%verzögerte Downsampling zu einer höheren Genauigkeit von classiﬁcation 
-
-
- \subsection{Xception}
-  \begin{figure}[h]
- 	\centering
- 	\includegraphics[width=\textwidth ]{Xception}
- 	\caption{ ff }
- 	\label{fig:Xception}
- \end{figure}
- \subsection{MobileNet}
-   \begin{figure}[h]
- 	\centering
- 	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
- 	\caption{ Xception Architektur }
- 	\label{fig:MobileNet}
- \end{figure}
-
- 
 \section{Effizienter Nutzung tiefer neuronaler Netze}
   Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik in verschiedenen Bereichen zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen.Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Netzparameter entfernt.Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren.Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als 32 Bits nutzt.Im folgenden werden nur die Beschneidung und Quantisierung von \ac{NN} mehr eingegangen werden.
 
@@ -1113,7 +1059,72 @@ Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekom
 
 
 
-\section{Experiment}
+\section{Experiment} \label{Experiment}
+\subsection{Lernrate}\label{Experiment:Lernrate}
+
+\begin{itemize}
+	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
+	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
+\end{itemize}
+In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
+
+
+
+ \section{Besondere \acsp{CNN}}
+\subsection{AlexNet}
+Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}.Das Besondere an AlexNet ist aber nicht die Anzahl der Schichten, sondern der Einsatz bestimmter Methoden oder Techniken:
+\begin{itemize}
+	\item \textbf{ReLU}: Vor AlexNet waren $ tanh $ und $ sigmoid $ die Standard Aktivierungsfunktionen, aber wegen ihrer Sättigung bei hohen oder sehr niedrigen Werten und der Tatsache, das sie in diesen Bereichen eine Steigung nahe bei null haben, verlangsamen sie stark die Gewichtsanpassungen, was nicht der Fall bei $ ReLU $ ist, das eine Steigung gleich null nur bei negativen Werten und bei positiven höheren Werte  eine Steigung nicht nahe bei null hat. Das Training von \ac{CNN} wird durch $ ReLU $  um ein Vielfaches schneller als ein Äquivalent mit $ tanh $ beschleunigt\cite{AlexNet}.
+	
+	\item \textbf{Überlappendes Pooling}: Die normalen \acsp{PooL} funktioniert wie in \ref{Pooling Layer} ($ pool\_size = stride$), aber die Überlappenden verwenden einfach ein $ stride $ kleiner als das $ pool\_size $.Nach \cite{AlexNet} verbessern die überlappenden \ac{PooL}  die Netzgenauigkeit und macht das Netz gegenüber Overfitting robuster.
+	\item \textbf{Dropout und Data Augmentation }: Ein anderer Vorteil von AlexNet ist die Verwendung von Dropout in \acsp{FCL}, das sich heute als die beste oder eine der besten Regulierungsmethoden erweist und der Vermehrung der Daten durch Spiegelung, die die Wahrscheinlichkeit von Overfitting reduziert.
+\end{itemize}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{AlexNet}
+	\caption{ AlexNet Architektur \href{https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ zum Bild} }
+	\label{fig:AlexNet}
+\end{figure}
+
+
+AlexNet kann aufgrund seiner Größe($\sim240MB$) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen oder übertreffen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden.\\
+
+
+kleinere \acsp{CNN}-Architekturen weisen mehrere Vorteile auf wie \\
+Kurze Trainingszeit\\
+
+
+\subsection{SqueezeNet}
+SqueezeNet\cite{SqueezeNet} mit seinem Feuermodul(\textit{fire module})(siehe Abbildung\ref{fig:fire_module}) erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5MB$. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{squeezenet}
+	\caption{ SqueezeNet Architektur \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+	\label{fig:SqueezeNet}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{fire_module}
+	\caption{ fire\_module \href{https://www.kdnuggets.com/2016/09/deep-learning-reading-group-squeezenet.html}{Link zum Bild} }
+	\label{fig:fire_module}
+\end{figure}
+%verzögerte Downsampling zu einer höheren Genauigkeit von classiﬁcation 
+
+
+\subsection{Xception}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{Xception}
+	\caption{ ff }
+	\label{fig:Xception}
+\end{figure}
+\subsection{MobileNet}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
+	\caption{ Xception Architektur }
+	\label{fig:MobileNet}
+\end{figure}
 
 
 \section{Abkürzungsverzeichnis}
@@ -1126,8 +1137,11 @@ Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekom
 	\acro{FCL}{Fully Connected Layer}
 	\acro{PooL}{Pooling Layer}
 	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
+	\acro{DNN}{Tiefe neuronale Netze}
 \end{acronym}
-\bibliographystyle{agsm}
+
+\bibliographystyle{acm}
+
 \begin{thebibliography}{lem00}
  \bibitem{1}
 	P. Kerlirzin, and F. Vallet \href{ https://www.mitpressjournals.org/doi/abs/10.1162/neco.1993.5.3.473?journalCode=neco} {Robustness in Multilayer Perceptrons}
