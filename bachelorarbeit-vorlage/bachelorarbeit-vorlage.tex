@@ -112,7 +112,7 @@
  
 \section{Grundlagen}\label{Grundlaagen}
 \subsection{Neuron}
-Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines \ac{KNN} ist in Abbildung \ref{fig:Fneuron}
+Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines künstlichen Neurons ist in Abbildung \ref{fig:Fneuron}
 zu sehen.
 
 \begin{figure}[h]
@@ -184,7 +184,12 @@ zu sehen.
 
 Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer}) zu bilden.Ein \ac{KNN} besteht aus einer oder mehreren Schichten und je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des neuronalen Netzes darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
 
+\subsection{Merkmalskarten(Feature-Maps)}
+Die Ausgabe einer Schicht wird als Aktivierungskarten oder Feature-Map(s) bezeichnet. Die Anzahl von Feature-Maps in einer Schicht ist gleich die Anzahl der Ausgabekanäle(\textit{output channels}) bzw: Tiefe(\textit{depth}) dieser Schicht.
+In einer Faltungsschicht ist ein Feature-Map immer zweidimensional, während die Dimension eines Feature-Maps in einem \ac{FCL} nur von der des Inputs abhängt, genauer gesagt,für ein n-dimensionales Inputs ist ein Feature-Map $ (n-1) $dimensional.
+Wie die Feature-Maps berechnet werden, hängt sehr vom Schichttyp ab. Es wird beispielsweise in einer Faltungsschicht die Faltungsoperation mehrmals auf die Eingabe angewendet und jedes Mal wird ein neues Feature-Map erhalten.
 
+\subsection{Filters}\label{Filter}
 \begin{itemize}
 	%- formalisierte Entsprechung der Nervenzelle besteht aus\\
 	
@@ -225,8 +230,6 @@ Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer})
 	\item  
 \end{itemize}
 
-
-\subsection{Feature-Maps}
 \subsection{Entwicklung von Künstlichen Neuronalen Netzen } \label{Entwicklung}
 
 %\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
@@ -234,15 +237,44 @@ Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer})
 %\\textbf{künstliches Neuron}.\\
 
 
-\section{\ac{CNN}}
+\section{Convolutional Neural Network}
 
 \subsection{Feedforward }
 %\paragraph{Layer in \ac{CNN}}
-\subsubsection{Input Layer}
+\subsubsection{Input Layer}\label{InputLayer}
 Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W\times H\times D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
 
 
-\subsubsection{Faltungsschicht(\textit{Convolution Layer})}
+\subsubsection{Faltungsschicht}\label{ConvL}
+Die wichtigste Sicht bzw: der Hauptschicht in einem \ac{CNN} ist die Faltungsschicht(\emph{Convolution Layer}).
+Die Eingabedaten eines \ac{CNN} besteht auf jedenfalls aus wichtigen und unwichtigen Informationen.Als wichtige und unwichtige Informationen haben wir z.B die starke Präsenz der weißen Farbe in einer Muschelsuppe bzw. die Präsenz eines Menschen, wenn man verschieden Ernährungsklasse klassifizieren möchte. Während des Trainings eines \ac{CNN} wird versucht, diese relevanten Informationen aus den Daten zu entnehmen und die irrelevanten auszuschließen. Alles was ein \ac{CNN} aus den Eingabedaten nutzt, um die Daten zu bestimmter Klassen zuzuordnen, wird als Feature bezeichnet.
+Das einzige bzw. das Hauptziel einer Faltungsschicht besteht darin, die Features aus seinen Inputdaten herauszuziehen.
+Dass ein Faltungsschicht in der Lage ist, Features selbst zu extrahieren, ohne dass man sie hinweist, was wichtig ist und was nicht, ist wirklich beeindruckend,Aber die Art und Weise, wie sie es tut, ist noch beeindruckender.
+
+In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt, die eigentlich nur eine Matrixmultiplikation zwischen Eingabedaten und Kernels ist und um diese Faltungsoperation durchzuführen, muss einigen Hyperparameter vordefiniert sein, und zwar:
+Für die Weitererklärung wird ein $ (100, 100, 3) $ Bild als Eingabe der \ac{ConvL} betrachtet.
+
+\begin{itemize}
+	\item Die Anzahl und die Größe von Filtern.\\
+	Die Anzahl an Filters gibt nicht nur an, wie viele Filter in dem \ac{ConvL} verwendet werden, sondern auch ,wie oft die  Faltungsoperation durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht.
+	Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach einem Feature ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, wir verbinden also jedes Neuron nur mit einem lokalen Bereich der Bild. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich die vom Input, also für ein $ (100, 100, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	
+	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht.
+	
+	\item Die Schrittgröße(\emph{Stride})\\
+	
+\end{itemize}
+\textbf{\emph{Struktur}}
+\begin{enumerate}
+	\item Filter ok
+	\item stride
+	\item padding
+	\item receptive field
+	\item low and higher level features
+	\item activate? yes or no
+	\item convolution in depth : combination of several detected feature
+	\item CNN
+\end{enumerate}
+
 Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte dieses Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt und dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ I_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
 
 \begin{center}
@@ -383,8 +415,7 @@ Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{St
 	\label{Faltungsoperation2}
 \end{figure}
 
-In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale.Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
-
+In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale.Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. \\
 
 
 \subsubsection{Aktivierungsfunktion}
@@ -1063,26 +1094,27 @@ Was der \textit{Expand} Block angeht, funktioniert der Block mit $ 1\times1 $ Fi
 Wie es in Abbildung \ref{fig:SqueezeNet} zu sehen ist, kann eine Verbindung zwischen zwei Layers über eine oder mehrere Schichte überspringen.Solche Verbindungen werden \textit{Residual connections}(RC) genannt und Netze mit RCs gehören zu der Klasse von Residual Netzwerke (mehr dazu siehe \cite{ResNet}).
 Wie die Abbildung ?? zeigt, liefert \textit{SqueezeNet} mit Simple RCs  als die anderen Varianten
 
-\subsubsection{Xception}
+\subsubsection{Xception: Extreme Inception}
 \textit{Xception} ist eine Variante von \textit{InceptionV3}
 \textbf{Related work}
 \begin{itemize}
 	\item Inception Familly
 	\item Depthwise separable convolutions
 	\item Residual Connection
+	\item Die Leistungssteigerungen sind nicht auf eine Kapazitätssteigerung zurückzuführen, sondern auf eine effizientere Nutzung der Modellparameter.
 	
 \end{itemize}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth ]{Xception}
-	\caption{ ff }
+	\caption{ Xception Architektur}
 	\label{fig:Xception}
 \end{figure}
 \subsubsection{MobileNet}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
-	\caption{ Xception Architektur }
+	\caption{ MobileNet Architektur }
 	\label{fig:MobileNet}
 \end{figure}
 
