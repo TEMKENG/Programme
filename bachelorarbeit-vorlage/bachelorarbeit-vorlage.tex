@@ -190,6 +190,9 @@ In einer Faltungsschicht ist ein Feature-Map immer zweidimensional, während die
 Wie die Feature-Maps berechnet werden, hängt sehr vom Schichttyp ab. Es wird beispielsweise in einer Faltungsschicht die Faltungsoperation mehrmals auf die Eingabe angewendet und jedes Mal wird ein neues Feature-Map erhalten.
 
 \subsection{Filters}\label{Filter}
+Filter ermöglicht die Extraktion von Features 
+
+
 \begin{itemize}
 	%- formalisierte Entsprechung der Nervenzelle besteht aus\\
 	
@@ -251,26 +254,66 @@ Die Eingabedaten eines \ac{CNN} besteht auf jedenfalls aus wichtigen und unwicht
 Das einzige bzw. das Hauptziel einer Faltungsschicht besteht darin, die Features aus seinen Inputdaten herauszuziehen.
 Dass ein Faltungsschicht in der Lage ist, Features selbst zu extrahieren, ohne dass man sie hinweist, was wichtig ist und was nicht, ist wirklich beeindruckend,Aber die Art und Weise, wie sie es tut, ist noch beeindruckender.
 
-In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt, die eigentlich nur eine Matrixmultiplikation zwischen Eingabedaten und Kernels ist und um diese Faltungsoperation durchzuführen, muss einigen Hyperparameter vordefiniert sein, und zwar:
-Für die Weitererklärung wird ein $ (100, 100, 3) $ Bild als Eingabe der \ac{ConvL} betrachtet.
+In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt,dabei wird das komponentenweises Produkt(\textit{Hadamard-Produkt}) zwischen einem kleinen Bereich der Eingabedaten und einem Kernel durchgeführt und dann die ganze aufsummiert. Eine Illustration der Faltungsoperation ist in der Abbildung \ref{Faltungsoperation2} zu sehen. Die Resultante der Faltungsoperation wird die Aktivierung des Neurons genannt.Sollte diese Aktivierung null sein, dann sagt man, dass das Neuron "\textit{nicht aktiv}"{} ist und sonst ist das 
+
+ um diese Faltungsoperation durchzuführen, muss einigen Hyperparameter vordefiniert sein, und zwar:
 
 \begin{itemize}
-	\item Die Anzahl und die Größe von Filtern.\\
+	\item \textbf{Anzahl und Größe von Filtern}\\
 	Die Anzahl an Filters gibt nicht nur an, wie viele Filter in dem \ac{ConvL} verwendet werden, sondern auch ,wie oft die  Faltungsoperation durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht.
 	Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach einem Feature ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, wir verbinden also jedes Neuron nur mit einem lokalen Bereich der Bild. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich die vom Input, also für ein $ (100, 100, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	
-	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht.
+	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.
 	
-	\item Die Schrittgröße(\emph{Stride})\\
+		\begin{figure*}[h]
+		\centering
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics{stride1}
+			\caption{\emph{Schrittgröße=(1,1) } }
+			\label{fig:stride1}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics{stride2}
+			\caption{ \emph{Schrittgröße=(2,2) } }
+			\label{fig:stride2}
+		\end{subfigure}
+	\end{figure*}
+	\item  \textbf{Schrittgröße}(\emph{Stride})\\
 	
+	Da ein Filter nur einen kleinen Bereich des Bilds wahrnehmen kann,wird eine Schrittgröße verwendet, um die Bewegung des Filters auf dem Bild zu steuern.Das Filter wird über das Bild von links nach rechts, von oben nach unten bewegt. Sei $ S:=(n,m) $  die Schrittgröße, dann wird das Filter von $ n $ Pixeln nach rechts für jede horizontale Bewegung des Filters und $ m $ Pixeln nach unten für jede vertikale Bewegung des Filters bewegt(siehe Abbildung \ref{fig:stride1} und \ref{fig:stride2}).Wie die folgende Tabelle zeigt,hängt die räumliche Dimension des Outputs sehr von der Schrittgröße ab.
+	
+	\begin{table}[h]
+		\centering
+			\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\textbf{Imagegröße} & \textbf{\emph{Stride}} & \textbf{\emph{Filtergröße}} & \textbf{\textit{Output (räumliche Dim.)}}&\textbf{\emph{Mit Padding}}\\ \hline
+			$ (100, 100, 3) $ &\textcolor{red}{$ (1,1) $ }& $ (3,3) $ &\textcolor{red}{$ (98,98) $ }&$ (100,100) $ \\ \hline
+			$ (100, 100, 3) $ &\textcolor{red}{$ (2, 2) $ } & $ (3,3) $ &\textcolor{red}{$ (49,49) $ }&$ (50,50) $ \\ \hline
+			$ (100, 100, 3) $ &$ (1,1) $ & \textcolor{blue}{$ (4,4) $ }&\textcolor{blue}{$ (97, 97) $ } & $ (100, 100) $\\ \hline
+			$ (100, 100, 3) $ &$ (1,1) $ & \textcolor{blue}{$ (10,10) $ }&\textcolor{blue}{$ (91, 91) $ } &$ (100, 100) $\\ \hline
+		\end{tabular}
+	\caption{Auswirkung von Schrittgröße,Filtergröße und Padding auf Output eines $ (100, 100, 3) $ Bild.}
+	\label{tab:Stride and filter size}
+	\end{table}
+	
+	\item \textbf{\textit{Padding}}\\
+		Mit einem großen Filter lernt man in der Regel "mehr"{} als mit einem kleinen.Aber wie in Tabelle \ref{tab:Stride and filter size} zu sehen, habe man eine Reduktion der Dimension, wenn ein großes Filter angewendet wird und dieser Verlust der Dimension ist nicht immer erwünscht, denn das verhindert, dass tiefere \acsp{CNN} entworfen werden und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Standard wird das Bild mit Nullen gefüllt und kann jedoch auch mit anderen Werten gefüllt werden.
+
 \end{itemize}
-\textbf{\emph{Struktur}}
+
+Bei der Faltungsoperation wird 
+
+
+Sehr oft sagt man, dass ein Neuron zwei Zustände "{}aktiv"{} und "nicht aktiv"{} hat\\
+\textbf{\emph{Check liste}}
 \begin{enumerate}
 	\item Filter ok
-	\item stride
-	\item padding
-	\item receptive field
+	\item stride ok
+	\item padding ok
+	\item receptive field ok
 	\item low and higher level features
-	\item activate? yes or no
+	\item activate? yes or no in Filter
 	\item convolution in depth : combination of several detected feature
 	\item CNN
 \end{enumerate}
