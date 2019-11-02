@@ -30,6 +30,7 @@
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
 \usetikzlibrary{matrix, positioning}
+
 %\usepackage[demo]{graphicx}
 \usetikzlibrary{arrows,automata, matrix,chains,positioning,decorations.pathreplacing,arrows}
 
@@ -241,7 +242,6 @@ Filter ermöglicht die Extraktion von Features
 
 
 \section{Convolutional Neural Network}
-
 \subsection{Feedforward }
 %\paragraph{Layer in \ac{CNN}}
 \subsubsection{Input Layer}\label{InputLayer}
@@ -254,9 +254,8 @@ Die Eingabedaten eines \ac{CNN} besteht auf jedenfalls aus wichtigen und unwicht
 Das einzige bzw. das Hauptziel einer Faltungsschicht besteht darin, die Features aus seinen Inputdaten herauszuziehen.
 Dass ein Faltungsschicht in der Lage ist, Features selbst zu extrahieren, ohne dass man sie hinweist, was wichtig ist und was nicht, ist wirklich beeindruckend,Aber die Art und Weise, wie sie es tut, ist noch beeindruckender.
 
-In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt,dabei wird das komponentenweises Produkt(\textit{Hadamard-Produkt}) zwischen einem kleinen Bereich der Eingabedaten und einem Kernel durchgeführt und dann die ganze aufsummiert. Eine Illustration der Faltungsoperation ist in der Abbildung \ref{Faltungsoperation2} zu sehen. Die Resultante der Faltungsoperation wird die Aktivierung des Neurons genannt.Sollte diese Aktivierung null sein, dann sagt man, dass das Neuron "\textit{nicht aktiv}"{} ist und sonst ist das 
-
- um diese Faltungsoperation durchzuführen, muss einigen Hyperparameter vordefiniert sein, und zwar:
+In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt,dabei wird das komponentenweises Produkt(\textit{Hadamard-Product}) zwischen einem kleinen Bereich der Eingabedaten und einem Kernel durchgeführt und dann die ganze aufsummiert. Eine Illustration der Faltungsoperation ist in der Abbildung \ref{fig:Faltungsoperation1} zu sehen. Die Resultante der Faltungsoperation wird die Aktivierung des Neurons genannt.Sollte diese Aktivierung des Neurons null sein, dann sagt man, dass das Neuron "\textit{nicht aktiv}"{} ist und sonst ist es \textit{aktiv}.Die null Aktivierung bedeutet, dass das vom Filter gesuchte Feature nicht gefunden wurde. Je stärker oder größer die Aktivierung eines Neurons ist, desto höher ist die Wahrscheinlichkeit, dass das vom Filter gesuchte Feature gefunden ist(siehe Abbildung \ref{fig:Faltungsoperation}).
+um diese Faltungsoperation durchzuführen, muss einigen Hyperparameter vordefiniert sein, und zwar:
 
 \begin{itemize}
 	\item \textbf{Anzahl und Größe von Filtern}\\
@@ -264,7 +263,7 @@ In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution oper
 	Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach einem Feature ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, wir verbinden also jedes Neuron nur mit einem lokalen Bereich der Bild. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich die vom Input, also für ein $ (100, 100, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	
 	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.
 	
-		\begin{figure*}[h]
+	\begin{figure*}[h]
 		\centering
 		\begin{subfigure}{.5\textwidth}
 			\centering
@@ -285,181 +284,94 @@ In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution oper
 	
 	\begin{table}[h]
 		\centering
-			\begin{tabular}{|c|c|c|c|c|}
+		\begin{tabular}{|c|c|c|c|c|}
 			\hline
 			\textbf{Imagegröße} & \textbf{\emph{Stride}} & \textbf{\emph{Filtergröße}} & \textbf{\textit{Output (räumliche Dim.)}}&\textbf{\emph{Mit Padding}}\\ \hline
+			$ (100, 100, 3) $ &{$ (1,1) $ }& $ (1,1) $ &{$ (100,100) $ }&$ (100,100) $ \\ \hline
 			$ (100, 100, 3) $ &\textcolor{red}{$ (1,1) $ }& $ (3,3) $ &\textcolor{red}{$ (98,98) $ }&$ (100,100) $ \\ \hline
 			$ (100, 100, 3) $ &\textcolor{red}{$ (2, 2) $ } & $ (3,3) $ &\textcolor{red}{$ (49,49) $ }&$ (50,50) $ \\ \hline
 			$ (100, 100, 3) $ &$ (1,1) $ & \textcolor{blue}{$ (4,4) $ }&\textcolor{blue}{$ (97, 97) $ } & $ (100, 100) $\\ \hline
 			$ (100, 100, 3) $ &$ (1,1) $ & \textcolor{blue}{$ (10,10) $ }&\textcolor{blue}{$ (91, 91) $ } &$ (100, 100) $\\ \hline
 		\end{tabular}
-	\caption{Auswirkung von Schrittgröße,Filtergröße und Padding auf Output eines $ (100, 100, 3) $ Bild.}
-	\label{tab:Stride and filter size}
+		\caption{Auswirkung von Schrittgröße,Filtergröße und Padding auf Output eines $ (100, 100, 3) $ Bild.}
+		\label{tab:Stride and filter size}
 	\end{table}
 	
 	\item \textbf{\textit{Padding}}\\
-		Mit einem großen Filter lernt man in der Regel "mehr"{} als mit einem kleinen.Aber wie in Tabelle \ref{tab:Stride and filter size} zu sehen, habe man eine Reduktion der Dimension, wenn ein großes Filter angewendet wird und dieser Verlust der Dimension ist nicht immer erwünscht, denn das verhindert, dass tiefere \acsp{CNN} entworfen werden und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Standard wird das Bild mit Nullen gefüllt und kann jedoch auch mit anderen Werten gefüllt werden.
-
+	Mit einem großen Filter lernt man in der Regel "mehr"{} als mit einem kleinen.Aber wie in Tabelle \ref{tab:Stride and filter size} zu sehen, habe man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.
+	
 \end{itemize}
-
-Bei der Faltungsoperation wird 
-
-
-Sehr oft sagt man, dass ein Neuron zwei Zustände "{}aktiv"{} und "nicht aktiv"{} hat\\
-\textbf{\emph{Check liste}}
-\begin{enumerate}
-	\item Filter ok
-	\item stride ok
-	\item padding ok
-	\item receptive field ok
-	\item low and higher level features
-	\item activate? yes or no in Filter
-	\item convolution in depth : combination of several detected feature
-	\item CNN
-\end{enumerate}
-
-Ein \ac{CNN} besteht aus eine oder mehrere Faltungsschichten, die jeweils aus eine oder mehrere Faltungseinheiten bestehen. Die Faltungsmatrizen werden als Filterkernel oder einfach Filter bezeichnet. Jedes Filter ist dafür zuständig, ein bestimmtes Merkmal wie zum Beispiel Kanten erkennen und zu extrahieren, also sollte dieses Merkmal fehlen, erkennt das Filter nichts, man sagt, dass das Neuron nicht aktiv ist. In einer Faltungsschicht wird eine sogenannte Faltungsoperation durchgeführt und dabei werden die Filter über die Inputdaten bewegen. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.Eine Beispiel der Berechnung des Outputs eines \ac{ConvL}s kann in Abbildung \ref{Faltungsoperation} entnommen werden.Dabei wird jedes aktives Pixel(Pixel mit acht direkten Nachbarn umgeben bzw. Pixel innerhalb des roten Rechteck in Abbildung \ref{Faltungsoperation}) nacheinander betrachtet. Für jedes aktives Pixel $ I_i $ und zugehörige Nachbarn wird eine Multiplikation mit den zugehörigen Elementen des Filters $ K $ durchgeführt und dann aufsummiert und $ I_i $ wird durch diese Summe ersetzt. Nachdem alle dieser Berechnungen über alle aktive Pixels ausgeführt werden sind, gelten nur die aktiven Pixels als Ausgabe der Schicht.
-
-\begin{center}
-	\begin{tabular}{r@{: }l r@{: }l r@{: }l}
-		$I$ & Conv-Layer Eingabedaten. & $K$ & Kernel/Filter& $ O $ &Conv-Layer Output.
-	\end{tabular}
-\end{center}
-
+In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale, also die früher entdeckten Features werden kombiniert, um komplexe Features wie .Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
 \begin{figure}[h]
 	\centering
-	\newbox\dumbox
-	\newcommand{\mymark}[2]{%
-		\setbox\dumbox=\hbox{#2}%
-		\hbox to \wd\dumbox{\hss%
-			\tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
-			\hss}%
-	}
-	
-\newcommand*{\putunder}[2]{%
-	{\mathop{#1}_{\textstyle #2}}%
-}
-	
-	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\caption{Matrixdarstellung}
+		\newbox\dumbox
+		\newcommand{\mymark}[2]{%
+			\setbox\dumbox=\hbox{#2}%
+			\hbox to \wd\dumbox{\hss%
+				\tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
+				\hss}%
+		}
+		\newcommand*{\putunder}[2]{%
+			{\mathop{#1}_{\textstyle #2}}%
+		}
 		
-		\[
-		\putunder{\left[\begin{matrix}
-		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
-		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
-		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
-		0 & 0 & 0 & 1 & 1 & 0 & 0\\
-		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
-		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
-		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
-		\end{matrix}\right]}{I}
-		\times
-		\putunder{\left[ \begin{array}{ccc}
-		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
-		0  & 1 &              0 \\
-		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
-		\end{array}\right]}{K}
-		=
-		\putunder{\left[\begin{array}{ccccccc}
-		\mymark{T}{1} & 4 & 3 & 4 &\mymark{C}{1}\\
-		1 & 2 & 4 & 3 & 3\\
-		1 & 2 & \mymark{E}{3} & 4 & 1\\
-		1 & 3 & 3 & 1 & 1\\
-		\mymark{A2}{3} & 3 & 1 & 1 & \mymark{B2}{0}
-		\end{array}\right]}{ O=I\times K}
-		\]
 		
-		\begin{tikzpicture}[overlay, remember picture,
-		myedge1/.style={dashed, black},
-		myedge2/.style={dashed,  red}]
+		\[ \putunder{\begin{array}{|*{9}{c}|}
+			\hline
+			\mymark{t}{0}& 0& 3&  3& 3& 0&  \mymark{s}{0}& 0& 0\\ 
+			0& \mymark{f}{2}& 0&  3& 2& 0&  0& 2& 0\\ 
+			2& 0& \mymark{t1}{2}&  2& 0& 2&  2& 0& \mymark{s1}{2}\\ 						
+			\mymark{q}{1}& 1& 1&  \mymark{r}{1}& 1& 1&  1& 1& 1\\ 			
+			1& 0& 1&  0& 2& 0&  1& 0& 1\\ 
+			0& 0& \mymark{q1}{1}&  2& 0& \mymark{r1}{2}&  0& 0& 1\\ 						
+			\mymark{b}{1}& 1& 1&  1& 1& 1&  \mymark{j}{1}& 3& 1\\ 
+			3& 0& 3&  1& 2& 0&  3& \mymark{f1}{0}& 3\\ 
+			0& 3& \mymark{b1}{0}&  2& 0& 2&  0& 0& \mymark{j1}{0}\\  \hline
+			\end{array} }{\text{(9,9)Bild}}  
+		\quad \quad \times  \quad \quad
+		\putunder{\begin{array}{*{3}{|c}|}
+			\hline
+			0&0&0 \\ \hline
+			0&1&0 \\ \hline
+			1&0&1\\ \hline
+			\end{array}}{Filter}  
+		\quad \quad = \quad \quad
+		\putunder{ \begin{array}{ *{3}{|c}|}
+			\hline
+			\mymark{v}{6}&6&\mymark{ss}{6} \\ \hline
+			\mymark{qq}{1}&\mymark{rr}{6}&1 \\ \hline
+			\mymark{bb}{0}&0&\mymark{jj}{0}\\ \hline
+			\end{array}  }{\text{(3,3)Feature-Map}} \]
 		
-		%% Draw boxes
-		\draw[red, fill=red, opacity=.2]   (TL1.north west) rectangle (BR1.south east);
-		\draw[blue, fill=blue, opacity=.2]   (A.north west) rectangle (A1.south east);
-		\draw[yellow, fill=yellow, opacity=.2]   (B.north west) rectangle (B1.south east);
-		\draw[red]   (M.north west) rectangle (M1.south east);
-		\draw[green, fill=green, opacity=.2]   (T1.north west) rectangle (B11.south east);
-%		\draw[blue, fill=blue, fill opacity=.1] (TL2.north west) rectangle (BR2.south east);
-		\draw[red, fill=red, opacity=.2] (C.north west) rectangle (C.south east);
-		\draw[green, fill=green, opacity=.2] (T.north west) rectangle (T.south east);
-		\draw[blue, fill=blue, opacity=.2] (A2.north west) rectangle (A2.south east);
-		\draw[yellow, fill=yellow, opacity=.2] (B2.north west) rectangle (B2.south east) ;
-		\draw[blue, fill=blue, opacity=.5]   (B11.north west) rectangle (B.south east);
-		\draw[blue, fill=blue, opacity=.5] (E.north west) rectangle (E.south east) ;
+		\begin{tikzpicture}[overlay, remember picture]
+		\draw[green, fill=green, opacity=.2]   (t.north west) rectangle (t1.south east);
+		\draw[red, fill=red, opacity=.2]   (r.north west) rectangle (r1.south east);
+		\draw[yellow, fill=yellow, opacity=.3]   (j.north west) rectangle (j1.south east);
+		\draw[red]   (f.north west) rectangle (f1.south east);
+		\draw[blue, fill=blue, opacity=.5] (b.north west) rectangle (b1.south east) ;
+		\draw[Sepia, fill=Sepia, opacity=.2]   (s.north west) rectangle (s1.south east);
 		
-
+		\draw[green, fill=green, opacity=.2]   (v.north west) rectangle (v.south east);
+		\draw[red, fill=red, opacity=.2]   (rr.north west) rectangle (rr.south east);
+		\draw[yellow, fill=yellow, opacity=.2]   (jj.north west) rectangle (jj.south east);
+		\draw[blue, fill=blue, opacity=.2]   (bb.north west) rectangle (bb.south east);
+		%	\draw[yellow, fill=yellow, opacity=.2]   (qq.north west) rectangle (qq.south east);
+		\draw[Sepia, fill=Sepia, opacity=.2]   (ss.north west) rectangle (ss.south east);
 		\end{tikzpicture}
+		\label{fig:Faltungsoperation1}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\caption{ Pixeldarstellung }
+		\includegraphics[width=\textwidth]{activation}
+	\end{subfigure}
 	
-		\caption{Faltungsoperation mit einem $ 3\times 3 -$Filter und Schrittgröße $ =1 $}
-		\label{Faltungsoperation}
+	\caption{Faltungsoperation mit einem $ 3\times 3$-Filter und Schrittgröße $ =3 $}
+	\label{fig:Faltungsoperation}
 \end{figure}
-
-Ein anderes wichtiges Parameter von \ac{ConvL} ist die Schrittgröße(\textit{Stride}), die  sagt, wie das Filter über das Input bewegt werden muss und je nach der Schrittgröße hat das Output eine unterschiedliche räumliche Dimension. Die Standardschrittgröße ist eins und ein größere Schrittgröße($ >1 $) ermöglicht die Reduktion der Größe der Eingabedaten um mindestens die Hälfte. Vergleiche Abbildungen \ref{Faltungsoperation} und \ref{Faltungsoperation2}. 
-\begin{figure}[h]
-	\centering
-	\newbox\dumbox
-	\newcommand{\mymark}[2]{%
-		\setbox\dumbox=\hbox{#2}%
-		\hbox to \wd\dumbox{\hss%
-			\tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
-			\hss}%
-	}
-	
-	\newcommand*{\putunder}[2]{%
-		{\mathop{#1}_{\textstyle #2}}%
-	}
-	
-	
-	
-	\[
-	\putunder{\left[\begin{matrix}
-		\mymark{T1}{0} &\mymark{K}{1} & 1 & 1 & \mymark{TL1}{0} & 0 & \mymark{TR1}{0}\\
-		0 & \mymark{M}{0} & 1 &               1 & 1 &               0 & 0\\
-		0 & 0 & \mymark{B11}{0} & \mymark{K1}{1}& \mymark{BL1}{1} & 1 & \mymark{BR1}{0}\\
-		0 & 0 & 0 & 1 & 1 & 0 & 0\\
-		\mymark{A}{0} & 0 & 1 & 1 & \mymark{B}{0} & 0 & 0\\
-		0 & 1 & 1 & 0 & 0 & \mymark{M1}{0} & 0\\
-		1 & 1 & \mymark{A1}{0} & 0 & 0 & 0 &\mymark{B1}{0}\\
-		\end{matrix}\right]}{I}
-	\times
-	\putunder{\left[\begin{array}{ccc}
-		\mymark{TL2}{1} & 0 & \mymark{TR2}{1}\\
-		0  & 1 &              0 \\
-		\mymark{BL2}{1} & 0 & \mymark{BR2}{1}
-		\end{array}\right]}{K}
-	=
-	\putunder{\left[\begin{array}{ccc}
-		\mymark{T}{1} & 3 &\mymark{C}{1}\\
-		1  & \mymark{E}{3} & 1\\
-		\mymark{A2}{3}  & 1  & \mymark{B2}{0}
-		\end{array}\right]}{ O=I\times K}
-	\]
-	
-	\begin{tikzpicture}[overlay, remember picture,
-	myedge1/.style={dashed, black},
-	myedge2/.style={dashed,  red}]
-	
-	%% Draw boxes
-	\draw[red, fill=red, opacity=.2]   (TL1.north west) rectangle (BR1.south east);
-	\draw[blue, fill=blue, opacity=.2]   (A.north west) rectangle (A1.south east);
-	\draw[yellow, fill=yellow, opacity=.2]   (B.north west) rectangle (B1.south east);
-%	\draw[red]   (M.north west) rectangle (M1.south east);
-	\draw[green, fill=green, opacity=.2]   (T1.north west) rectangle (B11.south east);
-	%		\draw[blue, fill=blue, fill opacity=.1] (TL2.north west) rectangle (BR2.south east);
-	\draw[red, fill=red, opacity=.2] (C.north west) rectangle (C.south east);
-	\draw[green, fill=green, opacity=.2] (T.north west) rectangle (T.south east);
-	\draw[blue, fill=blue, opacity=.2] (A2.north west) rectangle (A2.south east);
-	\draw[yellow, fill=yellow, opacity=.2] (B2.north west) rectangle (B2.south east) ;
-	\draw[blue, fill=blue, opacity=.5]   (B11.north west) rectangle (B.south east);
-	\draw[blue, fill=blue, opacity=.5] (E.north west) rectangle (E.south east) ;
-
-	\end{tikzpicture}
-	
-	\caption{Faltungsoperation mit einem $ 3\times 3 -$Filter und Schrittgröße $ =2 $}
-	\label{Faltungsoperation2}
-\end{figure}
-
-In einem \ac{CNN} mit mehreren \acsp{ConvL} kümmern sich die ersten \acsp{ConvL} um das Erlernen von einfachen Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale.Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. \\
-
 
 \subsubsection{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während dem Training mit sehr vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
@@ -469,35 +381,35 @@ Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
 
 
 \textbf{Binäre Treppenfunktion } ist extrem einfach, siehe Abbildung \ref{fig:Treppenfunktion}, definiert als
-		$  f(x)= 
-		\begin{cases}
-		1,& \text{if } x  \geq  a \text{  (a:= Schwellenwert )}\\
-		0,              & sonst
-		\end{cases} $. Sie ist für binäre Probleme geeignet, also Probleme wo man mit \textit{ja} oder \textit{nein} antworten sollte.Sie kann leider nicht mehr angewendet werden, wenn es mehr als zwei Klassen klassifiziert werden soll oder wenn das Optimierungsverfahren gradientenbasierend ist, denn Gradient immer null.
-	\begin{figure}[h]
+$  f(x)= 
+\begin{cases}
+1,& \text{if } x  \geq  a \text{  (a:= Schwellenwert )}\\
+0,              & sonst
+\end{cases} $. Sie ist für binäre Probleme geeignet, also Probleme wo man mit \textit{ja} oder \textit{nein} antworten sollte.Sie kann leider nicht mehr angewendet werden, wenn es mehr als zwei Klassen klassifiziert werden soll oder wenn das Optimierungsverfahren gradientenbasierend ist, denn Gradient immer null.
+\begin{figure}[h]
+	\caption{Binäre Treppenfunktion}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-10,xmax=10]
+		\addplot[ultra thick,blue,samples at={0,10}] {1};
+		\addplot[ultra thick,blue,samples at={0,-10.1}] {0};
+		\end{axis}
+		\end{tikzpicture}
 		\caption{Binäre Treppenfunktion}
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-10,xmax=10]
-			\addplot[ultra thick,blue,samples at={0,10}] {1};
-			\addplot[ultra thick,blue,samples at={0,-10.1}] {0};
-			\end{axis}
-			\end{tikzpicture}
-			\caption{Binäre Treppenfunktion}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-10,xmax=10]
-			\addplot[ultra thick,blue,samples at={-10.5,10.1}] {0};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Ableitung Binäre Treppenfunktion}
-		\end{subfigure}
-		\label{fig:Treppenfunktion}
-		
-	\end{figure}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-10,xmax=10]
+		\addplot[ultra thick,blue,samples at={-10.5,10.1}] {0};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Ableitung Binäre Treppenfunktion}
+	\end{subfigure}
+	\label{fig:Treppenfunktion}
+	
+\end{figure}
 
 \textbf{Lineare Funktion } ist definiert als $ f(x) = ax, $	$ f '(x) = a$, siehe Abbildung \ref{fig:Lineare Funktion}. Sie ist monoton, null zentriert und differenzierbar. Es ist jetzt möglich,nicht mehr nur binäre Probleme zu lösen und mit gradientenbasierenden Optimierungsverfahren während der Backpropagation Parameter anzupassen, denn Gradient nicht mehr null, also sie ist besser als binäre Funktion .Nutzt ein mehrschichtiges Netz die lineare Aktivierungsfunktion, so kann es auf ein einschichtiges Netz überführt werden und mit einem einschichtigen Netz können komplexe Probleme nicht gelöst werden.Außerdem ist der Gradient konstant. Der Netzfehler wird also nach einigen Epochen nicht mehr minimiert und das Netz wird immer das Gleiche vorhersagen.		
 \begin{figure}[h]
@@ -525,118 +437,118 @@ Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
 	
 \end{figure}
 
-	\textbf{Logistische Funktion} ist definiert als $f(x)=\frac{1}{1+exp(-x)} $ ,$ f'(x)= \frac{exp(x)}{(1+exp(x))^2}$, siehe Abbildung \ref{fig:sigmoid}. Sie ist differenzierbar, monoton, nicht linear und nicht null zentriert(hier nur positive Werte).Zwischen $ [-3,+3] $ ist der Gradient sehr hoch.Kleine Änderung in der Netzinput führt also zu einer großen Änderung der Netzausgabe. Diese Eigenschaft ist bei Klassifikationsproblemen sehr erwünscht.Die Ableitung ist glatt und von Netzinput abhängig. Parameter werden während der Backpropagation je nach Netzinput angepasst.
-	Außerhalb von $ [-3,3]  $ ist der Gradient fast gleich null, daher ist dort eine Verbesserung der Netzleistung fast nicht mehr möglich.Dieses Problem wird Verschwinden des Gradienten \textit{(vanishing gradient problem)} genannt.Außerdem konvergiert das Optimierungsverfahre sehr langsam und ist wegen wegen der exponentiellen  ($ e^x $) Berechnung rechenintensiv.
-	\begin{figure}[h]
-		\caption{Logistische Aktivierungsfunktion:$ sigmoid(x) $.}
-		\centering
-		\begin{subfigure}{.5\textwidth}	
-			\centering	
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=0,ymax=1.25,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {1/(1+exp(-x))};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Logistische Aktivierungsfunktion.}
-			
-		\end{subfigure}%	
-		\begin{subfigure}{.5\textwidth}	
-			\centering	
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.0,ymax=.3,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {exp(x)/((1+exp(x))^2)};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Ableitung der Logistische Funktion.}
-		\end{subfigure}
+\textbf{Logistische Funktion} ist definiert als $f(x)=\frac{1}{1+exp(-x)} $ ,$ f'(x)= \frac{exp(x)}{(1+exp(x))^2}$, siehe Abbildung \ref{fig:sigmoid}. Sie ist differenzierbar, monoton, nicht linear und nicht null zentriert(hier nur positive Werte).Zwischen $ [-3,+3] $ ist der Gradient sehr hoch.Kleine Änderung in der Netzinput führt also zu einer großen Änderung der Netzausgabe. Diese Eigenschaft ist bei Klassifikationsproblemen sehr erwünscht.Die Ableitung ist glatt und von Netzinput abhängig. Parameter werden während der Backpropagation je nach Netzinput angepasst.
+Außerhalb von $ [-3,3]  $ ist der Gradient fast gleich null, daher ist dort eine Verbesserung der Netzleistung fast nicht mehr möglich.Dieses Problem wird Verschwinden des Gradienten \textit{(vanishing gradient problem)} genannt.Außerdem konvergiert das Optimierungsverfahre sehr langsam und ist wegen wegen der exponentiellen  ($ e^x $) Berechnung rechenintensiv.
+\begin{figure}[h]
+	\caption{Logistische Aktivierungsfunktion:$ sigmoid(x) $.}
+	\centering
+	\begin{subfigure}{.5\textwidth}	
+		\centering	
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=0,ymax=1.25,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {1/(1+exp(-x))};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Logistische Aktivierungsfunktion.}
+		
+	\end{subfigure}%	
+	\begin{subfigure}{.5\textwidth}	
+		\centering	
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.0,ymax=.3,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {exp(x)/((1+exp(x))^2)};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Ableitung der Logistische Funktion.}
+	\end{subfigure}
 	\label{fig:sigmoid}
-		
-	\end{figure}
 	
- \textbf{Tangens Hyperbolicus} ist definiert als	$ tanh := 2sigmoid(x) -1$, siehe Abbildung \ref{fig:tanh}.Außer dass sie null zentriert ist, hat sie die gleichen Vor- und Nachteile wie die Sigmoid Funktion.\textcolor{red}{Sättigung fehl noch}
-	\begin{figure}[h]
+\end{figure}
+
+\textbf{Tangens Hyperbolicus} ist definiert als	$ tanh := 2sigmoid(x) -1$, siehe Abbildung \ref{fig:tanh}.Außer dass sie null zentriert ist, hat sie die gleichen Vor- und Nachteile wie die Sigmoid Funktion.\textcolor{red}{Sättigung fehl noch}
+\begin{figure}[h]
+	\caption{Tangens Hyperbolicus.}
+	\begin{subfigure}{.5\textwidth}	
+		\centering	
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-1.25,ymax=1.25,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {tanh(x)};
+		\end{axis}
+		\end{tikzpicture}		
 		\caption{Tangens Hyperbolicus.}
-		\begin{subfigure}{.5\textwidth}	
-			\centering	
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-1.25,ymax=1.25,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {tanh(x)};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Tangens Hyperbolicus.}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}		
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {2/(cosh(2*x)+1)};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Ableitung der Tangens Hyperbolicus.}
-		\end{subfigure}
-			\label{fig:tanh}		
-	\end{figure}
-	
-	\textbf{Rectified Linear Unit}(ReLU) ist definiert als $f(x)= max(x,0) $, siehe Abbildung \ref{fig:relu}. Sie ist sehr leicht zu berechnen. Es gibt keine Sättigung wie bei \textit{Sigmoid} und \textit{tanh}. Sie ist nicht linear,deshalb kann den Fehler schneller propagiert werden.Ein größter Vorteil der ReLU-Funktion ist, dass nicht alle Neurone gleichzeitig aktiviert sind, negative Eingangwerte werden zu null,daher hat die Ausgabe von Neuronen mit negativen Eingangwerten keine Einfluss auf die Schichtausgabe, diese Neurone sind einfach nicht aktiv.Das Netz wird also spärlich und effizienter und wir haben eine Verbesserung der Rechenleistung.
-	Es gibt keine Parameteranpassungen, wenn die Eingangwerte negative sind, denn der Gradient ist dort null.Je nachdem wie die Bias initialisiert sind, werden mehrere Neuron töten,also nie aktiviert und ReLU ist leider nicht null zentriert. \textcolor{red}{ReLUs haben die wünschenswerte Eigenschaft, dass sie keine Eingangsnormalisierung benötigen, um eine Sättigung zu verhindern.}
-		\begin{figure}[h]
-			\caption{ReLU Aktivierungsfunktion}
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.0,ymax=5,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {max(x,0)};
-			\end{axis}
-			\end{tikzpicture}
-			\caption{ReLU Aktivierungsfunktion}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}		
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.125,ymax=1.25,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {2/(cosh(2*x)+1)};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Ableitung der Tangens Hyperbolicus.}
+	\end{subfigure}
+	\label{fig:tanh}		
+\end{figure}
 
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.25,ymax=1.25,xmin=-5,xmax=5]
-			\addplot[ultra thick,blue,samples at={-5.5,0}] {0};
-			\addplot[ultra thick,blue,samples at={0,5.1}] {1};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Ableitung der ReLU Funktion}
-			
-		\end{subfigure}
-		\label{fig:relu}
-	\end{figure}
-	
-\textbf{Leaky ReLU Funktion} ist definiert als $  f(x)= 
-	\begin{cases}
-	x,& \text{if } x  >  0\\
-	0.01x,              & sonst
-	\end{cases} $, siehe Abbildung \ref{fig:LReLU}. Sie funktioniert genauso wie die ReLU-Funktion, außer dass sie das Problem des toten Neurons und sie ist null zentriert.Es gibt somit immer eine Verbesserung der Netzleistung, solange das Netz trainiert wird.Wenn das Problem von Leaky ReLU nicht gut gelöst wird, wird empfohlen, die \textit{Parametric ReLU }(PReLU) Aktivierungsfunktion zu verwenden, die während der Training selber lernt, Problem der toten Neurone zu lösen.
-	\begin{figure}[h]
-		\caption{Leaky ReLU Funktion}
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.5,ymax=5,xmin=-5,xmax=5]
-			\addplot[blue,ultra thick] {max(0.1 * x, x)};
-			\end{axis}
-			\end{tikzpicture}
-			\caption{Leaky ReLU Funktion}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
-			\centering
-			\begin{tikzpicture}
-			\begin{axis}[width=5.5cm,height=4cm,ymin=-0.25,ymax=1.25,xmin=-5,xmax=5]
-			\addplot[ultra thick,blue,samples at={-5.5,0}] {0};
-			\addplot[ultra thick,blue,samples at={0,5.1}] {1};
-			\end{axis}
-			\end{tikzpicture}		
-			\caption{Ableitung der Leaky ReLU Funktion}
-		\end{subfigure}
-
-		\label{fig:LReLU}
+\textbf{Rectified Linear Unit}(ReLU) ist definiert als $f(x)= max(x,0) $, siehe Abbildung \ref{fig:relu}. Sie ist sehr leicht zu berechnen. Es gibt keine Sättigung wie bei \textit{Sigmoid} und \textit{tanh}. Sie ist nicht linear,deshalb kann den Fehler schneller propagiert werden.Ein größter Vorteil der ReLU-Funktion ist, dass nicht alle Neurone gleichzeitig aktiviert sind, negative Eingangwerte werden zu null,daher hat die Ausgabe von Neuronen mit negativen Eingangwerten keine Einfluss auf die Schichtausgabe, diese Neurone sind einfach nicht aktiv.Das Netz wird also spärlich und effizienter und wir haben eine Verbesserung der Rechenleistung.
+Es gibt keine Parameteranpassungen, wenn die Eingangwerte negative sind, denn der Gradient ist dort null.Je nachdem wie die Bias initialisiert sind, werden mehrere Neuron töten,also nie aktiviert und ReLU ist leider nicht null zentriert. \textcolor{red}{ReLUs haben die wünschenswerte Eigenschaft, dass sie keine Eingangsnormalisierung benötigen, um eine Sättigung zu verhindern.}
+\begin{figure}[h]
+	\caption{ReLU Aktivierungsfunktion}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.0,ymax=5,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {max(x,0)};
+		\end{axis}
+		\end{tikzpicture}
+		\caption{ReLU Aktivierungsfunktion}
 		
-	\end{figure}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.25,ymax=1.25,xmin=-5,xmax=5]
+		\addplot[ultra thick,blue,samples at={-5.5,0}] {0};
+		\addplot[ultra thick,blue,samples at={0,5.1}] {1};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Ableitung der ReLU Funktion}
+		
+	\end{subfigure}
+	\label{fig:relu}
+\end{figure}
+
+\textbf{Leaky ReLU Funktion} ist definiert als $  f(x)= 
+\begin{cases}
+x,& \text{if } x  >  0\\
+0.01x,              & sonst
+\end{cases} $, siehe Abbildung \ref{fig:LReLU}. Sie funktioniert genauso wie die ReLU-Funktion, außer dass sie das Problem des toten Neurons und sie ist null zentriert.Es gibt somit immer eine Verbesserung der Netzleistung, solange das Netz trainiert wird.Wenn das Problem von Leaky ReLU nicht gut gelöst wird, wird empfohlen, die \textit{Parametric ReLU }(PReLU) Aktivierungsfunktion zu verwenden, die während der Training selber lernt, Problem der toten Neurone zu lösen.
+\begin{figure}[h]
+	\caption{Leaky ReLU Funktion}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.5,ymax=5,xmin=-5,xmax=5]
+		\addplot[blue,ultra thick] {max(0.1 * x, x)};
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Leaky ReLU Funktion}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\begin{axis}[width=5.5cm,height=4cm,ymin=-0.25,ymax=1.25,xmin=-5,xmax=5]
+		\addplot[ultra thick,blue,samples at={-5.5,0}] {0};
+		\addplot[ultra thick,blue,samples at={0,5.1}] {1};
+		\end{axis}
+		\end{tikzpicture}		
+		\caption{Ableitung der Leaky ReLU Funktion}
+	\end{subfigure}
 	
+	\label{fig:LReLU}
 	
+\end{figure}
+
+
 
 
 \textbf{Softmax} ist definiert als $ f(x_1, x_2, \cdots, x_n) = \frac{(e^{x_1}, ê^{x_2}, \cdots, e^{x_n})}{\sum_{i =1}^{n}{e^{x_i}}} $.Die Softmax-Funktion würde die Ausgänge für jede Klasse zwischen null und eins zusammendrücken und auch durch die Summe der Ausgänge teilen. Dies gibt im Wesentlichen die Wahrscheinlichkeit an, dass sich der Input in einer bestimmten Klasse befindet. 
@@ -650,11 +562,11 @@ Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgr�
 	\centering
 	
 	\begin{tabular}{c}	
-
-	
+		
+		
 		\begin{tikzpicture}
 		
-			\tikzset{square matrix/.style={
+		\tikzset{square matrix/.style={
 				matrix of nodes,
 				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
 				nodes={draw,
@@ -707,8 +619,8 @@ Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgr�
 \end{figure}
 
 Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{PooL} unterschiedliche Namen. Werden die Werte eines Blockes durch den Maximalwert des Blocks, dann sprechen wir von Max-Pooling-Layer (siehe Abbildung \ref{fig:MPL}), wenn sie durch den Mittelwert  des Blocks ersetzt, wird von Average-Pooling-Layer (siehe Abbildung \ref{fig:APL} ) und wenn die Filtergröße gleich die räumliche Dimension der Eingangdaten ist, sprechen wir von Global-Max-Pooling-Layer und Global-Average-Pooling-Layer, es wird also alle Neurone in einem Kanal zu einem Neuron, die Ausgabedimension solche Schicht entspricht der Anzahl der Kanäle bzw. Tiefe der Inputdaten.
- 
- Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
+
+Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
 
 \begin{figure}[h]
 	\centering
@@ -764,8 +676,8 @@ Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{
 		
 		\end{tikzpicture}
 	\end{tabular}
-	 \caption{Funktionsweise eines Average-Pooling-Layer }
-	 \label{fig:APL}
+	\caption{Funktionsweise eines Average-Pooling-Layer }
+	\label{fig:APL}
 \end{figure}
 
 
@@ -826,6 +738,12 @@ Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} w
 
 
 
+
+
+
+
+
+
 \subsection{Backforward }
 
 \subsubsection{Fehlerfunktion}\label{Fehlerfunktion}
@@ -838,10 +756,10 @@ Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten We
 Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). 
 
 \begin{align}
-	\label{MSE}	
-	MSE(Y, \widehat{Y}) =&\frac{1}{n}\sum_{i = 1}^{n}(Y_i - \widehat{Y}_i)^2\\
-	\label{CE}
-	CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}(Y_i\log(\widehat{Y}_i) +(1-Y_i)\log(1- \widehat{Y}_i))
+\label{MSE}	
+MSE(Y, \widehat{Y}) =&\frac{1}{n}\sum_{i = 1}^{n}(Y_i - \widehat{Y}_i)^2\\
+\label{CE}
+CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}(Y_i\log(\widehat{Y}_i) +(1-Y_i)\log(1- \widehat{Y}_i))
 \end{align}
 
 \begin{align*}
@@ -864,11 +782,13 @@ Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \e
 Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein \ac{DNN} als eine Gleichung mit Millionen von Variablen(lernbare Parameter) vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Daten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
 Die Gradientenabstiegsverfahren sind Verfahren, die auf dem Gradient basieren, um Optimierungsprobleme zu lösen.Hier wird Gradientenabstiegsverfahren verwendet, die optimalen Parametern zu finden oder anzunähern.
 
-\paragraph{Ablauf eines Gradientenverfahrens im \ac{DNN} }
+\begin{center}
+	\textbf{Ablauf eines Gradientenverfahrens im \ac{DNN} }
+\end{center}
 Das Gradientenabstiegsverfahren kann in drei Hauptschritte aufgeteilt werden.Die Abbildung \ref{fig:Backprop} stellt das Backpropagation-Verfahren bildlich dar.
 Beim ersten Schritt  wird ein zufälliger Punkt aus dem Parameterraum ausgewählt und davon ausgehend wird der Parameterraum exploriert. Das entspricht der Netzparameterinitialisierung am Trainingsanfang.
 Der zweite Schritt besteht darin, die Abstiegsrichtung zu bestimmen.Dazu werden zuerst die Eingangdaten in das \ac{NN} eingespeist(\textit{Forwardpropogation}), danach wird der Fehler zwischen den Netzvorhersagen und den korrekten Werten berechnet und ein Fehler gibt es (fast) immer, denn die Initialisierung wird zufällig gemacht und die Wahrscheinlichkeit, dass wir von Anfang an die optimalen Werte finden, ist verschwindend klein und zuletzt wird der Gradient(\ref{Gradient}) der Kostenfunktion in abhängig von den gegebenen Eingangdaten und den erwarteten Werten berechnet. 
- Beim letzten Schritt wird die Schrittweite bestimmen.Die Lernrate (\ref{Lernrate}) oder die Schrittweite wird vor Trainingsbeginn festgelegt oder während des Trainings abhängig von aktuellem Netzzustand allmählich adaptiert.
+Beim letzten Schritt wird die Schrittweite bestimmen.Die Lernrate (\ref{Lernrate}) oder die Schrittweite wird vor Trainingsbeginn festgelegt oder während des Trainings abhängig von aktuellem Netzzustand allmählich adaptiert.
 
 
 \begin{figure}[h]
@@ -915,39 +835,41 @@ Pfeile in Abbildung \ref{fig:Backprop} weisen nur den Prozessablauf hin.
 
 
 
-\paragraph{Variante des Gradientenverfahrens}
+\begin{center}
+	\textbf{Variante des Gradientenverfahrens}
+\end{center}
 Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur durch die Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.Zum Aktualisierung der Netzwerkparameter nutzen sie jeweils die Gleichung \eqref{GD}.
 
 \begin{equation}\label{GD}
-	\theta_{t+1} = \theta_{t} -\eta g_{t}, \quad g_t=\frac{\delta E}{\delta \theta_{t}}
+\theta_{t+1} = \theta_{t} -\eta g_{t}, \quad g_t=\frac{\delta E}{\delta \theta_{t}}
 \end{equation}
 \begin{center}
 	\begin{tabular}{r@{: }l r@{: }l}
-	 $ \eta$& Lernrate & $ E$ & Die Fehlerfunktion\\
-	 $ \theta_{t} $& Netzwerkparameter zum Zeitpunkt $ t $
+		$ \eta$& Lernrate & $ E$ & Die Fehlerfunktion\\
+		$ \theta_{t} $& Netzwerkparameter zum Zeitpunkt $ t $
 	\end{tabular}
 \end{center}
 \subparagraph{Stochastic Gradient Descent (SGD):}
-		Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft online Training  genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationen sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
+Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft online Training  genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationen sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
 \subparagraph{Batch Gradient Descent (BGD):}
-		BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz zur Netzwerkparameteraktualisierung genutzt wird.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung des Minimums der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
+BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz zur Netzwerkparameteraktualisierung genutzt wird.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung des Minimums der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
 \subparagraph{Mini-batch Stochastic Gradient Descent(MSGD): }
-		MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.
+MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.
 
 Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
 Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 
 
 
-  % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
- % \newpage 
+% Literaturverzeichnis (beginnt auf einer ungeraden Seite)
+% \newpage 
 \section{Kompression von \ac{DNN}}
-  Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik in verschiedenen Bereichen zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen.Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Netzparameter entfernt.Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren.Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als 32 Bits nutzt.Im folgenden werden nur die Beschneidung und Quantisierung von \ac{NN} mehr eingegangen werden.
+Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik in verschiedenen Bereichen zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen.Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Netzparameter entfernt.Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren.Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als 32 Bits nutzt.Im folgenden werden nur die Beschneidung und Quantisierung von \ac{NN} mehr eingegangen werden.
 
-  Neuronale Netze sind sowohl rechenintensiv als auch speicherintensiv, was ihre Bereitstellung auf eingebetteten Systemen mit begrenzten Hardware-Ressourcen erschwert\cite{5}. 
-  Um dem Problem von Rechenzeit und Speicherplatzbedarf entgegenzuwirken, wird die tiefe Kompression(\textit{Deep Compression}) Technik von \cite[Han et al]{5} eingeführt.
-  Die Deep Compression Technik besteht aus drei Phasen:Netzwerkbereinigung (\textit{Pruning Network}),Quantizierung(\textit{Quantization}) und Huffman-Codierung(\textit{Huffman Coding})
-  
+Neuronale Netze sind sowohl rechenintensiv als auch speicherintensiv, was ihre Bereitstellung auf eingebetteten Systemen mit begrenzten Hardware-Ressourcen erschwert\cite{5}. 
+Um dem Problem von Rechenzeit und Speicherplatzbedarf entgegenzuwirken, wird die tiefe Kompression(\textit{Deep Compression}) Technik von \cite[Han et al]{5} eingeführt.
+Die Deep Compression Technik besteht aus drei Phasen:Netzwerkbereinigung (\textit{Pruning Network}),Quantizierung(\textit{Quantization}) und Huffman-Codierung(\textit{Huffman Coding})
+
 \subsection{Pruning Network}
 Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netze versucht, unwichtige oder redundante Parameter oder komplette Neuronen aus dem Netz zu entfernen, um ein Netz mit möglichst geringer Komplexität zu erhalten. Mit unwichtigen Parametern werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Wert null beeinflussen das Output des Neurons nicht mehr und sind einfach überflüssig .Da fast keine Parameter nach Netztraining genau gleich null sind, wird einen Schwellenwert entweder fixiert oder bestimmt, um zu entscheiden, welche Parameter als null bzw. unwichtig betrachtet werden.Das Pruning reduziert die Anzahl der Parameter, was die Netzkomplexität, die Rechenzeit und auch die Wahrscheinlichkeit des Overfitting reduziert.Für AlexNet und VGG-16 Modell wird durch Pruning die Anzahl der Parameter um 9 bzw. 13 mal reduziert\cite{5}.\textcolor{blue}{Zur effizienteren Speicherung des beschnitten Netzes kann ein CRS (\textit{Compressed Row Storage}) oder CCS (\textit{Compressed Column Storage}) Format verwendet werden, das $ 2a+n+1 $ statt $ n*n $ Zahlen speichert, wobei $ a $ die Anzahl der Elemente ungleich Null und $ n $ die Anzahl der Zeilen oder Spalten der Matrix ist}. \\
 
@@ -999,101 +921,18 @@ Vor kurzem haben \cite[Yoni et al]{quantizationYoni} einen neue Ansatz für die 
 \subsection{Huffman Codierung}
 Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. 
 
- \section{Overfitting in Convolutional   neuronale Netzwerke}
- \subsection{Overfitting Definition}
- \textcolor{red}{\begin{itemize}
- 		\item Erinnern Sie sich an das Kind aus Ihrer Mittelschulklasse, das bei den Tests sehr gut abgeschnitten hat, aber es schlecht tat, wenn die Fragen zum Test ursprüngliches Denken erforderten und nicht in der Klasse behandelt wurden? Warum tat er dies schlecht, wenn er mit einem Problem konfrontiert wurde, das er noch nie zuvor gesehen hatte? Weil er sich die Antworten auf die in der Klasse behandelten Fragen gemerkt hatte, ohne die zugrunde liegenden Konzepte zu verstehen.
- 		\item Ebenso ist die Größe des Neuronalen Netzwerks seine Fähigkeit zu lernen, aber wenn Sie nicht vorsichtig sind, wird es versuchen, die Beispiele in den Trainingsdaten zu speichern, ohne das Konzept zu verstehen. Infolgedessen wird das Neuronale Netzwerk außergewöhnlich gut mit den Trainingsdaten arbeiten, aber sie lernen nicht das eigentliche Konzept. Es wird bei neuen und unsichtbaren Testdaten nicht gut funktionieren. Dies wird als Überfitting bezeichnet.
- 	\end{itemize}
-}
- Wenn ein von der Maschine gelerntes Modell zu gut auf die Trainingsdaten abgestimmt ist und sehr schlechte Vorhersagen über Daten macht, die es bisher nicht gesehen hat, wird gesagt, dass das Modell an Überanpassung(Overfitting) leidet, anders gesagt, das Modell war nicht in der Lage, die relevanten Merkmale aus den Trainingsdaten zu verallgemeinern, sondern die ganzen Trainingsdaten auswendig zu lernen.Die irrelevanten Informationen aus den Trainingsdaten können z.B die Position des Tellers in einem Bild sein, wenn man Essen klassifizieren sollte. Im folgenden werden einige Mittels vorgestellt, um mit Overfitting umzugehen.
- \subsection{Strategie gegen Overfitting}
- \subsubsection{{Data Augmentation}}\label{Data Augmentation}
- Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netze.Dass ein Datensatz groß oder ausreichend für das Training eines \ac{NN}s ist, hängt nur von der Größe des \ac{NN}s ab und da die \acsp{NN}, die die besten Leistungen aufweisen, Millionen von Parametern haben, ist fast unmöglich für jedes  Problem von Maschine Lernen ausreichende Daten zu finden.Anstatt immer neue Daten zur Verbesserung der Netzleistung zu sammeln, können wir die Leistung des Modells verbessern, indem wir neue Daten von den bereits vorhandenen Daten aus erzeugen.\\
- Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden, Parallelverschiebungen und die Gauß'sches Rauschen.
- Für diese Arbeit habe ich zwei Ansätze im Gebrauch gehabt, um den Datensatz zu erhöhen:
- Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben und die originalen Daten werden zur Validierung verwendet.Der zweite Ansatz besteht darin, zum Trainingszeitpunkt und zur Testzeit die neuen Daten zu erzeugen. Hier haben wir keinen Datensatz größer als den originalen, aber die Daten, die ins Netzwerk eingespeist werden, ändern sich ständig.Angenommen wir die Möglichkeit haben, alle diese Transformationen durchzuführen, dann kann es vorkommen, dass eine Photo während der ersten Epoche horizontal gespiegelt wird und während der zweiten um  zwanzig Grad gedreht wird, umso weiter.Zur Implementierung des zweiten Ansatzes bietet \textit{KERAS} Framework die Funktion \textit{ImageDataGeneerator}. Das interessanteste an \textit{ImageDataGeneerator} ist, dass es mehrere Transformationen gleichzeitig anwenden(siehe Abbildung \ref{fig:ImageDataAugmentation}).
-
- \begin{figure}[h]
- 	\centering
- 	\includegraphics{ImageDataAugmaentation.png}
- 	\caption{Anwendung von \textit{ImageDataAugmentation} }
- 	\label{fig:ImageDataAugmentation}
- \end{figure}
- 
-Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Daten durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.\\
- 
-
-\subsubsection{Dropout}  \label{Dropout}
-Künstliche Neurone sind von biologischen Neuronen inspiriert, aber die Beiden unterscheidet sich sehr voneinander und einer der wichtigen Unterschiede ist, dass biologische Neuronen unvollkommene Maschinen sind, die sehr oft nicht richtig funktioniert und das ist a priori nie den Fall bei  künstlichen Neuronen. Wir könnten also glauben, dass \ac{KNN} die biologische übertreffen könnten.Es sei denn, dass diese Funktionsstörung von biologischen Neuronen nicht eine Schwäche ist, sondern eher eine Stärke ist.Eine der verblüffenden Entdeckungen in \ac{KI} Bereich ist, dass es wünschenswert ist, künstliche Neuronen von Zeit zu Zeit zu Fehlfunktionen zu bringen\cite{1}. \textcolor{blue}{Jetzt können wir uns fragen, wie Dysfunktion von Neuronen die Performances \acsp{CNN} verbessern kann}.Die zufällige Hinzufügen von Dysfunktionen in einer Schicht der \ac{CNN} wird \textit{Dropout} benannt und wurde von \cite[Geoffrey E. et al]{2} eingeführt.\\
-\paragraph{Funktionsweise von Dropout}.\\
-Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen(versteckt und sichtbar)  in einem  \ac{NN} \cite{3}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
-In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von anderen Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis der Schicht teilnehmen. Während der Testphase  werden alle Verbindungen zurückgesetzt, die während des Trainings gelöscht wurden und die ausgehenden Verbindungen gelöschter Neurone mit $ p $   multipliziert.
-
-	\begin{figure}[h]
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[scale=2, width=.8\linewidth, height=\linewidth]{dropout1.png}
-			\caption{Standard neuronale Netze}
-		\label{fig:dropout1}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=.8\linewidth, height=\linewidth, scale=2]{dropout2.png}
-		\caption{Netze nach Dropout}
-		\label{fig:dropout2}
-	\end{subfigure}
-	\caption{Neuronales Netz mit Dropout ausgestattet \cite{3}.}
-	\label{fig:Dropout}
-\end{figure}
-
-\paragraph{Verhinderung der Koadaptationen zwischen Neuronen}.\\
-Während des Trainings können mehrere Neurone zur Minimierung der Fehlerfunktion so gut zusammenarbeiten, dass die Erkennung bestimmter Merkmale ohne diese Zusammenarbeit nicht mehr möglich ist, aber solche komplexe Koadaptationen  können zu einer Überanpassung führen, denn diese komplexe Koadaptationen existieren nicht immer in Testdaten. Da die am Training teilnehmenden Neuronen nach dem Zufallsprinzip nach jeder Epoche ausgewählt werden, haben wir für jedes Training ein neues Modell, was die Neuronen zur Zusammenarbeit zwingt, ohne jedoch voneinander abhängig zu sein, anders gesagt, wird jedes Neuron unabhängig von anderen Neuronen die Muster korrekt lernen können.  
-
-\paragraph{Automatische Erhöhung von Training Data und Regelung }.\\
-Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:DropoutDataAugmentation} angezeigt ist, zu einer automatische Erzeugung neuer Trainingsdaten. Die verwendeten Daten in ausgedünnten Modellen sind also nur eine Abstraktion von echten Daten bzw. Rauschdaten und da wir für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, $ 2^n $ mögliche Modelle haben, haben wir $ 2^n $ mögliche Abstraktion von unseren Daten und das sollte einer der Gründe sein, warum Dropout effektiver als andere rechnerisch kostengünstige Regler ist \cite{3} und warum die Trainingszeit von \acsp{NN} mit Dropout mindestens verdoppelt wird. 
-
-\begin{figure}[h]
-	\centering
-	\includegraphics{model}
-	\caption{Erhöhung des Trainingsdaten durch Dropout}
-	\label{fig:DropoutDataAugmentation}
-\end{figure}
-
-Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
-%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
-
-\subsubsection{Batch-Normalisierung}\label{Batch-Normalisierung}
-Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür ist zum Beispiel die Tatsache, dass die Parameter einer Schicht während des Trainings tiefer neuronaler Netze immer unter der Annahme, dass sich die Parameter anderer Schichten nicht ändern, aktualisiert werden und da alle Schichten während des Updates geändert werden, verfolgt das Optimierungsverfahren ein Minimum, das sich ständig bewegt. Ein anderer Grund dafür ist die ständigen Veränderungen im Laufe des Trainings in die Verteilung des Netzinputs, diese Veränderung wird von \cite{bactchnormalisation} als interne kovariate Verschiebung(\textit{Internal Covariate Shift}) genannt.Zur Lösung dieser Probleme schlagen \textit{LeCunn et al}\cite{LeCun} vor dem Training das Netzinput zu normalisieren. Aber dieser Ansatz bringt nicht so viel, wenn das \ac{NN} wirklich tief ist, denn nur der Netzinput profitiert von der Normalisierung und die kleinen Veränderungen in versteckte Schichten werden sich immer mehr verstärken, je tiefer man das Netz durchläuft. Mit der Ausbreitung tiefer \acsp{NN} dehnt Batch-Normalisierung(BN)\cite{bactchnormalisation} diese Idee der Datennormalisierung auf versteckte Schichten tiefer \acsp{NN} aus. Bei der BN werden die Eingaben in einem Netzwerk standardisiert, die entweder auf die Aktivierungen einer vorherigen Schicht oder auf direkte Eingaben angewendet wird, so standardisiert, dass der Mittelwert in der Nähe von null liegt und die Standardabweichung in der Nähe von eins liegt. Die BN wird über Mini-Batches und nicht über den gesamten Trainingssatz durchgeführt, daher enthalten wir nur Näherungen an tatsächliche Werte der Standardabweichung und des Mittelwerts über das Trainingssatzes, aber wir gewinnen an Geschwindigkeit und an Speicherplatzverbrauch.Die Gleichung \eqref{BNA} gibt die formale Beschreibung des BN Algorithmus an.
-\begin{center}
-	 Batch-Normalisierungstransformation, angewendet auf Aktivierung x über einen Mini-Batch
-\end{center}
-\begin{subequations}
-	 \begin{align*}
-		\textbf{Input:} & \text{  Werte von x über einer Mini-Batch: } B=\{x_{1...m}\}\\
-		& \text{Lernbare Parameter  } \beta, \gamma \\
-		\textbf{Output:} & \{ y_i = BN_{\beta, \gamma}(x_i)\}
-	\end{align*}
-	\begin{align}
-		\text{Mini-Batch Mittelwert  : } &\mu_\beta=\frac{1}{m}\sum_{i = 1}^{m}x_i \\
-		\text{ Mini-Batch Standardabweichung :} &\sigma_\beta^2=\frac{1}{m}\sum_{i = 1}^{m}(x_i- \mu_\beta)^2 \\
-		 \text{Normalisierung:} & \widehat{x_i} = \frac{x_i - \mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}} \\
-		 \text{Skalierung und Verschiebung :} & {y_i} = \gamma\widehat{x_i} + \beta \equiv BN_{\gamma, \beta}
-	\end{align}
-	\label{BNA}
-\end{subequations}
-Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekommen wir die gleiche Verteilung wie vor der Batch-Normalisierung, d.h die Eingabe war also schon normalisiert. Interessanterweise kann das Netz während des Trainings eine bessere Verteilung als die erwünschte finden, denn $\gamma$ und $\beta$ sind lernbare Parameter.
-
- Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
- Zum anderen wird die interne kovariate Verschiebung geringer, was das Training beschleunigt, in einigen Fällen durch Halbierung der Epochen oder besser. Noch dazu wird das Netz durch die BN in gewissem Maße reguliert, daher wird die Verwendung von Dropout bzw. Regulierungstechnik reduziert oder sogar überflüssig und somit eine Verbesserung der Verallgemeinerungsgenauigkeit.
-
-
-
 \section{Experiment} \label{Experiment}
+\subsection{Lernrate}\label{Experiment:Lernrate}
+Wie in \ref{Lernrate} gesehen, die Lernrate sagt uns, wie schnell wir ans Ziel kommen möchten.
+\begin{itemize}
+	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
+	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
+\end{itemize}
+In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
 
 
 
- \subsection{Besondere \acsp{CNN}}
+\subsection{Besondere \acsp{CNN}}
 \subsubsection{AlexNet}
 Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Alex Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und etwas $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}.Das Besondere an AlexNet ist aber nicht die Anzahl der Schichten, sondern der Einsatz bestimmter Methoden oder Techniken:
 \begin{itemize}
@@ -1162,13 +1001,6 @@ Wie die Abbildung ?? zeigt, liefert \textit{SqueezeNet} mit Simple RCs  als die 
 \end{figure}
 
 
-\subsection{Lernrate}\label{Experiment:Lernrate}
-Wie in \ref{Lernrate} gesehen, die Lernrate sagt uns, wie schnell wir ans Ziel kommen möchten.
-\begin{itemize}
-	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
-	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
-\end{itemize}
-In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
 
 \subsection{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}
 Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.
@@ -1220,6 +1052,97 @@ v_{t}=& \beta_{2}v_{t-1}+(1-\beta_{2})g^2_t,&\widehat{v}_{t} =&\dfrac{v_t}{1-\be
 Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Implementierung, effizienter Nutzung der Speicherplatz und seine Invarianz zur diagonalen Neuskalierung der Gradienten.
 \\ \textcolor{purple}{Kleines Experiment}
 
+
+\subsection{Problem beim Training von  Convolutional   neuronale Netzwerke}
+\subsubsection{Overfitting }
+%\textcolor{red}{\begin{itemize}
+%		\item Erinnern Sie sich an das Kind aus Ihrer Mittelschulklasse, das bei den Tests sehr gut abgeschnitten hat, aber es schlecht tat, wenn die Fragen zum Test ursprüngliches Denken erforderten und nicht in der Klasse behandelt wurden? Warum tat er dies schlecht, wenn er mit einem Problem konfrontiert wurde, das er noch nie zuvor gesehen hatte? Weil er sich die Antworten auf die in der Klasse behandelten Fragen gemerkt hatte, ohne die zugrunde liegenden Konzepte zu verstehen.
+%		\item Ebenso ist die Größe des Neuronalen Netzwerks seine Fähigkeit zu lernen, aber wenn Sie nicht vorsichtig sind, wird es versuchen, die Beispiele in den Trainingsdaten zu speichern, ohne das Konzept zu verstehen. Infolgedessen wird das Neuronale Netzwerk außergewöhnlich gut mit den Trainingsdaten arbeiten, aber sie lernen nicht das eigentliche Konzept. Es wird bei neuen und unsichtbaren Testdaten nicht gut funktionieren. Dies wird als Überfitting bezeichnet.
+%	\end{itemize}
+%}
+Wenn ein von der Maschine gelerntes Modell zu gut auf die Trainingsdaten abgestimmt ist und sehr schlechte Vorhersagen über Daten macht, die es bisher nicht gesehen hat, wird gesagt, dass das Modell an Überanpassung(Overfitting) leidet, anders gesagt, das Modell war nicht in der Lage, die relevanten Merkmale aus den Trainingsdaten zu verallgemeinern, sondern die ganzen Trainingsdaten auswendig zu lernen.Die irrelevanten Informationen aus den Trainingsdaten können z.B die Position des Tellers in einem Bild sein, wenn man Essen klassifizieren sollte. Im folgenden werden einige Mittels vorgestellt, um mit Overfitting umzugehen.\\
+\begin{center}
+	\textbf{Strategie gegen Overfitting}
+\end{center}
+\subparagraph{{Data Augmentation}}\label{Data Augmentation}
+Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netze.Dass ein Datensatz groß oder ausreichend für das Training eines \ac{NN}s ist, hängt nur von der Größe des \ac{NN}s ab und da die \acsp{NN}, die die besten Leistungen aufweisen, Millionen von Parametern haben, ist fast unmöglich für jedes  Problem von Maschine Lernen ausreichende Daten zu finden.Anstatt immer neue Daten zur Verbesserung der Netzleistung zu sammeln, können wir die Leistung des Modells verbessern, indem wir neue Daten von den bereits vorhandenen Daten aus erzeugen.\\
+Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden, Parallelverschiebungen und die Gauß'sches Rauschen.
+Für diese Arbeit habe ich zwei Ansätze im Gebrauch gehabt, um den Datensatz zu erhöhen:
+Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben und die originalen Daten werden zur Validierung verwendet.Der zweite Ansatz besteht darin, zum Trainingszeitpunkt und zur Testzeit die neuen Daten zu erzeugen. Hier haben wir keinen Datensatz größer als den originalen, aber die Daten, die ins Netzwerk eingespeist werden, ändern sich ständig.Angenommen wir die Möglichkeit haben, alle diese Transformationen durchzuführen, dann kann es vorkommen, dass eine Photo während der ersten Epoche horizontal gespiegelt wird und während der zweiten um  zwanzig Grad gedreht wird, umso weiter.Zur Implementierung des zweiten Ansatzes bietet \textit{KERAS} Framework die Funktion \textit{ImageDataGeneerator}. Das interessanteste an \textit{ImageDataGeneerator} ist, dass es mehrere Transformationen gleichzeitig anwenden(siehe Abbildung \ref{fig:ImageDataAugmentation}).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics{ImageDataAugmaentation.png}
+	\caption{Anwendung von \textit{ImageDataAugmentation} }
+	\label{fig:ImageDataAugmentation}
+\end{figure}
+
+Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Daten durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.\\
+
+
+\subparagraph{Dropout}  \label{Dropout}
+Künstliche Neurone sind von biologischen Neuronen inspiriert, aber die Beiden unterscheidet sich sehr voneinander und einer der wichtigen Unterschiede ist, dass biologische Neuronen unvollkommene Maschinen sind, die sehr oft nicht richtig funktioniert und das ist a priori nie den Fall bei  künstlichen Neuronen. Wir könnten also glauben, dass \ac{KNN} die biologische übertreffen könnten.Es sei denn, dass diese Funktionsstörung von biologischen Neuronen nicht eine Schwäche ist, sondern eher eine Stärke ist.Eine der verblüffenden Entdeckungen in \ac{KI} Bereich ist, dass es wünschenswert ist, künstliche Neuronen von Zeit zu Zeit zu Fehlfunktionen zu bringen\cite{1}. \textcolor{blue}{Jetzt können wir uns fragen, wie Dysfunktion von Neuronen die Performances \acsp{CNN} verbessern kann}.Die zufällige Hinzufügen von Dysfunktionen in einer Schicht der \ac{CNN} wird \textit{Dropout} benannt und wurde von \cite[Geoffrey E. et al]{2} eingeführt.
+\subparagraph{Funktionsweise von Dropout}.\\
+Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen(versteckt und sichtbar)  in einem  \ac{NN} \cite{3}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
+In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von anderen Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis der Schicht teilnehmen. Während der Testphase  werden alle Verbindungen zurückgesetzt, die während des Trainings gelöscht wurden und die ausgehenden Verbindungen gelöschter Neurone mit $ p $   multipliziert.
+
+\begin{figure}[h]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=2, width=.8\linewidth, height=\linewidth]{dropout1.png}
+		\caption{Standard neuronale Netze}
+		\label{fig:dropout1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth, height=\linewidth, scale=2]{dropout2.png}
+		\caption{Netze nach Dropout}
+		\label{fig:dropout2}
+	\end{subfigure}
+	\caption{Neuronales Netz mit Dropout ausgestattet \cite{3}.}
+	\label{fig:Dropout}
+\end{figure}
+
+\subparagraph{Verhinderung der Koadaptationen zwischen Neuronen}.\\
+Während des Trainings können mehrere Neurone zur Minimierung der Fehlerfunktion so gut zusammenarbeiten, dass die Erkennung bestimmter Merkmale ohne diese Zusammenarbeit nicht mehr möglich ist, aber solche komplexe Koadaptationen  können zu einer Überanpassung führen, denn diese komplexe Koadaptationen existieren nicht immer in Testdaten. Da die am Training teilnehmenden Neuronen nach dem Zufallsprinzip nach jeder Epoche ausgewählt werden, haben wir für jedes Training ein neues Modell, was die Neuronen zur Zusammenarbeit zwingt, ohne jedoch voneinander abhängig zu sein, anders gesagt, wird jedes Neuron unabhängig von anderen Neuronen die Muster korrekt lernen können.  
+
+\subparagraph{Automatische Erhöhung von Training Daten und Regelung }.\\
+Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:DropoutDataAugmentation} angezeigt ist, zu einer automatische Erzeugung neuer Trainingsdaten. Die verwendeten Daten in ausgedünnten Modellen sind also nur eine Abstraktion von echten Daten bzw. Rauschdaten und da wir für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, $ 2^n $ mögliche Modelle haben, haben wir $ 2^n $ mögliche Abstraktion von unseren Daten und das sollte einer der Gründe sein, warum Dropout effektiver als andere rechnerisch kostengünstige Regler ist \cite{3} und warum die Trainingszeit von \acsp{NN} mit Dropout mindestens verdoppelt wird. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics{model}
+	\caption{Erhöhung des Trainingsdaten durch Dropout}
+	\label{fig:DropoutDataAugmentation}
+\end{figure}
+
+Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
+%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
+
+\subparagraph{Batch-Normalisierung}\label{Batch-Normalisierung}
+Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür ist zum Beispiel die Tatsache, dass die Parameter einer Schicht während des Trainings tiefer neuronaler Netze immer unter der Annahme, dass sich die Parameter anderer Schichten nicht ändern, aktualisiert werden und da alle Schichten während des Updates geändert werden, verfolgt das Optimierungsverfahren ein Minimum, das sich ständig bewegt. Ein anderer Grund dafür ist die ständigen Veränderungen im Laufe des Trainings in die Verteilung des Netzinputs, diese Veränderung wird von \cite{bactchnormalisation} als interne kovariate Verschiebung(\textit{Internal Covariate Shift}) genannt.Zur Lösung dieser Probleme schlagen \textit{LeCunn et al}\cite{LeCun} vor dem Training das Netzinput zu normalisieren. Aber dieser Ansatz bringt nicht so viel, wenn das \ac{NN} wirklich tief ist, denn nur der Netzinput profitiert von der Normalisierung und die kleinen Veränderungen in versteckte Schichten werden sich immer mehr verstärken, je tiefer man das Netz durchläuft. Mit der Ausbreitung tiefer \acsp{NN} dehnt Batch-Normalisierung(BN)\cite{bactchnormalisation} diese Idee der Datennormalisierung auf versteckte Schichten tiefer \acsp{NN} aus. Bei der BN werden die Eingaben in einem Netzwerk standardisiert, die entweder auf die Aktivierungen einer vorherigen Schicht oder auf direkte Eingaben angewendet wird, so standardisiert, dass der Mittelwert in der Nähe von null liegt und die Standardabweichung in der Nähe von eins liegt. Die BN wird über Mini-Batches und nicht über den gesamten Trainingssatz durchgeführt, daher enthalten wir nur Näherungen an tatsächliche Werte der Standardabweichung und des Mittelwerts über das Trainingssatzes, aber wir gewinnen an Geschwindigkeit und an Speicherplatzverbrauch.Die Gleichung \eqref{BNA} gibt die formale Beschreibung des BN Algorithmus an.
+\begin{center}
+	Batch-Normalisierungstransformation, angewendet auf Aktivierung x über einen Mini-Batch
+\end{center}
+\begin{subequations}
+	\begin{align*}
+	\textbf{Input:} & \text{  Werte von x über einer Mini-Batch: } B=\{x_{1...m}\}\\
+	& \text{Lernbare Parameter  } \beta, \gamma \\
+	\textbf{Output:} & \{ y_i = BN_{\beta, \gamma}(x_i)\}
+	\end{align*}
+	\begin{align}
+	\text{Mini-Batch Mittelwert  : } &\mu_\beta=\frac{1}{m}\sum_{i = 1}^{m}x_i \\
+	\text{ Mini-Batch Standardabweichung :} &\sigma_\beta^2=\frac{1}{m}\sum_{i = 1}^{m}(x_i- \mu_\beta)^2 \\
+	\text{Normalisierung:} & \widehat{x_i} = \frac{x_i - \mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}} \\
+	\text{Skalierung und Verschiebung :} & {y_i} = \gamma\widehat{x_i} + \beta \equiv BN_{\gamma, \beta}
+	\end{align}
+	\label{BNA}
+\end{subequations}
+Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekommen wir die gleiche Verteilung wie vor der Batch-Normalisierung, d.h die Eingabe war also schon normalisiert. Interessanterweise kann das Netz während des Trainings eine bessere Verteilung als die erwünschte finden, denn $\gamma$ und $\beta$ sind lernbare Parameter.
+
+Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
+Zum anderen wird die interne kovariate Verschiebung geringer, was das Training beschleunigt, in einigen Fällen durch Halbierung der Epochen oder besser. Noch dazu wird das Netz durch die BN in gewissem Maße reguliert, daher wird die Verwendung von Dropout bzw. Regulierungstechnik reduziert oder sogar überflüssig und somit eine Verbesserung der Verallgemeinerungsgenauigkeit.
+\subsubsection{Dataset}
 \section{Abkürzungsverzeichnis}
 \begin{acronym}[THIBAUT]
 	\acro{KNN}{Künstliches neuronales Netz}
