@@ -47,7 +47,7 @@
 \newcommand{\Q}{\mathbb{Q}} % rationale
 \newcommand{\Z}{\mathbb{Z}} % ganze
 \newcommand{\N}{\mathbb{N}} % natuerliche
-\def\Arrow{\raisebox{1.3\height}{\scalebox{2}{$\xRightarrow[Stride=2]{pool\_size =(2,2)}$}}}
+\def\Arrow{\raisebox{3\height}{\scalebox{1}{$\xRightarrow[.]{.}$}}}
 
 
 \makeatletter
@@ -558,133 +558,136 @@ In allgemein wird die ReLU aufgrund des Problems der toten Neurone nur in verste
 \subsubsection{Pooling Layer}\label{Pooling Layer}
 Die Funktionsweise von Pooling-Schichten ist sehr ähnlich zu der von \acsp{ConvL}. Das Filter wird über die Inputdaten bewegen und dabei anstatt die Faltungsoperation durchzuführen, werden die Inputdaten Blockweise zusammengefasst. Ein Pooling-Layer besitzt nur ein Filter, das nicht wie in \acsp{ConvL} lernbar ist, sondern gibt nur an, wie groß der Block, der zusammengefasst wird, sein muss.
 Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgröße verwendet, was die Dimension der Inputdaten um die Hälfte reduziert. Interessanter dabei ist ,dass die wichtigen Informationen oder Muster nach der Pooling-Layer vorhanden bleiben und damit haben wir nicht nur eine Erhöhung der Rechengeschwindigkeit, sondern auch eine wesentliche Reduzierung der Netzparameter, was die Wahrscheinlichkeit einer Modelüberanpassung(\textit{Overfitting}) reduziert. Pooling-Schichten sind etwa invariant gegenüber kleiner Veränderung wie Parallelverschiebung\cite{4}.
+
 \begin{figure}[h]
 	\centering
-	
-	\begin{tabular}{c}	
+	\begin{tabular}{cc}
+			
+			\begin{tabular}{c}	
+				
+				
+				\begin{tikzpicture}
+				
+				\tikzset{square matrix/.style={
+						matrix of nodes,
+						column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+						nodes={draw,
+							minimum height=#1,
+							anchor=center,
+							text width=#1,
+							align=center,
+							inner sep=0pt
+						},
+					},
+					square matrix/.default=.5cm
+				}
+				\matrix[square matrix]
+				{
+					|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
+					|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
+					|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
+					|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
+				};
+				
+				\end{tikzpicture}\Arrow%
+				
+				
+				\begin{tikzpicture}
+				\centering
+				
+				\tikzset{square matrix/.style={
+						matrix of nodes,
+						column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+						nodes={draw,
+							minimum height=#1,
+							anchor=center,
+							text width=#1,
+							align=center,
+							inner sep=0pt
+						},
+					},
+					square matrix/.default=1cm
+				}
+				\matrix[square matrix]
+				{
+					|[fill=green]|	16 & |[fill=yellow]| 13 \\
+					|[fill=red]|	15 & 14 \\
+				};
+				
+				\end{tikzpicture}
+			\end{tabular}
+
+	&
+			\begin{tabular}{c}
+				
+				\begin{tikzpicture}
+				
+				\tikzset{square matrix/.style={
+						matrix of nodes,
+						column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+						nodes={draw,
+							minimum height=#1,
+							anchor=center,
+							text width=#1,
+							align=center,
+							inner sep=0pt
+						},
+					},
+					square matrix/.default=.5cm
+				}
+				
+				\matrix[square matrix]
+				{
+					|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
+					|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
+					|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
+					|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
+				};
+				
+				\end{tikzpicture}\Arrow
+				
+				\begin{tikzpicture}
+				
+				\tikzset{square matrix/.style={
+						matrix of nodes,
+						column sep=-\pgflinewidth, row sep=-\pgflinewidth,
+						nodes={draw,
+							minimum height=#1,
+							anchor=center,
+							text width=#1,
+							align=center,
+							inner sep=0pt
+						},
+					},
+					square matrix/.default=1cm
+				}
+				
+				\matrix[square matrix]
+				{
+					|[fill=green]|	8.5 & |[fill=yellow]| 8.5 \\
+					|[fill=red]|	8.5 & 8.5 \\
+				};
+				
+				\end{tikzpicture}
+			\end{tabular}
+
 		
-		
-		\begin{tikzpicture}
-		
-		\tikzset{square matrix/.style={
-				matrix of nodes,
-				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-				nodes={draw,
-					minimum height=#1,
-					anchor=center,
-					text width=#1,
-					align=center,
-					inner sep=0pt
-				},
-			},
-			square matrix/.default=.75cm
-		}
-		\matrix[square matrix]
-		{
-			|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
-			|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
-			|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
-			|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
-		};
-		
-		\end{tikzpicture}\Arrow%
-		
-		
-		\begin{tikzpicture}
-		\centering
-		
-		\tikzset{square matrix/.style={
-				matrix of nodes,
-				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-				nodes={draw,
-					minimum height=#1,
-					anchor=center,
-					text width=#1,
-					align=center,
-					inner sep=0pt
-				},
-			},
-			square matrix/.default=1.5cm
-		}
-		\matrix[square matrix]
-		{
-			|[fill=green]|	16 & |[fill=yellow]| 13 \\
-			|[fill=red]|	15 & 14 \\
-		};
-		
-		\end{tikzpicture}
 	\end{tabular}
-	\caption{Funktionsweise eines Max-Pooling-Layer}
-	\label{fig:MPL}
+			\caption{Funktionsweise der Pooling-Sicht mit Pooling\_size$ =(2,2) $ und $ Stride =2$}
+			\label{fig:Pooling}
 \end{figure}
 
-Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{PooL} unterschiedliche Namen. Werden die Werte eines Blockes durch den Maximalwert des Blocks, dann sprechen wir von Max-Pooling-Layer (siehe Abbildung \ref{fig:MPL}), wenn sie durch den Mittelwert  des Blocks ersetzt, wird von Average-Pooling-Layer (siehe Abbildung \ref{fig:APL} ) und wenn die Filtergröße gleich die räumliche Dimension der Eingangdaten ist, sprechen wir von Global-Max-Pooling-Layer und Global-Average-Pooling-Layer, es wird also alle Neurone in einem Kanal zu einem Neuron, die Ausgabedimension solche Schicht entspricht der Anzahl der Kanäle bzw. Tiefe der Inputdaten.
+
+
+
+Je nachdem wie die Blöcke in \ac{PooL} zusammengefasst werden, haben die \acsp{PooL} unterschiedliche Namen. Werden die Werte eines Blockes durch den Maximalwert des Blocks, dann sprechen wir von Max-Pooling-Layer (siehe Abbildung \ref{fig:Pooling} links), wenn sie durch den Mittelwert  des Blocks ersetzt, wird von Average-Pooling-Layer (siehe Abbildung \ref{fig:Pooling} rechts ) und wenn die Filtergröße gleich die räumliche Dimension der Eingangdaten ist, sprechen wir von Global-Max-Pooling-Layer und Global-Average-Pooling-Layer, es wird also alle Neurone in einem Kanal zu einem Neuron, die Ausgabedimension solche Schicht entspricht der Anzahl der Kanäle bzw. Tiefe der Inputdaten.
 
 Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
-
-\begin{figure}[h]
-	\centering
-	\begin{tabular}{c}
-		
-		\begin{tikzpicture}
-		
-		\tikzset{square matrix/.style={
-				matrix of nodes,
-				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-				nodes={draw,
-					minimum height=#1,
-					anchor=center,
-					text width=#1,
-					align=center,
-					inner sep=0pt
-				},
-			},
-			square matrix/.default=.75cm
-		}
-		
-		\matrix[square matrix]
-		{
-			|[fill=green]|	16& |[fill=green]|	3 & |[fill=yellow]|2 &|[fill=yellow]| 13 \\
-			|[fill=green]|	5 & |[fill=green]|	10 &|[fill=yellow]| 11 &|[fill=yellow]| 8 \\
-			|[fill=red]|	9 & |[fill=red]|	6 & 7 & 12 \\
-			|[fill=red]|	4 & |[fill=red]|	15 & 14 & 1 \\
-		};
-		
-		\end{tikzpicture}\Arrow
-		
-		\begin{tikzpicture}
-		
-		\tikzset{square matrix/.style={
-				matrix of nodes,
-				column sep=-\pgflinewidth, row sep=-\pgflinewidth,
-				nodes={draw,
-					minimum height=#1,
-					anchor=center,
-					text width=#1,
-					align=center,
-					inner sep=0pt
-				},
-			},
-			square matrix/.default=1.5cm
-		}
-		
-		\matrix[square matrix]
-		{
-			|[fill=green]|	8.5 & |[fill=yellow]| 8.5 \\
-			|[fill=red]|	8.5 & 8.5 \\
-		};
-		
-		\end{tikzpicture}
-	\end{tabular}
-	\caption{Funktionsweise eines Average-Pooling-Layer }
-	\label{fig:APL}
-\end{figure}
-
 
 
 
 \subsubsection{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
-Nachdem die relevanten lokalen Merkmale durch die Wiederholung von Conv und Pooling-Schichten extrahiert werden sind, wenden sie in einem \ac{FCL} kombiniert, um das Ergebnis jeder Klasse zu berechnen. Die \acsp{FCL} des \ac{CNN} bieten sie die Möglichkeit, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann. Die \acsp{FCL} funktionieren eigentlich genau wie \acsp{ConvL}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur \acsp{FCL} sieht wie in Abbildung\ref{KNN} aus.
+Nachdem die relevanten lokalen Merkmale durch die Wiederholung von Conv und Pooling-Schichten extrahiert werden sind, wenden sie in einem \ac{FCL} kombiniert, um das Ergebnis jeder Klasse zu berechnen. Die \acsp{FCL} des \ac{CNN} ermöglichen, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann und ihm eine Klasse zugewiesen werden kann. Die \acsp{FCL} funktionieren eigentlich genau wie \acsp{ConvL}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur \acsp{FCL} sieht wie in Abbildung\ref{KNN} aus.
 
 \def\layersep{2.5cm}
 \begin{figure}[h]
@@ -864,14 +867,35 @@ Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist
 % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
 % \newpage 
 \section{Kompression von \ac{DNN}}
-Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik in verschiedenen Bereichen zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen.Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Netzparameter entfernt.Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren.Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als 32 Bits nutzt.Im folgenden werden nur die Beschneidung und Quantisierung von \ac{NN} mehr eingegangen werden.
-
-Neuronale Netze sind sowohl rechenintensiv als auch speicherintensiv, was ihre Bereitstellung auf eingebetteten Systemen mit begrenzten Hardware-Ressourcen erschwert\cite{5}. 
-Um dem Problem von Rechenzeit und Speicherplatzbedarf entgegenzuwirken, wird die tiefe Kompression(\textit{Deep Compression}) Technik von \cite[Han et al]{5} eingeführt.
-Die Deep Compression Technik besteht aus drei Phasen:Netzwerkbereinigung (\textit{Pruning Network}),Quantizierung(\textit{Quantization}) und Huffman-Codierung(\textit{Huffman Coding})
+Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie z.B \textit{Xception(134 Layers),MobileNetV2(157 Layers), InceptionResNetV2(782 Layers)}, um Ergebnisse auf dem neuesten Stand der Technik zu erzielen. Aber die Verwendung von sehr tiefer \acsp{NN} bringt mit sich nicht nur eine deutliche Verbesserung der Modellleistung, sondern auch einen bedeutenden Bedarf an Rechenleistung und an Speicherplatz, was der Einsatz solcher Modelle auf Echtzeitsystemen mit begrenzten Hardware-Ressourcen schwierig macht.Es wurden bisher mehrere Ansätze untersucht, um die dem \ac{NN} zugewiesenen Ressourcen effizienter zu nutzen:
+\begin{itemize}
+	\item Die Modellbeschneidung(\textit{Network pruning}), die die redundanten und  die nicht relevanten Verbindungen zwischen Neuronen entfernt.
+	 \item Die Destillation von \acsp{NN}, die ermöglicht, die großen Modellen in kleinen  zu komprimieren. 	
+ \item Die Quantisierung von \ac{NN}, die für die Darstellung von einzelnem Netzparameter weniger als $ 32 $ Bits nutzt.
+ \item  Huffman-Codierung, die eine komprimierte Darstellung des Netzwerks ermöglicht.
+\end{itemize} 
+Im folgenden werden nur die Beschneidung, die Quantisierung von \ac{NN} und die Anwendung von Huffman auf \ac{NN} mehr eingegangen werden.
+%\\
+%
+%Neuronale Netze sind sowohl rechenintensiv als auch speicherintensiv, was ihre Bereitstellung auf eingebetteten Systemen mit begrenzten Hardware-Ressourcen erschwert\cite{5}. 
+%Um dem Problem von Rechenzeit und Speicherplatzbedarf entgegenzuwirken, wird die tiefe Kompression(\textit{Deep Compression}) Technik von \cite[Han et al]{5} eingeführt.
+%Die Deep Compression Technik besteht aus drei Phasen:Netzwerkbereinigung (\textit{Pruning Network}),Quantizierung(\textit{Quantization}) und Huffman-Codierung(\textit{Huffman Coding})
 
 \subsection{Pruning Network}
-Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netze versucht, unwichtige oder redundante Parameter oder komplette Neuronen aus dem Netz zu entfernen, um ein Netz mit möglichst geringer Komplexität zu erhalten. Mit unwichtigen Parametern werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Wert null beeinflussen das Output des Neurons nicht mehr und sind einfach überflüssig .Da fast keine Parameter nach Netztraining genau gleich null sind, wird einen Schwellenwert entweder fixiert oder bestimmt, um zu entscheiden, welche Parameter als null bzw. unwichtig betrachtet werden.Das Pruning reduziert die Anzahl der Parameter, was die Netzkomplexität, die Rechenzeit und auch die Wahrscheinlichkeit des Overfitting reduziert.Für AlexNet und VGG-16 Modell wird durch Pruning die Anzahl der Parameter um 9 bzw. 13 mal reduziert\cite{5}.\textcolor{blue}{Zur effizienteren Speicherung des beschnitten Netzes kann ein CRS (\textit{Compressed Row Storage}) oder CCS (\textit{Compressed Column Storage}) Format verwendet werden, das $ 2a+n+1 $ statt $ n*n $ Zahlen speichert, wobei $ a $ die Anzahl der Elemente ungleich Null und $ n $ die Anzahl der Zeilen oder Spalten der Matrix ist}. \\
+Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netze versucht, unwichtige oder redundante Verbindungen oder komplette Neuronen aus dem Netzwerk zu entfernen, um ein Netz mit möglichst geringer Komplexität zu erhalten. Mit unwichtigen Verbindungen werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Nullwert haben keinen Einfluss auf das Output des Neurons, sie sind einfach überflüssig. Während oder nach dem Training gibt es mehrere Parameter, die nicht wirklich zum Neuronenergebnis beitragen, obwohl sie keinen Nullwert haben, deshalb ist es zum Reduzieren der Netzwerkdichte notwendig, einen Schwellenwert $ \theta $ entweder zu setzen oder zu bestimmen und dann werden alle Parameter mit einem Wert in $ [-\theta, \theta] $  eliminiert.
+
+Das Pruning-Verfahren bietet einige Vorteile wie Reduzierung der Speicher- und Hardwarekosten, die Trainingsbeschleunigung , die schnellere Antwortzeit und das Verringern der Wahrscheinlichkeit der Overfitting(\ref{Overfitting}).
+Es ist sehr wichtig zu beachten, dass die Anwendung vom Pruning-Verfahren auf ein \ac{NN} nur Sinn macht, wenn das \ac{NN} schon trainiert ist, sonst macht das Pruning nur eine Reduktion der Anzahl der Netzwerkparameter.
+
+Es gibt zwei Hauptszenarien für das Pruning von \ac{NN}.
+Die erste besteht darin, die irrelevanten Verbindungen in einem komplett trainierten \ac{NN} zu entfernen. Mit komplett trainierten \ac{NN} wird gemeint, dass die erwünschte Genauigkeit schon erreicht ist. Im zweiten Szenario wird Pruning während des Trainings durchgeführt.Dabei wird vor Trainingsbeginn  bestimmte Dinge festgelegt,wie z.B. ab wann wird das Netzwerk beschnitten und wie oft es durchgeführt werden soll. 
+
+Das erste Szenario ist einfacher anzuwenden, denn man muss nur darauf warten, bis es keine Verbesserung der Genauigkeit des \ac{NN} mehr gibt und dann Pruning auf das \ac{NN} anwenden, aber damit verliert man großen Vorteile des Pruning, die die Beschleunigung des Trainings und Reduzierung der Overfitting-Wahrscheinlichkeit sind.
+Aus diesen Gründen wird in der Praxis das zweite Szenario bevorzugt, aber die richtigen Hyperparameter zu finden, ist kompliziert. Eine zu früh Beschneidung kann z.B. die Genauigkeit des \ac{NN} zu sehr verschlechtern, denn es kann sein, dass eine Verbindung, die nur nach einer späteren Gewichtsanpassung zum Ergebnis eines Neurons  hätte beigetragen können, entfernt würde, aber es bietet eine Beschleunigung des Trainings. Was eine zu spät Beschneidung angeht, haben wir fast die gleichen Nachteile wie im ersten Szenario und eine sehr häufiges Pruning kann das Training  auch verlangsamen.Das ganze Prozess musst leider mehrmals angewendet, um die richtigen Hyperparameter zu finden.
+
+
+Das Pruning-Verfahren kann  während oder nach dem Training eines \ac{NN} angewendet
+Das Pruning reduziert die Anzahl der Parameter, was die Netzkomplexität, die Rechenzeit und auch die Wahrscheinlichkeit des Overfitting reduziert.Für AlexNet und VGG-16 Modell wird durch Pruning die Anzahl der Parameter um 9 bzw. 13 mal reduziert\cite{5}.\textcolor{blue}{Zur effizienteren Speicherung des beschnitten Netzes kann ein CRS (\textit{Compressed Row Storage}) oder CCS (\textit{Compressed Column Storage}) Format verwendet werden, das $ 2a+n+1 $ statt $ n*n $ Zahlen speichert, wobei $ a $ die Anzahl der Elemente ungleich Null und $ n $ die Anzahl der Zeilen oder Spalten der Matrix ist}. \\
 
 Das Pruning-Verfahren kann per Hand( also durch festlegen von Hyperparametern vor Trainingsbeginn)  oder automatisch(die Hyperparameter werden während des Trainings gelernt) durchgeführt werden. Erstmals von \cite[Han et al.]{5} vorgeschlagen, wird das Pruning-Verfahren per Hand durchgeführt und dabei wird vor dem Netztraining einen Schwellenwert(\textit{Threshold}) für alle Layers fixiert.Obwohl dieses Vorgehen gute Ergebnisse aufweist, hat es Nachteile, die nicht unberücksichtigt lassen werden können:Einerseits muss das Netz mehrmals erneut trainiert werden, nur um den Schwellenwert anzupassen und anderseits ist die Anzahl diese Iterationen eingeschränkt.In Abbildung \ref{fig:PN} ist der Ablauf des Pruning-Verfahrens dargestellt. Dieses Verfahren kann also zu einer nicht optimalen Konfiguration führen. Um dieser Probleme entgegenzuwirken, haben \cite[Manessi et al.]{Automated Pruning} das Pruning-Verfahren automatisiert.
 \begin{figure}[h]
@@ -1054,7 +1078,7 @@ Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Imp
 
 
 \subsection{Problem beim Training von  Convolutional   neuronale Netzwerke}
-\subsubsection{Overfitting }
+\subsubsection{Overfitting }\label{Overfitting}
 %\textcolor{red}{\begin{itemize}
 %		\item Erinnern Sie sich an das Kind aus Ihrer Mittelschulklasse, das bei den Tests sehr gut abgeschnitten hat, aber es schlecht tat, wenn die Fragen zum Test ursprüngliches Denken erforderten und nicht in der Klasse behandelt wurden? Warum tat er dies schlecht, wenn er mit einem Problem konfrontiert wurde, das er noch nie zuvor gesehen hatte? Weil er sich die Antworten auf die in der Klasse behandelten Fragen gemerkt hatte, ohne die zugrunde liegenden Konzepte zu verstehen.
 %		\item Ebenso ist die Größe des Neuronalen Netzwerks seine Fähigkeit zu lernen, aber wenn Sie nicht vorsichtig sind, wird es versuchen, die Beispiele in den Trainingsdaten zu speichern, ohne das Konzept zu verstehen. Infolgedessen wird das Neuronale Netzwerk außergewöhnlich gut mit den Trainingsdaten arbeiten, aber sie lernen nicht das eigentliche Konzept. Es wird bei neuen und unsichtbaren Testdaten nicht gut funktionieren. Dies wird als Überfitting bezeichnet.
