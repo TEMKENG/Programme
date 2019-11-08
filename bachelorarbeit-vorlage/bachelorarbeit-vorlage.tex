@@ -970,17 +970,33 @@ Es wird von Quantisierung gesprochen, wenn es versucht wird, sich den Werten ein
 		\item low-bit Quantisierung
 	\end{itemize}
 \end{center}
-\begin{itemize}
-	\item Wegen der Annäherung gehen die Daten immer verloren
-	\item Vektoren aus kleiner Dimension fordern weniger Speicherplatz, durch Matrixoperation wird sich die kleine der Originale Vektor annähert
-	\item Vector Quantisierung( SVD)  in \ac{FCL}\quad siehe Numerik Vorlesung  $ (blatt13\_sol.py) $
-	\item  Low-bit Quantisierung
-\end{itemize}
-\begin{itemize}
-	\item  Der Speicherbedarf für ein Low-Bit-Präzisionsmodell kann ebenso wie der Stromverbrauch erheblich reduziert werden.
-	\item Kernel weise Quantisierung
-	\item nutzen mehrere Tensor um eine bessere Approximation von Tensor die gegenüber der Quantisierung sehr empfindlich sind statt nur eine Tensor 
-\end{itemize}
+\textbf{Matrixfaktorisierung}\\
+Die Matrixfaktorisierung versucht, eine Matrix durch die Singulärwertzerlegung($ SVD $) zu approximieren.
+Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n} $ verwendet eine Matrix $ B \in \R^{m\times n}  $ vom Rang $ k \le \min(m, n) $, siehe Gleichung(\ref{eq:SVD}), wobei $ U $ und $ V $ orthogonale Matrizen und $ S $ eine Diagonalmatrix, deren Diagonaleinträge Singulärwerte heißen und bei Betrachtung von oben nach unten monoton abnehmen. Sollte man $ B $ direkt speichern, so hat man keine Kompression gemacht, sondern nur Informationen und Rechenzeiten verschwendet, denn die Matrizen $ A $ und $ B $ haben die gleiche Dimension, also liegt der Hauptvorteil von der Matrixfaktorisierung darin, wie die Matrix $ B $ gespeichert wird.
+
+\begin{equation}\label{eq:SVD}
+	\begin{array}{l}
+	A = USV^T\\
+	B = \widehat{U}\widehat{S}\widehat{V}^T =  U[:,:k] S[:k,:k] V[:k, :]^T \\
+	{||A||_F} = \sqrt{\sum_{i = 1}^{m} \sum_{j =1}^{n} A_{i,j}^2} := \text{Frobenius Norm}
+	\end{array}	
+\end{equation}
+
+Eigentlich werden $ \widehat{U} , \widehat{S} $ und $ \widehat{V} $ statt $ B $ gespeichert, damit wird $ m k + k k + k n $ statt $ mn $ Speicherplatz verwendet und da $ \widehat{S} $ Diagonalmatrix ist, kann auch einfach nur die Diagonaleinträge gespeichert werden, was zu einer Kompressionsrate von $ \dfrac{mn}{k(m+n+1)} $ führt. Die Verwendung von Matrizen von kleinen Rang hebt die Tatsache hervor, dass es redundante Parameter in \ac{NN}-Parametern gibt.Dies Redundanzeigenschaft wird ausgenutzt, um die Geschwindigkeit zu erhöhen\cite[Denton et al]{matrix quantization}.Im Sinne der Frobeniusnorm ist $ B $ die bestmögliche Approximation von $ A $ mit Singulärwertzerlegung durch eine Matrix von Rang $ k $.
+Angenommen bildet die zu approximierenden NN-Parameter ein Bild, dann zeigt die Abbildung \ref{fig:matrix_fatorization} ,wie man die NN-Parameter approximieren kann.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{matrix_fatorization}
+	\begin{center}
+		SW: Singulärwerte
+	\end{center}
+	\caption{Parameter Approximieren durch Matrixfaktorisierung }
+	\label{fig:matrix_fatorization}
+\end{figure}
+Wie man in der Abbildung \ref{fig:matrix_fatorization} sieht, reichen  relativ wenige Singulärwerte (ca. $ 5 $) schon aus, um die groben Konturen zu erkennen. Details erkennt man bei ca. $ 10 $ Singulärwerten schon. Generell wird das Bild schärfer bei mehr Singulärwerten.
+
+
 Die Quantisierung \cite{quantization1} bezieht sich auf den Prozess der Reduzierung der Anzahl der Bits,die für Darstellung einer Zahl notwendig sind. Im Bereich des \textit{Deep Learning} ist das Standard numerische Format für Forschung und Einsatz bisher 32-Bit Fließkommazahlen oder FP32, denn es bietet ein bessere Genauigkeit, aber die anderen Formaten wie 8-,4-,2- oder 1-Bits werden auch verwendet, obwohl sie mehr oder weniger ein Verlust an Genauigkeit aufweisen.
 
 Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen kleinen Verlust der Netzleistung zur Folge, sondern auch die Verwendung von deutlich reduzierter Bandbreite und Speicherplatz. Noch dazu beschleunigt die Quantisierung die Berechnungen, denn die ganzzahlige Berechnung zum Beispiel ist schneller als die Fließkommaberechnung.
@@ -995,6 +1011,21 @@ Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer gering
 
 Vor kurzem haben \cite[Yoni et al]{quantizationYoni} einen neue Ansatz für die Quantisierung vorgeschlagen,der das lineare Quantisierungsproblem als \textit{Minimum Mean Squared Error} (MMSE) Problem löst und der nicht nur die 4-Bit(INT4) Quantisierung von schon trainierten Modellen ohne ein neues Training des Modells, sondern auch die Einsparung von Chipfläche (\textit{chip area}) ermöglicht. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.
 
+\begin{center}
+	kommt noch dazu
+\end{center}
+\textcolor{blue}{
+	\begin{itemize}
+		\item  Der Speicherbedarf für ein Low-Bit-Präzisionsmodell kann ebenso wie der Stromverbrauch erheblich reduziert werden.
+		\item nutzen mehrere Tensor um eine bessere Approximation von Tensor die gegenüber der Quantisierung sehr empfindlich sind statt nur eine Tensor 
+\end{itemize}}
+
+\textcolor{purple}{
+	\begin{itemize}
+		\item Reduzierte Float Darstellung (32 $\rightarrow$ 16)
+		\item Hybrid Quantisierung: Mischung von 8 bit Integer und 32 bit float Bits
+		\item 8 oder 16 bit Integer Quantisierung 
+\end{itemize}}
 \subsection{Huffman Codierung}
 Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. 
 
@@ -1253,6 +1284,11 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville:
  	\href{https://arxiv.org/abs/1608.08710}{Pruning Filters for Efficient ConvNets}
  \bibitem{Automated Pruning}
       Franco Manessi, Alessandro Rozza, Simone Bianco, Paolo Napoletano, Raimondo Schettini \href{https://arxiv.org/abs/1712.01721}{Automated Pruning for Deep Neural Network Compression}
+      
+   \bibitem{matrix quantization}
+   		Emily Denton,Wojciech Zaremba,Joan Bruna,Yann LeCun and	Rob Fergus
+   		\href{https://arxiv.org/pdf/1404.0736.pdf}{Exploiting Linear Structure Within Convolutional
+   			Networks for Efficient Evaluation}
  \bibitem{7}
  	 Pavel Golik , Patrick Doetsch, Hermann Ney
  	\href{http://books.jackon.me/Cross-Entropy-vs-Squared-Error-Training-a-Theoretical-and-Experimental-Comparison.pdf}{Cross-Entropy vs. Squared Error Training:a Theoretical and Experimental Comparison}

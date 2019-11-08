@@ -14,11 +14,12 @@
 \contentsline {figure}{\numberline {19}{\ignorespaces Netzbeschneidung w\IeC {\"a}hrend des Trainings\relax }}{19}{figure.caption.26}
 \contentsline {figure}{\numberline {20}{\ignorespaces Einfluss der Intensit\IeC {\"a}t des Filters auf Feature-Map\relax }}{20}{figure.caption.27}
 \contentsline {figure}{\numberline {21}{\ignorespaces Das Beschneiden eines Filters f\IeC {\"u}hrt zum Entfernen der entsprechenden Feature-Map und der zugeh\IeC {\"o}rigen Kernel in der n\IeC {\"a}chsten Ebene\cite {Filter Pruning}.\relax }}{21}{figure.caption.28}
-\contentsline {figure}{\numberline {22}{\ignorespaces AlexNet Architektur \href {https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ zum Bild} \relax }}{25}{figure.caption.29}
-\contentsline {figure}{\numberline {23}{\ignorespaces SqueezeNet Architekturen \cite {SqueezeNet} \relax }}{26}{figure.caption.30}
-\contentsline {figure}{\numberline {24}{\ignorespaces fire\_module \cite {SqueezeNet} \relax }}{27}{figure.caption.31}
-\contentsline {figure}{\numberline {25}{\ignorespaces Xception Architektur\relax }}{27}{figure.caption.32}
-\contentsline {figure}{\numberline {26}{\ignorespaces MobileNet Architektur \relax }}{28}{figure.caption.33}
-\contentsline {figure}{\numberline {27}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{31}{figure.caption.35}
-\contentsline {figure}{\numberline {28}{\ignorespaces Neuronales Netz mit Dropout ausgestattet \cite {3}.\relax }}{32}{figure.caption.39}
-\contentsline {figure}{\numberline {29}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{33}{figure.caption.42}
+\contentsline {figure}{\numberline {22}{\ignorespaces Parameter Approximieren durch Matrixfaktorisierung \relax }}{22}{figure.caption.29}
+\contentsline {figure}{\numberline {23}{\ignorespaces AlexNet Architektur \href {https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ zum Bild} \relax }}{26}{figure.caption.30}
+\contentsline {figure}{\numberline {24}{\ignorespaces SqueezeNet Architekturen \cite {SqueezeNet} \relax }}{27}{figure.caption.31}
+\contentsline {figure}{\numberline {25}{\ignorespaces fire\_module \cite {SqueezeNet} \relax }}{28}{figure.caption.32}
+\contentsline {figure}{\numberline {26}{\ignorespaces Xception Architektur\relax }}{28}{figure.caption.33}
+\contentsline {figure}{\numberline {27}{\ignorespaces MobileNet Architektur \relax }}{29}{figure.caption.34}
+\contentsline {figure}{\numberline {28}{\ignorespaces Anwendung von \textit {ImageDataAugmentation} \relax }}{32}{figure.caption.36}
+\contentsline {figure}{\numberline {29}{\ignorespaces Neuronales Netz mit Dropout ausgestattet \cite {3}.\relax }}{33}{figure.caption.40}
+\contentsline {figure}{\numberline {30}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{34}{figure.caption.43}
