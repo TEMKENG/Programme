@@ -1003,31 +1003,11 @@ Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen klei
 Bei Quantisierung mit wenige Bits geht es mehr oder weniger um die Abbildung eine großen Bereiches auf einen kleinen und dazu werden zwei Hauptwerte benötigt: der dynamische Bereich des Tensors und ein Skalierungsfaktor. Angenommen haben wir einen dynamischen Bereich $ [0,500] $ und einen Skalierungsfaktor:$ 5 $, dann ergibt sich der neue Bereich $ [0, 100] $, es wird also Werte zwischen $ [5k, 5(k+1)] $ oder $ [5k -0.5, 5k +0.5] $ auf $ 5k $ abgebildet. Es ist sinnvoller,  die Skalierungsfaktors unter Berücksichtigung der Anzahl und der Verteilung der Werte in dynamischen Bereich des Tensors auszuwählen, sonst können zu viel Informationen verloren gehen.
 
 Sobald ein anderes Format mit weniger Bits als FP32 verwendet, spricht man in \ac{ML} von Quantisierung.
-Als Hauptvorteile von Quantisierung haben wir:
-\begin{itemize}
-	\item  Reduzierung der Speicherplatzbedarf.\\
-		\begin{itemize}
-			\item 16 bit float: 2x Reduzierung der Modellparameter\\
-			\item 8 bit integer: 4 Reduzierung der Modellparameter\\
-			\item 4 bit integer: 8x Reduzierung der Modellparameter
-		\end{itemize}	
+Als Hauptvorteile von Quantisierung haben wir:Erstens wenn wir ein Modell mit FP32-Format durch das gleiche Modell mit  FP16, INT8  oder  INT4  ersetzen, reduzieren wir den Speicherbedarf um die Hälfte,um ein Viertel bzw. um ein Achtel.Zweitens sind die Hardwares so programmiert, dass die integer Operationen im Vergleich zu FP32-Operationen schneller und energieeffizienter sind und drittens wird die Bandbreite durch die Verwendung von kleineren Modellen und dynamischen Werten stark reduziert.
 		
-	\item  Berechnungen schneller  durchführen.
-		\begin{itemize}
-			\item Integer Operationen sind schneller
-		\end{itemize}
-	\item Reduzierung der benötigte Energie
-		\begin{itemize}
-			\item Integer Operationen verbrauchen weniger Energie
-		\end{itemize}
-	\item Reduktion der Bandbreite
-		\begin{itemize}
-			\item kleinere Modelle und dynanische Werte reduzieren die Bandbreite. 
-		\end{itemize}
-\end{itemize}
-Im Allgemein wird  einen Skalierungsfaktor für jeden Tensor jeder Schicht berechnet und diese kann offline oder online gemacht werden.Bei der \textit{Offline} Berechnung werden vor der Bereitstellung des Modells einigen Statistiken gesammelt, entweder während des Trainings oder durch die Ausführung einiger Epochen auf dem trainierten FP32-Modell und basierend auf diesen Statistiken werden die verschiedenen Skalierungsfaktoren berechnet und nach der Bereitstellung des Modells festgelegt.Durch die Anwendung dieser Methode lauft man die Gefahr, dass zur Laufzeit die Werte, die außerhalb der zuvor beobachteten Bereiche auftreten, abgeschnitten werden, was zu einer Verschlechterung der Genauigkeit führen kann.Bei der \textit{online} werden die \textit{Min/Max}-Werte für jeden Tensor dynamisch zur Laufzeit berechnet. Bei dieser Methode kann es nicht zu einer Beschneidung kommen, jedoch können die zusätzlichen Rechenressourcen, die zur Berechnung der Min/Max-Werte zur Laufzeit benötigt werden, unerschwinglich.\cite{quantization1}\\
+Zur einer effizienteren Auswahl der Skalierfaktoren pro Schicht bzw. pro Filter ist es notwendig, Statistiken  über das \ac{NN} zu sammeln und das kann \textit{offline} oder \textit{online} gemacht werden. Bei der \textit{Offline} Berechnung werden vor der Bereitstellung des Modells einigen Statistiken gesammelt, entweder während des Trainings oder durch die Ausführung einiger Epochen auf dem trainierten FP32-Modell und basierend auf diesen Statistiken werden die verschiedenen Skalierfaktoren berechnet und nach der Bereitstellung des Modells festgelegt.Bei dieser Methode besteht die Gefahr, dass zur Laufzeit die Werte, die außerhalb des zuvor definierten Bereichs auftreten, abgeschnitten werden, was zu einer Verschlechterung der Genauigkeit führen kann.Bei der \textit{online} werden die \textit{Min/Max}-Werte für jeden Tensor dynamisch zur Laufzeit berechnet. Bei dieser Methode kann es nicht zu einer Beschneidung kommen, jedoch können die zusätzlichen Rechenressourcen, die zur Berechnung der Min/Max-Werte zur Laufzeit benötigt werden, unerschwinglich sein.\cite{quantization1}
 
-Es gibt zwei Arten und Weisen, wie die Quantisierung durchgeführt wird.Die erste ist das vollständige Training eines Modells mit einer gewünschten niedrigeren Bit-Genauigkeit(kleiner als 32 Bits).Die Quantisierung mit sehr geringer Genauigkeit ermöglicht ein potenziell schnelles Training und Inferenz, aber der Hauptproblem mit diesem Ansatz ist, dass Netzparameter nur bestimmte Werte annehmen können, so ist die Aktualisierung der Netzparameter bzw. das Backpropagation nicht mehr wohldefiniert.
+Es gibt zwei Quantifizierungsszenarien.Die erste ist das vollständige Training eines Modells mit einer gewünschten niedrigeren Bit-Genauigkeit(\textit{bit precission})(kleiner als 32 Bits).Das Training mit sehr geringer Genauigkeit ermöglicht ein potenziell schnelles Training und Inferenz, aber der Hauptproblem mit diesem Ansatz ist, dass Netzparameter nur bestimmte Werte annehmen können, so ist die Aktualisierung der Netzparameter bzw. das Backpropagation nicht mehr wohldefiniert \cite{quantizationYoni}.
 Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Eine aggressive Quantisierung hat im Allgemein einen negativen Einfluss auf die Netzleistung und um diesen Leistungsabfall zu überwinden, wird sehr oft auf Methoden wie das erneuerte Training des Netz nach der Quantisierung, die gleichzeitige Verwendung von verschiedenen Formaten oder die uneinheitliche Quantisierung zurückgegriffen.
 
 Vor kurzem haben \cite[Yoni et al]{quantizationYoni} einen neue Ansatz für die Quantisierung vorgeschlagen,der das lineare Quantisierungsproblem als \textit{Minimum Mean Squared Error} (MMSE) Problem löst und der nicht nur die 4-Bit(INT4) Quantisierung von schon trainierten Modellen ohne ein neues Training des Modells, sondern auch die Einsparung von Chipfläche (\textit{chip area}) ermöglicht. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.

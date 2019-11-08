@@ -24,25 +24,25 @@
 \contentsline {section}{\numberline {4}Kompression von \ac {DNN}}{17}{section.4}
 \contentsline {subsection}{\numberline {4.1}Pruning Network}{17}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Quantisierung von neuronalen Netzwerken}{21}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Huffman Codierung}{25}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.3}Huffman Codierung}{24}{subsection.4.3}
 \contentsline {section}{\numberline {5}Experiment}{25}{section.5}
 \contentsline {subsection}{\numberline {5.1}Lernrate}{25}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}Besondere \acsp {CNN}}{25}{subsection.5.2}
 \contentsline {subsubsection}{\numberline {5.2.1}AlexNet}{25}{subsubsection.5.2.1}
 \contentsline {subsubsection}{\numberline {5.2.2}SqueezeNet}{26}{subsubsection.5.2.2}
 \contentsline {subsubsection}{\numberline {5.2.3}Xception: Extreme Inception}{28}{subsubsection.5.2.3}
-\contentsline {subsubsection}{\numberline {5.2.4}MobileNet}{29}{subsubsection.5.2.4}
-\contentsline {subsection}{\numberline {5.3}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{29}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.2.4}MobileNet}{28}{subsubsection.5.2.4}
+\contentsline {subsection}{\numberline {5.3}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{28}{subsection.5.3}
 \contentsline {subsubsection}{\numberline {5.3.1}Adaptive Gradient Algorithm (AdaGrad)}{29}{subsubsection.5.3.1}
-\contentsline {subsubsection}{\numberline {5.3.2}Root Mean Square Propagation(RMSProp)}{30}{subsubsection.5.3.2}
-\contentsline {subsubsection}{\numberline {5.3.3}Adaptive Moment Estimation(Adam)}{31}{subsubsection.5.3.3}
+\contentsline {subsubsection}{\numberline {5.3.2}Root Mean Square Propagation(RMSProp)}{29}{subsubsection.5.3.2}
+\contentsline {subsubsection}{\numberline {5.3.3}Adaptive Moment Estimation(Adam)}{30}{subsubsection.5.3.3}
 \contentsline {subsection}{\numberline {5.4}Problem beim Training von Convolutional neuronale Netzwerke}{31}{subsection.5.4}
 \contentsline {subsubsection}{\numberline {5.4.1}Overfitting}{31}{subsubsection.5.4.1}
 \contentsline {subparagraph}{\nonumberline Data Augmentation}{31}{section*.36}
-\contentsline {subparagraph}{\nonumberline Dropout}{33}{section*.38}
+\contentsline {subparagraph}{\nonumberline Dropout}{32}{section*.38}
 \contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{33}{section*.40}
-\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{34}{section*.42}
+\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{33}{section*.42}
 \contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{34}{section*.43}
-\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{35}{section*.45}
+\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{34}{section*.45}
 \contentsline {subsubsection}{\numberline {5.4.2}Dataset}{36}{subsubsection.5.4.2}
 \contentsline {section}{\numberline {6}Abk\IeC {\"u}rzungsverzeichnis}{36}{section.6}
