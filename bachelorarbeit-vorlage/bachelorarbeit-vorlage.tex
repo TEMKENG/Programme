@@ -5,8 +5,6 @@
 % zur Kontrolle des Umbruchs Klassenoption draft verwenden
 
 
-% die folgenden Packete erlauben den Gebrauch von Umlauten und ß
-% in der Latex Datei
 \usepackage[utf8]{inputenc}
 % \usepackage[latin1]{inputenc} %  Alternativ unter Windows
 \usepackage[T1]{fontenc}
@@ -30,6 +28,8 @@
 \usepackage{tkz-euclide}
 \usepackage{pgfplots}
 \usetikzlibrary{matrix, positioning}
+
+\usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
 
 %\usepackage[demo]{graphicx}
 \usetikzlibrary{arrows,automata, matrix,chains,positioning,decorations.pathreplacing,arrows}
@@ -95,17 +95,41 @@
 
 
 
-  % Inhaltsverzeichnis
-  \tableofcontents
-  \listoffigures
+
+    \section*{Erklärung}
+  
+  Ich  versichere  wahrheitsgemäß,  die  Arbeit selbstständig verfasst,  alle  benutzten  Hilfsmittel  vollständig  und  genau  angegeben  und  alles kenntlich  gemacht  zu  haben,  was  aus  Arbeiten  anderer  unverändert  oder  mit  Abänderungen entnommen  wurde,  sowie die Satzung  der  Universität Augsburg  zur  Sicherung guter wissenschaftlicher Praxis in der jeweils gültigen Fassung beachtet zu haben.
+  \\[2ex] 
+  
+  \noindent
+  Ort, den Datum\\[5ex]
+ 
 
 \newpage
- 
+   % Inhaltsverzeichnis
+ \tableofcontents
+%\newpage
+%\listofalgorithmes
 
 
   % Ab sofort Seitenzahlen in der Kopfzeile anzeigen
   \pagestyle{headings}
-
+ \newpage
+%
+%\section{Abkürzungsverzeichnis}
+\begin{acronym}[THIBAUT]
+	\acro{KNN}{Künstliches neuronales Netz}
+	\acro{CNN}{Convolutional Neural Network}
+	\acro{KI}{Künstliche Intelligenz}
+	\acro{NN}{neuronales Netz}
+	\acro{ConvL}{Convolutional Layer}
+	\acro{FCL}{Fully Connected Layer}
+	\acro{PooL}{Pooling Layer}
+	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
+	\acro{DNN}{Tiefe neuronale Netze}
+	\acro{ML}{Maschine Lernen}
+\end{acronym}
+\newpage
 \section{Einleitung}
 
 
@@ -116,7 +140,7 @@
  
 \section{Grundlagen}\label{Grundlaagen}
 \subsection{Neuron}
-Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das biologische Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines künstlichen Neurons ist in Abbildung \ref{fig:Fneuron}
+Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das Verhalten vom biologischen Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten in einem \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines künstlichen Neurons ist in Abbildung \ref{fig:Fneuron}
 zu sehen.
 
 \begin{figure}[h]
@@ -143,7 +167,7 @@ zu sehen.
 	{\textbf{$w_j$}};
 	\node[on chain=2,init] (sigma) 
 	{$z= \sum_{i =1}^{n}{x_iw_i +b} $};
-	\node[on chain=2,squa,label=above:{\parbox{2cm}{\centering Aktivierungs\\funktion }}]   
+	\node[on chain=2,squa,label=above:{\parbox{2cm}{\centering Aktivierungs\\funktion $ f $}}]   
 	{$f(z)$};
 	\node[on chain=2,label=above:Output,join=by -latex] 
 	{$y$};
@@ -186,6 +210,7 @@ zu sehen.
 	\label{fig:Fneuron}
 \end{figure}
 
+
 Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer}) zu bilden.Ein \ac{KNN} besteht aus einer oder mehreren Schichten und je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des neuronalen Netzes darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
 
 \subsection{Merkmalskarten(Feature-Maps)}
@@ -194,7 +219,9 @@ In einer Faltungsschicht ist ein Feature-Map immer zweidimensional, während die
 Wie die Feature-Maps berechnet werden, hängt sehr vom Schichttyp ab. Es wird beispielsweise in einer Faltungsschicht die Faltungsoperation mehrmals auf die Eingabe angewendet und jedes Mal wird ein neues Feature-Map erhalten.
 
 \subsection{Filters}\label{Filter}
-Filter ermöglicht die Extraktion von Features 
+Ein Filter ermöglicht die Extraktion von Features.
+Die modernen Architekturen von \ac{CNN} verwendet immer mehr Filter (mindestens $ 2000 $), um bessere Ergebnisse zu erzielen. Wegen der zufällige Initialisierung von Filtern und ihrer großen Anzahl im \ac{CNN} kann es vorkommen, dass mehrere Filter das gleiche Feature extrahieren, solche Filter werden als Redundant bezeichnet, oder dass Filter genau das Gegenteil von dem filtern, was wir wollen, nämlich unwichtige Informationen, deshalb werden während des Trainings die Filterparameter ständig geändert. Zwei nichtlineare Filter, d. h. Filter, die nicht proportional zueinander sind, lernen unterschiedliche Dinge.Man kann also daraus schließen, dass je größer die Anzahl an Filter ist, desto mehr Features gefiltert werden können oder besser sind die Ergebnisse, aber das ist in Allgemein falsch, da die guten Ergebnisse sehr stark davon abhängen, wie die Filter im CNN aufgestapelt sind. Zu viele Filtern in einem \ac{CNN} können dazu führen, dass das \ac{CNN} sowohl gute Features als auch schlechte schneller lernt und zu wenige Filter schränken die Kapazität des \ac{CNN} ein,  wichtige Features zu extrahieren, denn irgendwann wird es vorkommen, dass jedes Filter etwas Wichtiges gelernt hat, aber noch mehr Informationen werden benötigt, um die Trainingsdaten zu erklären.
+Es ist also wichtig die richtige Anzahl von Filtern zu finden.
 
 
 \begin{itemize}
@@ -755,7 +782,7 @@ Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} w
 
 Das Training von \acsp{CNN} besteht darin, den vom \ac{CNN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
 Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird durch eine Fehlerfunktion auch Kostenfunktion genannt quantifiziert oder angegeben.
-Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des \acsp{CNN}.Es wird in Laufe des Trainings von \acsp{CNN} versucht, diese Kostenfunktion mit Gradient basierten Verfahren zu minimieren(siehe Absatz \ref{Gradientenabstieg})
+Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des \acsp{CNN}.Es wird in Laufe des Trainings von \acsp{CNN} versucht, diese Kostenfunktion mit Gradient basierten Verfahren zu minimieren(siehe Absatz \ref{Gradientenabstiegsverfahren})
 
 
 Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). 
@@ -784,8 +811,8 @@ Die Lernrate muss allerdings im Intervall  $]0,1[$ Werte annehmen, sonst ist das
 Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \eta_{opt}(x) $, sodass das globale oder lokale Minimum sofort nach der Parameteranpassung erreicht wird. Da $ \eta_{opt}(x) $ am Trainingsanfang leider nicht bekannt ist, wird die Lernrate in die Praxis vom Programmierer basiert auf seine Kenntnisse mit \acsp{NN} oder einfach zufällig gesetzt.
 
 \subsubsection{Gradientenabstiegsverfahren}\label{Gradientenabstiegsverfahren}
-Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein \ac{DNN} als eine Gleichung mit Millionen von Variablen(lernbare Parameter) vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Daten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
-Die Gradientenabstiegsverfahren sind Verfahren, die auf dem Gradient basieren, um Optimierungsprobleme zu lösen.Hier wird Gradientenabstiegsverfahren verwendet, die optimalen Parametern zu finden oder anzunähern.
+Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein \ac{DNN} als eine Gleichung mit Millionen von Variablen vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Trainingsdaten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
+Die Gradientenabstiegsverfahren sind Verfahren, die auf dem Gradient basieren, um Optimierungsprobleme zu lösen.Hier wird Gradientenabstiegsverfahren verwendet, um sich der optimalen Parametern anzunähern oder sie zu finden.
 
 \begin{center}
 	\textbf{Ablauf eines Gradientenverfahrens im \ac{DNN} }
@@ -808,62 +835,93 @@ Beim letzten Schritt wird die Schrittweite bestimmen.Die Lernrate (\ref{Lernrate
 		\node[state]         (2) [below, fill=yellow,xshift=3cm, yshift=-2cm] 		{\parbox{3cm}{\centering Neuronale Netze\\ (Forward-Pass)\\$ y =f(x,w,b)  $}};
 		\node[state]         (3) [right,xshift=3cm] {\parbox{5cm}{\centering Netzparameter\\Gewichte:$w= w_1, \cdots, w_n $\\Bias:b}};
 		\node[state]         (4) [below of=2] 		{\parbox{4cm}{\centering Netzvorhersagen:\\$y= y_1, \cdots,y_n $}};
-		\node[state]         (5) [right of=2, xshift=3cm, fill=yellow] 		{ \parbox{4cm}{\centering Fehlerstimmung:\\$ kost(y,\widehat{y}) $}};
+		\node[state]         (5) [right of=2, xshift=3cm, fill=yellow] 		{ \parbox{4cm}{\centering Fehlerstimmung:\\$ E(y,\widehat{y}) $}};
 		\node[state]         (6) [right of=3, xshift=3cm]       {\parbox{4cm}{\centering Tatsächliche Werte:\\  $ \widehat{y}=\widehat{y}_1, \cdots,\widehat{y}_n $}};
-		\node[state]		 (7) [below of=5, fill=yellow]		{\parbox{5cm}{\centering Netzparameter Anpassen\\$ w_i = w_i -\eta \frac{\delta kost(y, \widehat{y})}{\delta w_i} $\\$ b = b -\eta \frac{\delta kost(y, \widehat{y})}{\delta b} $}};
+		\node[state]		 (7) [below of=5, fill=yellow]		{\parbox{5cm}{\centering Netzparameter Anpassen:\\Gradientenabstiegsverfahren\\ anwenden }};
 		
-		\path (1)edge node{}(2);
-		\path (3)edge node{}(2);
-		\path (2)edge node{}(4);
+		\path (1)edge[draw=purple] node{}(2);
+		\path (3)edge[draw=purple] node{}(2);
+		\path (2)edge[draw=purple] node{}(4);
 		\path (4)edge node{}(5);
 		\path (6)edge node{}(5);
 		\path (5)edge node{}(7);
-		\path (7)edge[bend left, draw=red] node[rotate=100, xshift=8ex, text=red]{Backward-Pass}(3);
-		
+		\path (7)edge[bend left, draw=red] node{}(3);
 		\end{tikzpicture}}
 	\begin{center}
 		\begin{tabular}{r@{: }l r@{: }l}
-			$f(x,w,b)$ & Netzfunktion. & $kost(y,\widehat{y})$ & Kostenfunktion. \\ 
-			$ \eta $& Lernrate &$ \frac{\delta kost(y, \widehat{y})}{\delta w_i} $ & Ableitung der Kostenfunktion abhängig von $ w_i $.
+			$f(x,w,b)$ & Netzfunktion. & $E(y,\widehat{y})$ & Kostenfunktion. \\ 
+			$ \eta $& Lernrate. &			\textcolor{red}{$\longrightarrow$} & Backward-Pass.\\  \textcolor{purple}{$\longrightarrow$} & Forward-Pass  &
+			\textcolor{blue}{$\longrightarrow$} & Fehlerfunktion
 		\end{tabular}
+	
 	\end{center}
 	
 	\caption{Ablauf der Backpropagation}
 	\label{fig:Backprop}
 \end{figure}
 
-Pfeile in Abbildung \ref{fig:Backprop} weisen nur den Prozessablauf hin.
-
-
-
-
-
-
-
 \begin{center}
 	\textbf{Variante des Gradientenverfahrens}
 \end{center}
-Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur durch die Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.Zum Aktualisierung der Netzwerkparameter nutzen sie jeweils die Gleichung \eqref{GD}.
+Bisher existiert drei Variante des Gradientenabstiegsverfahren, die sich nur durch die Größe der Daten, die sie verwendet, um den Gradienten der Kostenfunktion berechnet, unterscheidet.
+\subparagraph{Stochastic Gradient Descent (SGD)}:
+Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft online Training  genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationen sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigt werden.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden. Der Algorithmus \ref{alg:SGD} zeigt den Ablauf von SGD.
+\begin{algorithm}
 
-\begin{equation}\label{GD}
-\theta_{t+1} = \theta_{t} -\eta g_{t}, \quad g_t=\frac{\delta E}{\delta \theta_{t}}
-\end{equation}
-\begin{center}
-	\begin{tabular}{r@{: }l r@{: }l}
-		$ \eta$& Lernrate & $ E$ & Die Fehlerfunktion\\
-		$ \theta_{t} $& Netzwerkparameter zum Zeitpunkt $ t $
-	\end{tabular}
-\end{center}
-\subparagraph{Stochastic Gradient Descent (SGD):}
-Bei SGD wird jeweils ein Element bzw. Sample aus der Trainingsmenge durch das \ac{NN} durchlaufen und den jeweiligen Gradienten berechnen, um die Netzwerkparameter zu aktualisieren.Diese Methode wird sehr oft online Training  genannt,denn jedes Sample aktualisiert das Netzwerk. SGD verwendet geringer Speicherplatz und die Iterationen sind schnell durchführbar.Zusätzlich kann die Konvergenz für großen Datensatz wegen der ständigen Aktualisierung der Netzwerkparameter beschleunigen.Diese ständigen Aktualisierung hat die Schwankung der Schritte in Richtung der Minima zur Folge, was die Anzahl der Iteration bis zum Erreichen des Minimums deutlich ansteigt und dabei helfen kann, aus einem unerwünschten lokalen Minimum zu entkommen.Ein großer Nachteil dieses Verfahren ist der Verlust der parallelen Ausführung, es kann jeweils nur ein Sample ins \ac{NN} eingespeist werden.
-\subparagraph{Batch Gradient Descent (BGD):}
-BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz zur Netzwerkparameteraktualisierung genutzt wird.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung des Minimums der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $E$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		Shuffle X, y\;
+		\For{ $ x_i, y_i $ in X, y}{
+			$\tilde{y}= F(\theta, x_i)$\;
+			
+			$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\partial E(y_i,\tilde{y_i})}{\partial\theta}$\;
+		}
+		
+	}
+	\caption{Stochastic Gradient descent(SGD) \cite{CNNStory}.}
+	\label{alg:SGD}
+\end{algorithm}
+
+\subparagraph{Batch Gradient Descent (BGD)}:
+BGD funktioniert genauso wie SGD, außer dass der ganze Datensatz statt jeweils ein Element aus dem Datensatz zur Netzwerkparameteraktualisierung genutzt wird.Jetzt kann das Verfahren einfach parallel ausgeführt werden, was den Verarbeitungsprozess des Datensatzes stark beschleunigt. BGD weist weniger Schwankungen in Richtung des Minimums der Kostenfunktion als SGD auf, was das Gradientenabstiegverfahren stabiler macht.Außerdem ist das BGD recheneffizienter als das SGD, denn nicht alle Ressourcen werden für die Verarbeitung eines Samples, sondern für den ganzen Datensatz verwendet.BGD ist leider sehr langsam,denn die Verarbeitung des ganzen Datensatz kann lange dauern und es ist nicht immer anwendbar, denn sehr große Datensätze lassen sich nicht im Speicher einspeichern.Der Algorithmus \ref{alg:BGD} zeigt den Ablauf von BGD.
+\begin{algorithm}
+	
+
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $\epsilon$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		$\tilde{y}= F(\theta, x)$\;
+		$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\partial\epsilon(y,\tilde{y})}{\partial\theta}$\;
+		
+	}
+	\caption{Batch Gradient descent \cite{CNNStory}.}
+	\label{alg:BGD}
+\end{algorithm}
 \subparagraph{Mini-batch Stochastic Gradient Descent(MSGD): }
-MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.
+MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen (\textit{Mini-Batch oder Batch}) möglicherweise gleicher Größe aufgeteilt.Je nachdem wie man die Batch-Große setzt, enthalten wir SGD oder BGD wieder. Das Training wird Batchweise durchgeführt, d.h. es wird jeweils ein Batch durch das \ac{NN} propagiert, der Verlust jedes Sample im Batch wird berechnet und dann deren Durchschnitt benutzt, um die Netzwerkparameter zu anzupassen.MSGD verwendet den Speicherplatz effizienter und kann von Parallelen Ausführung profitieren. Noch  dazu konvergiert MSGD schneller und ist stabiler. In die Praxis wird fast immer das MSGD Verfahren bevorzugt.Der Algorithmus \ref{alg:MSGD} zeigt den Ablauf von MSGD
 
-Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
-Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
-
+\begin{algorithm}
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $E$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		Shuffle X, y\;
+		\For{each batch of $ x_i, y_i $ in X, y}{
+			$\tilde{y}= F(\theta, x_i)$\;
+			
+			$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\partial E(y_i,\tilde{y_i})}{\partial\theta}$\;
+		}
+		
+	}
+	\caption{Mini-Batch Stochastic Gradient descent(MSGD) \cite{CNNStory}.}
+	\label{alg:MSGD}
+\end{algorithm}
 
 
 % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
@@ -996,47 +1054,35 @@ Angenommen bildet die zu approximierenden NN-Parameter ein Bild, dann zeigt die 
 \end{figure}
 Wie man in der Abbildung \ref{fig:matrix_fatorization} sieht, reichen  relativ wenige Singulärwerte (ca. $ 5 $) schon aus, um die groben Konturen zu erkennen. Details erkennt man bei ca. $ 10 $ Singulärwerten schon. Generell wird das Bild mit mehr Singulärwerten schärfer.
 
-\textbf{Quantisierung mit weniger Bits(Low-bit Quantization}\\
+\textbf{Quantisierung mit weniger Bits(Low-bit Quantization)}\\
 Im Bereich des \textit{Deep Learning} ist das Standard numerische Format für Forschung und Einsatz bisher 32-Bit Fließkommazahlen oder FP32, denn es bietet ein bessere Genauigkeit, aber die anderen Formaten wie 8-,4-,2- oder 1-Bits werden auch verwendet, obwohl sie mehr oder weniger ein Verlust an Genauigkeit aufweisen.
 Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen kleinen Verlust der Netzleistung zur Folge, sondern auch die Verwendung von deutlich reduzierter Bandbreite und Speicherplatz. Noch dazu beschleunigt die Quantisierung die Berechnungen, denn die ganzzahlige Berechnung zum Beispiel ist schneller als die Fließkommaberechnung.
 
 Bei Quantisierung mit wenige Bits geht es mehr oder weniger um die Abbildung eine großen Bereiches auf einen kleinen und dazu werden zwei Hauptwerte benötigt: der dynamische Bereich des Tensors und ein Skalierungsfaktor. Angenommen haben wir einen dynamischen Bereich $ [0,500] $ und einen Skalierungsfaktor:$ 5 $, dann ergibt sich der neue Bereich $ [0, 100] $, es wird also Werte zwischen $ [5k, 5(k+1)] $ oder $ [5k -0.5, 5k +0.5] $ auf $ 5k $ abgebildet. Es ist sinnvoller,  die Skalierungsfaktors unter Berücksichtigung der Anzahl und der Verteilung der Werte in dynamischen Bereich des Tensors auszuwählen, sonst können zu viel Informationen verloren gehen.
 
 Sobald ein anderes Format mit weniger Bits als FP32 verwendet, spricht man in \ac{ML} von Quantisierung.
-Als Hauptvorteile von Quantisierung haben wir:Erstens wenn wir ein Modell mit FP32-Format durch das gleiche Modell mit  FP16, INT8  oder  INT4  ersetzen, reduzieren wir den Speicherbedarf um die Hälfte,um ein Viertel bzw. um ein Achtel.Zweitens sind die Hardwares so programmiert, dass die integer Operationen im Vergleich zu FP32-Operationen schneller und energieeffizienter sind und drittens wird die Bandbreite durch die Verwendung von kleineren Modellen und dynamischen Werten stark reduziert.
+Als Hauptvorteile von Quantisierung haben wir:Erstens wenn wir ein Modell mit FP32-Format durch das gleiche Modell mit 16-Bit Float(FP16), 8-Bit Integer(INT8)  oder 4-Bit Integer(INT4)  ersetzen, reduzieren wir den Speicherbedarf um die Hälfte,um ein Viertel bzw. um ein Achtel.Zweitens sind die Hardwares so programmiert, dass die integer Operationen im Vergleich zu FP32-Operationen schneller und energieeffizienter sind und drittens wird die Bandbreite durch die Verwendung von kleineren Modellen und dynamischen Werten stark reduziert.
 		
 Zur einer effizienteren Auswahl der Skalierfaktoren pro Schicht bzw. pro Filter ist es notwendig, Statistiken  über das \ac{NN} zu sammeln und das kann \textit{offline} oder \textit{online} gemacht werden. Bei der \textit{Offline} Berechnung werden vor der Bereitstellung des Modells einigen Statistiken gesammelt, entweder während des Trainings oder durch die Ausführung einiger Epochen auf dem trainierten FP32-Modell und basierend auf diesen Statistiken werden die verschiedenen Skalierfaktoren berechnet und nach der Bereitstellung des Modells festgelegt.Bei dieser Methode besteht die Gefahr, dass zur Laufzeit die Werte, die außerhalb des zuvor definierten Bereichs auftreten, abgeschnitten werden, was zu einer Verschlechterung der Genauigkeit führen kann.Bei der \textit{online} werden die \textit{Min/Max}-Werte für jeden Tensor dynamisch zur Laufzeit berechnet. Bei dieser Methode kann es nicht zu einer Beschneidung kommen, jedoch können die zusätzlichen Rechenressourcen, die zur Berechnung der Min/Max-Werte zur Laufzeit benötigt werden, unerschwinglich sein.\cite{quantization1}
 
 Es gibt zwei Quantifizierungsszenarien.Die erste ist das vollständige Training eines Modells mit einer gewünschten niedrigeren Bit-Genauigkeit(\textit{bit precission})(kleiner als 32 Bits).Das Training mit sehr geringer Genauigkeit ermöglicht ein potenziell schnelles Training und Inferenz, aber der Hauptproblem mit diesem Ansatz ist, dass Netzparameter nur bestimmte Werte annehmen können, so ist die Aktualisierung der Netzparameter bzw. das Backpropagation nicht mehr wohldefiniert \cite{quantizationYoni}.
-Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Eine aggressive Quantisierung hat im Allgemein einen negativen Einfluss auf die Netzleistung und um diesen Leistungsabfall zu überwinden, wird sehr oft auf Methoden wie das erneuerte Training des Netz nach der Quantisierung, die gleichzeitige Verwendung von verschiedenen Formaten oder die uneinheitliche Quantisierung zurückgegriffen.
+Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Im Allgemeinen gilt: Je geringer die Bitgenauigkeit, desto größer ist der Verlust der Genauigkeit und um diesen Leistungsabfall zu überwinden, wird sehr oft das \ac{NN} erneuert trainiert oder wird auf eine hybride Quantisierung, die zur Quantisierung verschiedene Formaten z.B. INT8 für die Gewichte und FP32 für die Aktivierung gleichzeitig verwendet,  zurückgegriffen.
 
-Vor kurzem haben \cite[Yoni et al]{quantizationYoni} einen neue Ansatz für die Quantisierung vorgeschlagen,der das lineare Quantisierungsproblem als \textit{Minimum Mean Squared Error} (MMSE) Problem löst und der nicht nur die 4-Bit(INT4) Quantisierung von schon trainierten Modellen ohne ein neues Training des Modells, sondern auch die Einsparung von Chipfläche (\textit{chip area}) ermöglicht. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.
+Vor kurzem haben \cite[Yoni et al]{quantizationYoni} zur  Quantisierung  das lineare Quantisierungsproblem als ein \textit{Minimum Mean Squared Error} (MMSE) Problem formuliert und gelöst.Sie sind in der Lage, die trainierten Modelle zu quantisieren, ohne das \ac{NN} erneuert trainieren zu haben um seine Genauigkeit wiederherzustellen und benutzen dabei nur das INT4-Format. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.
 
-\begin{center}
-	kommt noch dazu
-\end{center}
-\textcolor{blue}{
-	\begin{itemize}
-		\item  Der Speicherbedarf für ein Low-Bit-Präzisionsmodell kann ebenso wie der Stromverbrauch erheblich reduziert werden.
-		\item nutzen mehrere Tensor um eine bessere Approximation von Tensor die gegenüber der Quantisierung sehr empfindlich sind statt nur eine Tensor 
-\end{itemize}}
+Wie oben erwähnt, eine Quantisierung mit zu weniger Bit führt zu einem großen Genauigkeitsverlust, aber \cite[Yoni et al]{quantizationYoni} haben gezeigt, dass Die Quantisierung mit INT4-Format zu einem besseren Ergebnis führen kann. Das sollte daran liegen, dass sie fürs Approximieren eines Tensors, der gegenüber der Quantisierung sehr empfindlich ist, statt nur einen Tensor mehrere Tensors im INT4-Format benutzen.
 
-\textcolor{purple}{
-	\begin{itemize}
-		\item Reduzierte Float Darstellung (32 $\rightarrow$ 16)
-		\item Hybrid Quantisierung: Mischung von 8 bit Integer und 32 bit float Bits
-		\item 8 oder 16 bit Integer Quantisierung 
-\end{itemize}}
 \subsection{Huffman Codierung}
 Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. 
 
 \section{Experiment} \label{Experiment}
 \subsection{Lernrate}\label{Experiment:Lernrate}
 Wie in \ref{Lernrate} gesehen, die Lernrate sagt uns, wie schnell wir ans Ziel kommen möchten.
-\begin{itemize}
-	\item $ \eta < \eta_{opt} $:So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .
-	\item $ \eta > \eta_{opt} $:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.
-\end{itemize}
+
+ {$ \eta < \eta_{opt} $}:
+ So sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann in einem unerwünschten lokalen Minimum stecken bleiben .\\
+ {$ \eta > \eta_{opt} $}:Hier wird die Anzahl der Iterationen zwar verringert, aber das Verfahren ist nicht stabil, denn \textcolor{blue}{in der Nähe vom Minimum oder es} wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zum lokalen oder globalen Minimum zu gelangen.\\
+
 In die Praxis gibt es Methoden und Funktionen, um die Lernrate während des Trainings anzupassen. z.B die \textit{KERAS} Funktion \textit{ReduceLROnPlateau}, die die Lernrate reduziert, wenn das \ac{NN} nach einer bestimmten Anzahl von Epochen keine Verbesserung mehr aufweist.
 
 
@@ -1112,7 +1158,9 @@ Wie die Abbildung ?? zeigt, liefert \textit{SqueezeNet} mit Simple RCs  als die 
 
 
 \subsection{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}
-Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.
+Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
+Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
+
 \subsubsection{Adaptive Gradient Algorithm (AdaGrad)}
 AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
 \begin{equation}\label{adagrad}
@@ -1252,25 +1300,16 @@ Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekom
 Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
 Zum anderen wird die interne kovariate Verschiebung geringer, was das Training beschleunigt, in einigen Fällen durch Halbierung der Epochen oder besser. Noch dazu wird das Netz durch die BN in gewissem Maße reguliert, daher wird die Verwendung von Dropout bzw. Regulierungstechnik reduziert oder sogar überflüssig und somit eine Verbesserung der Verallgemeinerungsgenauigkeit.
 \subsubsection{Dataset}
-\section{Abkürzungsverzeichnis}
-\begin{acronym}[THIBAUT]
-	\acro{KNN}{Künstliches neuronales Netz}
-	\acro{CNN}{Convolutional Neural Network}
-	\acro{KI}{Künstliche Intelligenz}
-	\acro{NN}{neuronales Netz}
-	\acro{ConvL}{Convolutional Layer}
-	\acro{FCL}{Fully Connected Layer}
-	\acro{PooL}{Pooling Layer}
-	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
-	\acro{DNN}{Tiefe neuronale Netze}
-	\acro{ML}{Maschine Lernen}
-\end{acronym}
+
 
 \bibliographystyle{acm}
-
+\section{Literatur}
 \begin{thebibliography}{lem00}
  \bibitem{1}
 	P. Kerlirzin, and F. Vallet: \href{ https://www.mitpressjournals.org/doi/abs/10.1162/neco.1993.5.3.473?journalCode=neco} {Robustness in Multilayer Perceptrons}
+	\bibitem{CNNStory}
+		Md. Zahangir Alom,Tarek M. Taha, Christopher Yakopcic,Stefan Westberg,Mahmudul Hasan,Brian C. Van Esesn , Abdul A. S. Awwal und Vijayan K. Asari \href{https://arxiv.org/abs/1803.01164}{The History Began from AlexNet: A Comprehensive Survey on Deep Learning Approaches}
+	
  \bibitem{2}
  	Geoffrey E. Hinton and Nitish Srivastava and Alex Krizhevsky and Ilya Sutskever and Ruslan R. Salakhutdinov: \href{https://arxiv.org/abs/1207.0580}{Improving neural networks by preventing co-adaptation of feature detectors}
  \bibitem{3}
@@ -1345,17 +1384,11 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville:
 \vspace*{8cm}
 
 
-\section*{Erklärung}
 
-Ich  versichere  wahrheitsgemäß,  die  Arbeit selbstständig verfasst,  alle  benutzten  Hilfsmittel  vollständig  und  genau  angegeben  und  alles kenntlich  gemacht  zu  haben,  was  aus  Arbeiten  anderer  unverändert  oder  mit  Abänderungen entnommen  wurde,  sowie die Satzung  der  Universität Augsburg  zur  Sicherung guter wissenschaftlicher Praxis in der jeweils gültigen Fassung beachtet zu haben.
-\\[2ex] 
-
-\noindent
-Ort, den Datum\\[5ex]
 
 % Unterschrift (handgeschrieben)
 
 
 
 \end{document}
-
+\listoffigures

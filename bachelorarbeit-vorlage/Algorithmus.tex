@@ -1,0 +1,78 @@
+\documentclass{article}
+
+\usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+
+
+\begin{document}
+
+
+\begin{algorithm}
+	
+	\caption{Gradient descent}
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $\epsilon$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		$\tilde{y}= F(\theta, x)$\;
+		$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\delta\epsilon(y,\tilde{y})}{\delta\theta}$\;
+
+	}
+	\label{algo:GD}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{Stochastic Gradient descent(SGD)}
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $\epsilon$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		Shuffle X, y\;
+		\For{ $ x_i, y_i $ in X, y}{
+		$\tilde{y}= F(\theta, x_i)$\;
+		
+		$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\delta\epsilon(y_i,\tilde{y_i})}{\delta\theta}$\;
+	}
+		
+	}
+	\label{algo:SGD}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Mini-Batch Stochastic Gradient descent(MSGD)}
+	\KwIn{loss function $E$, learning rate $\eta$, dataset $ X, y $ und das Modell $ F(\theta, x) $}
+	\KwOut{Optimum $\theta$ which minimizes $E$ }
+	\DontPrintSemicolon
+	
+	\While{converge}{
+		Shuffle X, y\;
+		\For{each batch of $ x_i, y_i $ in X, y}{
+			$\tilde{y}= F(\theta, x_i)$\;
+			
+			$\theta = \theta -\eta.\frac{1}{N}\sum_{i=1}^{N}\frac{\delta E(y_i,\tilde{y_i})}{\delta E}$\;
+		}
+		
+	}
+	\label{algo:MSGD}
+\end{algorithm}
+\newpage
+\begin{algorithm}
+	\caption{Back-Propagation}
+	\KwIn{Netzwerk mit $ l $ layers, Aktivirungsfunktion $\sigma_l$ , Output von der verstekten Schicht $ h_l =\sigma_l(W_l^Th_{l-1} +b_{l}) $  und die Netzwerkausgabe $\tilde{y}= h_{l}$}
+	\DontPrintSemicolon
+	Berechnen der Gradient: $\delta \gets \frac{\partial E(y_{i}, \tilde{y}_i)}{\partial y}$ \;
+	\For{$ i \gets l $ bis $ 0 $ }{
+		Berechnen der Gradient für die Aktuelle Schicht \;
+		$\frac{\partial E(y, \tilde{y})}{\partial W_l} =\frac{\partial E(y, \tilde{y})}{\partial h_l}\frac{\partial h_l}{\partial W_l} = \delta\frac{\partial h_l}{\partial W_l}$\;
+			$\frac{\partial E(y, \tilde{y})}{\partial b_l} =\frac{\partial E(y, \tilde{y})}{\partial h_l}\frac{\partial h_l}{\partial b_l} = \delta\frac{\partial h_l}{\partial b_l}$\;
+		
+	   Gradientabstiegverfahren mit 	$ \frac{\partial E(y, \tilde{y})}{\partial W_l} $ und $ \frac{\partial E(y, \tilde{y})}{\partial b_l} $\;
+	   Propagiere den Gradienten zu den unteren Schichten.\;
+	   $\delta \gets \frac{\partial E(y, \tilde{y})}{\partial h_l}\frac{\partial h_l}{\partial h_{l-1}} = \delta \frac{\partial h_l}{\partial h_{l-1}}$\;
+		
+	}
+	\label{algo:BP}
+\end{algorithm}
+\end{document} 
