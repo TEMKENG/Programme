@@ -31,23 +31,23 @@
 \contentsline {subparagraph}{\nonumberline Standard Convolution}{27}{section*.34}
 \contentsline {subparagraph}{\nonumberline Depthwise Convolution}{28}{section*.36}
 \contentsline {subparagraph}{\nonumberline Pointwise Convolution}{29}{section*.38}
-\contentsline {subparagraph}{\nonumberline Depthwise Separable Convolution}{29}{section*.39}
+\contentsline {subparagraph}{\nonumberline Depthwise Separable Convolution}{30}{section*.39}
 \contentsline {subsection}{\numberline {5.3}Besondere \acsp {CNN}: \leavevmode {\color {red}Bitte nicht lesen}}{30}{subsection.5.3}
 \contentsline {subsubsection}{\numberline {5.3.1}AlexNet}{30}{subsubsection.5.3.1}
-\contentsline {subsubsection}{\numberline {5.3.2}SqueezeNet}{30}{subsubsection.5.3.2}
+\contentsline {subsubsection}{\numberline {5.3.2}SqueezeNet}{31}{subsubsection.5.3.2}
 \contentsline {subsubsection}{\numberline {5.3.3}Xception}{32}{subsubsection.5.3.3}
-\contentsline {subsubsection}{\numberline {5.3.4}MobileNet}{33}{subsubsection.5.3.4}
-\contentsline {subsection}{\numberline {5.4}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{33}{subsection.5.4}
-\contentsline {subsubsection}{\numberline {5.4.1}Adaptive Gradient Algorithm (AdaGrad)}{33}{subsubsection.5.4.1}
-\contentsline {subsubsection}{\numberline {5.4.2}Root Mean Square Propagation(RMSProp)}{34}{subsubsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.3.4}MobileNet}{34}{subsubsection.5.3.4}
+\contentsline {subsection}{\numberline {5.4}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{34}{subsection.5.4}
+\contentsline {subsubsection}{\numberline {5.4.1}Adaptive Gradient Algorithm (AdaGrad)}{35}{subsubsection.5.4.1}
+\contentsline {subsubsection}{\numberline {5.4.2}Root Mean Square Propagation(RMSProp)}{35}{subsubsection.5.4.2}
 \contentsline {subsubsection}{\numberline {5.4.3}Adaptive Moment Estimation(Adam)}{35}{subsubsection.5.4.3}
 \contentsline {subsection}{\numberline {5.5}Problem beim Training von Convolutional neuronale Netzwerke}{36}{subsection.5.5}
 \contentsline {subsubsection}{\numberline {5.5.1}Overfitting}{36}{subsubsection.5.5.1}
 \contentsline {subparagraph}{\nonumberline Data Augmentation}{36}{section*.45}
 \contentsline {subparagraph}{\nonumberline Dropout}{37}{section*.47}
-\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{37}{section*.49}
+\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{38}{section*.49}
 \contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{38}{section*.51}
-\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{38}{section*.52}
-\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{39}{section*.54}
+\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{39}{section*.52}
+\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{40}{section*.54}
 \contentsline {subsubsection}{\numberline {5.5.2}Dataset}{41}{subsubsection.5.5.2}
 \contentsline {section}{\numberline {6}Literatur}{41}{section.6}

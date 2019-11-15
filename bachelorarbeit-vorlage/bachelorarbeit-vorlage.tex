@@ -288,9 +288,9 @@ Um diese Faltungsoperation durchzuführen, muss einige Hyperparameter vordefinie
 
 \begin{itemize}
 	\item \textbf{Anzahl und Größe von Filtern}\\
-	Die Anzahl an Filters gibt nicht nur an, wie viele Filter in dem \ac{ConvL} verwendet werden, sondern auch ,wie oft die  Faltungsoperation durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht.
+	Die Anzahl an Filters gibt nicht nur an, wie viele Filter in dem \ac{ConvL} verwendet werden, sondern auch ,wie oft die Faltungsoperation auf die Eingabe durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht.
 	Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach einem Feature ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, wir verbinden also jedes Neuron nur mit einem lokalen Bereich der Bild. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich die vom Input, also für ein $ (100, 100, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	
-	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt.
+	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt. 
 	
 	\begin{figure}[h]
 		\centering
@@ -331,7 +331,9 @@ Um diese Faltungsoperation durchzuführen, muss einige Hyperparameter vordefinie
 	Mit einem großen Filter lernt man in der Regel "mehr"{} als mit einem kleinen.Aber wie in Tabelle \ref{tab:Stride and filter size} zu sehen, habe man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.
 	
 \end{itemize}
-In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{ConvL} mit dem Erlernen einfacher Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale, also die früher entdeckten Features werden kombiniert, um komplexe Features wie einen Kreis zu bilden .Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
+In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{ConvL} mit dem Erlernen einfacher Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale. Das liegt daran, dass jede nachfolgende Schicht einen größeren Bereich des Originalbildes betrachten oder \glqq sehen \grqq{} kann.Nehmen wir an,dass die zwei ersten Layers eines \acsp{CNN} Filter von Größe $ 3\times 3 $  und ein \textit{Stride} $ =(1,1) $ verwenden.Die erste Schicht betrachte immer $ 3\times3 $ benachbarte Pixel des Originalbildes und speichert seine Aktivierung auf einem Pixel. Jetzt wenn die zweite \ac{ConvL}  $ 3\times3 $ benachbarte Pixel betrachtet, betrachtet sie eigentlich  $ 5\times5 $ benachbarte Pixel des Originalbildes.Wir können uns deshalb vorstellen, dass irgendwo in späteren Schichten Filter das gesamte Originalbild betrachten.
+% 
+% also die früher entdeckten Features werden kombiniert, um komplexe Features wie einen Kreis zu bilden .Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}{\textwidth}
@@ -1088,6 +1090,9 @@ sei $ \eta_{opt} $  bzw. $ \eta $ die optimale bzw. die ausgewählte Lernrate f�
  \textcolor{blue}{ hier kommen noch Bild und Erklärung}
 
 \subsection{Convolution Layers}
+Heutzutage werden nur Filter der Größe $ 1\times 1 $ und $ 3\times 3 $ und nicht größer verwendet, obwohl größere Filter globale Informationen effizienter entnehmen und so zu besserer Ergebnisse kommen können. Dafür gibt es viele Gründe. Erstens sind die Berechnungen mit kleinerer Filter viel schneller als mit größerer Filter. Zweitens kann ein \ac{ConvL} mit einer großen Filtergröße durch mehrere aufeinanderfolgende \acsp{ConvL} mit einer kleineren Filtergröße ersetzt werden und dabei werden sogar die Anzahl der benötigten Parameter deutlich reduziert. Sollte man z.B. ein $ 5\times 5 $ Filter auf eine Eingabe von Tiefe $ d $ angewendet, so braucht man $ 5\times 5\times d $ Gewichte, um ein Feature-Map zu erzeugen. Nimmt man hingegen zwei aufeinanderfolgende \acsp{ConvL} mit $ 3\times 3$ Filtern, so braucht man nur $ 2(3\times 3\times d) $ Gewichte, um ein Feature-Map zu erzeugen. 
+
+
 Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einem Eingang mit einem Kanal. Im Folgenden werden verschiedene Arten beschrieben, wie die Faltungsoperation an einem Eingang mit mehreren Kanälen durchgeführt werden kann. Für die Erklärung von Konzepten wird folgendes als Eingabe der Faltungsschicht betrachtet.
 
  \[ I=\begin{cases}
