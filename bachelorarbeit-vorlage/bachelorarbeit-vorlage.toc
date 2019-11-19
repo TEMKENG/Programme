@@ -25,32 +25,30 @@
 \contentsline {subsection}{\numberline {4.1}Pruning Network}{21}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Quantisierung von neuronalen Netzwerken}{25}{subsection.4.2}
 \contentsline {subsection}{\numberline {4.3}Huffman Codierung}{27}{subsection.4.3}
-\contentsline {section}{\numberline {5}Experiment}{28}{section.5}
-\contentsline {subsection}{\numberline {5.1}Analyse der Ergebnisse mit Hilfe von Metriken}{28}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Metriken nennen und vergleichen}{28}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Klassifizierungsgenauigkeit}{28}{subsubsection.5.1.2}
-\contentsline {subsection}{\numberline {5.2}Einfluss der Lernrate}{28}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Convolution Layers}{28}{subsection.5.3}
-\contentsline {subparagraph}{\nonumberline Standard Convolution}{29}{section*.34}
-\contentsline {subparagraph}{\nonumberline Depthwise Convolution}{30}{section*.36}
-\contentsline {subparagraph}{\nonumberline Pointwise Convolution}{30}{section*.38}
-\contentsline {subparagraph}{\nonumberline Depthwise Separable Convolution}{31}{section*.39}
+\contentsline {section}{\numberline {5}Experiment}{27}{section.5}
+\contentsline {subsection}{\numberline {5.1}Analyse der Ergebnisse mit Hilfe von Metriken}{27}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Einfluss der Lernrate}{29}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Convolution Layers}{29}{subsection.5.3}
+\contentsline {subparagraph}{\nonumberline Standard Convolution}{30}{section*.35}
+\contentsline {subparagraph}{\nonumberline Depthwise Convolution}{30}{section*.37}
+\contentsline {subparagraph}{\nonumberline Pointwise Convolution}{31}{section*.39}
+\contentsline {subparagraph}{\nonumberline Depthwise Separable Convolution}{32}{section*.40}
 \contentsline {subsection}{\numberline {5.4}Besondere \acsp {CNN}: \leavevmode {\color {red}Bitte nicht lesen}}{32}{subsection.5.4}
 \contentsline {subsubsection}{\numberline {5.4.1}AlexNet}{32}{subsubsection.5.4.1}
-\contentsline {subsubsection}{\numberline {5.4.2}SqueezeNet}{32}{subsubsection.5.4.2}
-\contentsline {subsubsection}{\numberline {5.4.3}Xception}{34}{subsubsection.5.4.3}
-\contentsline {subsubsection}{\numberline {5.4.4}MobileNet}{35}{subsubsection.5.4.4}
-\contentsline {subsection}{\numberline {5.5}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{35}{subsection.5.5}
-\contentsline {subsubsection}{\numberline {5.5.1}Adaptive Gradient Algorithm (AdaGrad)}{35}{subsubsection.5.5.1}
-\contentsline {subsubsection}{\numberline {5.5.2}Root Mean Square Propagation(RMSProp)}{36}{subsubsection.5.5.2}
-\contentsline {subsubsection}{\numberline {5.5.3}Adaptive Moment Estimation(Adam)}{37}{subsubsection.5.5.3}
+\contentsline {subsubsection}{\numberline {5.4.2}SqueezeNet}{34}{subsubsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.4.3}Xception}{35}{subsubsection.5.4.3}
+\contentsline {subsubsection}{\numberline {5.4.4}MobileNet}{36}{subsubsection.5.4.4}
+\contentsline {subsection}{\numberline {5.5}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{36}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.5.1}Adaptive Gradient Algorithm (AdaGrad)}{36}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.5.2}Root Mean Square Propagation(RMSProp)}{38}{subsubsection.5.5.2}
+\contentsline {subsubsection}{\numberline {5.5.3}Adaptive Moment Estimation(Adam)}{38}{subsubsection.5.5.3}
 \contentsline {subsection}{\numberline {5.6}Problem beim Training von Convolutional neuronale Netzwerke}{38}{subsection.5.6}
 \contentsline {subsubsection}{\numberline {5.6.1}Overfitting}{38}{subsubsection.5.6.1}
-\contentsline {subparagraph}{\nonumberline Data Augmentation}{38}{section*.45}
-\contentsline {subparagraph}{\nonumberline Dropout}{39}{section*.47}
-\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{39}{section*.49}
-\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{40}{section*.51}
-\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{40}{section*.52}
-\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{41}{section*.54}
+\contentsline {subparagraph}{\nonumberline Data Augmentation}{39}{section*.46}
+\contentsline {subparagraph}{\nonumberline Dropout}{39}{section*.48}
+\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{40}{section*.50}
+\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{40}{section*.52}
+\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{41}{section*.53}
+\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{42}{section*.55}
 \contentsline {subsubsection}{\numberline {5.6.2}Dataset}{43}{subsubsection.5.6.2}
 \contentsline {section}{\numberline {6}Literatur}{43}{section.6}

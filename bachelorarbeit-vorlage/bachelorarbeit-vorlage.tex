@@ -789,12 +789,11 @@ Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-ent
 \label{MSE}	
 MSE(Y, \widehat{Y}) =&\frac{1}{n}\sum_{i = 1}^{n}(Y_i - \widehat{Y}_i)^2\\
 \label{CE}
-CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}(Y_i\log(\widehat{Y}_i) +(1-Y_i)\log(1- \widehat{Y}_i))
+CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}Y_i\log(\widehat{Y}_i) 
 \end{align}
 
 \begin{align*}
-Y:=\{Y_1,\cdots, Y_n\} :&\text{Die tatsächlichen Werte} \\
-\widehat{Y}:=\{\widehat{Y}_1,\cdots, \widehat{Y}_n\} :&\text{Die Ausgabeweerte des neuronalen Netzes}
+Y:&\text{Satz von echten Labels} &  n: & \text{Die Batchgröße} & \widehat{Y}:&\text{Vorhersagesatz} 
 \end{align*}
 Im Gegenteil zu CE Fehlerfunktionen,die sich nur auf Wahrscheinlichkeitsverteilungen anwenden lassen, können die MSE auf beliebige Werte angewendet werden. Nach \cite[Pavel et al]{7} ermöglicht die CE-Verlustfunktion ein besseres Finden lokaler Optima als die MSE-Verlustfunktion und das soll daran liegen, dass das Training des MSE Systems schneller in einem schlechten lokalen Optimum stecken bleibt, in dem der Gradient fast null ist und damit keine weitere Reduzierung der Netzfehler ermöglicht.Im Allgemein ist die CE Kostenfunktion für die Klassifikationsprobleme und die MSE Fehlerfunktion für die lineare Regression-Probleme besser.
 
@@ -1076,8 +1075,24 @@ Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie 
 \section{Experiment} \label{Experiment}
 
 \subsection{Analyse der Ergebnisse mit Hilfe von Metriken}
-\subsubsection{Metriken nennen und vergleichen}
-\subsubsection{Klassifizierungsgenauigkeit}
+Nach dem Entwurf des Netzwerks muss es noch bewertet werden,um zu überprüfen, ob es unseren Erwartungen (Genauigkeit, Stabilität und Trainingszeit) entspricht. Diese Bewertung kann man mit Hilfe von Metriken und einem Testdatensatz machen.Es ist zwingend erforderlich, dass der Datensatz immer in zwei (Training und Validierung) oder drei (Training, Validierung und Test) unterteilt wird, da es sonst nicht möglich sein wird, abzuschätzen, wie das Modell Konzepte aus dem Datensatz generalisiert, sondern vielmehr, wie es lernt, jedes Element des Datensatzes einer Klasse zuzuordnen und da das Modell trainiert ist, um die Fehlklassifizierung zu reduzieren, wird die Netzwerkleistung bei Trainingsdaten auf jeden Fall immer besser, daher lohnt es sich nicht zur Abschätzung der Modellleistung die Trainingsdaten zu verwenden.
+
+Metriken können verwendet werden, um die Netzwerkleistung zu quantifizieren, und es gibt eine große Vielfalt von ihnen. Die am meistens verwendeten Metriken sind  die mittlere Genauigkeit(\textit{mean accuracy}) und den Logarithmischen Verlust(\textit{logarithmic loss}).
+
+Die Mittlere Genauigkeit oder Klassifizierungsgenauigkeit ist die Anzahl der korrekten Vorhersagen im Verhältnis zu allen getroffenen Vorhersagen. siehe Gleichung(\ref{eq:acc}).
+Der logarithmische Verlust sieht genauso wie das \textit{Cross-entropy}(\ref{CE}). Wenn man die Abbildung \ref{fig:accVSlogLoss} genau anschaut, stellt man fest, dass die Genauigkeit nach 60 Epochen flach bleibt, was gleich bedeutend ist, dass die Netzwerkleistung konstant bleibt, d.h. das Netzwerk weist keine Verbesserung und keine Verschlechterung auf
+\begin{equation}\label{eq:acc}
+	acc := \dfrac{\textit{Korrekte Vorhersagen}}{\textit{Alle Vorhersagen}}
+\end{equation}
+
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{accVSlogLoss}
+	\caption{Vergleich zwischen Genauigkeit und logarithmischen Verlust. }
+	\label{fig:accVSlogLoss}
+\end{figure}
+
+ Die Genauigkeit ist keine zuverlässige Metrik für die tatsächliche Leistung eines Klassifikators, da sie bei einem unausgewogenen Datensatz irreführende Ergebnisse liefert (d.h. wenn die Anzahl der Beobachtungen in verschiedenen Klassen stark variiert).
+
 Dies funktioniert nur dann gut, wenn der Datensatz nahezu gleichmäßig auf die Klassen verteilt ist.
 
 \textcolor{purple}{Datenset nicht gleichmäßig verteilen}
