@@ -1127,26 +1127,53 @@ sei $ \eta_{opt} $  bzw. $ \eta $ die optimale bzw. die ausgewählte Lernrate f�
 
  Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Minimum zu erreichen.Aber die Anzahl der benötigten Iterationen bis zum Minimum steigt offensichtlich an und das Verfahren kann leichter in einem unerwünschten lokalen Minimum stecken bleiben .
  
- {$ \eta > \eta_{opt} $}:Hier wird die Anzahl der Iterationen entweder reduziert oder erhöht.Das  Verfahren ist im Allgemein nicht stabil, denn es wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zu einem lokalen oder globalen Minimum zu gelangen.  Wenn eine hohe Lernrate angewendet wird, kann man versuchen, das Verhalten des \ac{CNN} zu kontrollieren, indem man die Lernrate nach einer Reihe von Iterationen reduziert, bei denen sich die Metrik (Netzwerkgenauigkeit oder Netzwerkfehler) nicht mehr verbessert hat ,oder indem man Optimierer(\ref{Optimizer}) verwendet, die im Laufe des Trainings die Lernrate entsprechend der Eingabe und der aktuellen Lernrate anpassen. Der Grund, warum die Lernrate immer reduziert und nicht erhöht werden muss, sollte daran liegen, dass das \ac{CNN} irgendwann gut trainiert ist und sollte daher neuen Informationen nicht mehr Gewicht  beimessen als dem bereits Gelernten. \\
+ {$ \eta > \eta_{opt} $}:Hier wird die Anzahl der Iterationen entweder reduziert oder erhöht.Das  Verfahren ist im Allgemein nicht stabil, denn es wird über das Minimum ständig hinausgegangen und es ist nicht mehr sichern, zu einem lokalen oder globalen Minimum zu gelangen.  Wenn eine hohe Lernrate angewendet wird, kann man versuchen, das Verhalten des \ac{CNN} zu kontrollieren, indem man die Lernrate nach einer Reihe von Iterationen reduziert, bei denen sich die Metrik (Netzwerkgenauigkeit oder Netzwerkfehler) nicht mehr verbessert hat ,oder indem man Optimierer(\ref{Optimizer}) verwendet, die im Laufe des Trainings die Lernrate entsprechend der Eingabe und der aktuellen Lernrate anpassen. Der Grund, warum die Lernrate immer reduziert und nicht erhöht werden muss, sollte daran liegen, dass das \ac{CNN} irgendwann gut trainiert ist und sollte daher neuen Informationen nicht mehr Gewicht  beimessen als dem bereits Gelernten.
 
-Aus der Abbildung(\ref{fig:Lernrate}) stellt man zuerst fest, dass die Verwendung verschiedener Lernrate zu unterscheiden Ergebnissen führt und Je höher die Lernrate, desto mehr Schwankungen gibt es.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{LearningRate}
 	\begin{center}
 		\begin{tabular}{r@{: }l r@{: }l}
 			Imagegröße & (100, 100,3) & $0\_$ & Lernrate$ =0.0001 $ \\ 
-			$ 1\_ $& Lernrate$ =0.001 $ &	$ 2\_ $ & Lernrate$ =0.005 $\\  \textcolor{purple}{$\longrightarrow$} & Forward-Pass  &
-			\textcolor{blue}{$\longrightarrow$} & Fehlerfunktion
+			$ 1\_ $& Lernrate$ =0.005 $ &	$ 2\_ $ & Lernrate$ =0.001 $
 		\end{tabular}
 		
 	\end{center}
 \caption{MobileNet\_v1 mit verschiedenen Lernraten.}
 \label{fig:Lernrate}
 \end{figure}
+\begin{itemize}
+	\item Aus der Abbildung(\ref{fig:Lernrate}) stellt man zuerst fest, dass die Verwendung verschiedener Lernrate zu unterschiedenen Ergebnissen führt und Je höher die Lernrate, desto mehr Schwankungen gibt es.
+	\item Die Reduzierung der Lernrate, wenn sich das Netzwerk nicht mehr verbessert, verbessert die Netzwerkleistung.In der Abbildung gibt es eine jähe Erhöhung der Netzwerkleistung(\textit{orange Kurve}). Das markiert die Änderung der Lernrate von $ 0.005 $ auf $ 0.00001 $. Um zu erkennen, dass sich das Netzwerk nicht mehr verbessert, werden sogenannte \glqq $  Callback$ \grqq-Funktionen verwendet, die fordern, dass bestimmte Hyperparameter wie der Faktor, um den die Lernrate reduziert wird($ new\_lr = old\_lr*factor $) und die Anzahl der Epochen auch \textit{Patience} genannt, die die überwachte Menge(Z.B. der Validierungsfehler oder Validierungsgenauigkeit) ohne Verbesserung produziert haben. Diese Standard-Callback-Funktionen funktionieren leider nur dann gut, wenn der überwachte Menge (pseudo)-monoton(genau wie die ersten beiden Bilder in der Abbildung \ref{fig:Lernrate_scheduler}) ist. Diese Standard-Callback-Funktionen nehmen nicht in Betracht die allgemeine Verhalten des Netzwerks im Zeitintervall \textit{Patience}, sondern vergleichen der erste Eintrag in diesem Zeitintervall mit den anderen Einträgen, was zum Fehler führen kann, wie das letzte Bild in der Abbildung \ref{fig:Lernrate_scheduler} gut zeigt.
+	
+	Um dieses Problem zu lösen, haben wir eine neue Methode entwickelt, die uns sagt, ob sich die Netzwerkleistung verändert hat und wie sehr sich das Netzwerk verändert hat. Das Verfahren funktioniert wie folgt:
+	\begin{itemize}
+		\item Wir zeichnen eine horizontale Linie, die über den Durchschnittswert im Zeitintervall \textit{Patience} verläuft.Also $ y = ax +b,( a=0, b= Durchschnittswert) $, siehe orange Kurve in der Abbildung \ref{fig:Lernrate_scheduler}.
+		\item Dann versuchen wir alle Werte im Zeitintervall \textit{Patience} durch eine affine Funktion($ y=ax+b $) zu approximieren, indem wir ein \ac{NN} trainieren.Siehe blaue Kurve in der Abbildung \ref{fig:Lernrate_scheduler}.
+	\end{itemize}
+\end{itemize}
 
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{.3\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{lr_schedu_Falsch1}
+	\end{subfigure}%
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{lr_schedu_Falsch2}
+	\end{subfigure}%
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{lr_schedu_Falsch}
+	\end{subfigure}
+	\caption{Lernraten-Scheduler.}
+	\label{fig:Lernrate_scheduler}
+\end{figure}
+
+\textcolor{purple}{vergleich zwischen normale LearningRateScheduler und meine}
 \subsection{Convolution Layers}
-Heutzutage werden nur Filter der Größe $ 1\times 1 $ und $ 3\times 3 $ und nicht größer verwendet, obwohl größere Filter globale Informationen effizienter entnehmen und so zu besserer Ergebnisse kommen können. Dafür gibt es viele Gründe. Erstens sind die Berechnungen mit kleinerer Filter viel schneller als mit größerer Filter. Zweitens kann ein \ac{ConvL} mit einer großen Filtergröße durch mehrere aufeinanderfolgende \acsp{ConvL} mit einer kleineren Filtergröße ersetzt werden und dabei werden sogar die Anzahl der benötigten Parameter deutlich reduziert. Sollte man z.B. ein $ 5\times 5 $ Filter auf eine Eingabe von Tiefe $ d $ angewendet, so braucht man $ 5\times 5\times d $ Gewichte, um ein Feature-Map zu erzeugen. Nimmt man hingegen zwei aufeinanderfolgende \acsp{ConvL} mit $ 3\times 3$ Filtern, so braucht man nur $ 2(3\times 3\times d) $ Gewichte, um ein Feature-Map zu erzeugen. Drittens hat man bei kleinen Filtern nur eine langsame Reduzierung der Bilddimension, was den Entwurf von sehr tiefer \ac{CNN}s wie \textit{InceptionResNet} ermöglicht. Viertens können kleine Filter sehr lokale Merkmale extrahieren, so dass einfache und komplexe Informationen gleichzeitig erfasst werden.Die Anzahl der extrahierten Features ist enorm und werden gefiltert, wenn man tiefer im Netzwerk geht.
+Heutzutage werden am meisten nur Filter der Größe $ 1\times 1 $ und $ 3\times 3 $ und nicht größer verwendet, obwohl größere Filter globale Informationen effizienter entnehmen und so zu besserer Ergebnisse kommen können. Dafür gibt es viele Gründe. Erstens sind die Berechnungen mit kleinerer Filter viel schneller als mit größerer Filter. Zweitens kann ein \ac{ConvL} mit einer großen Filtergröße durch mehrere aufeinanderfolgende \acsp{ConvL} mit einer kleineren Filtergröße ersetzt werden und dabei werden sogar die Anzahl der benötigten Parameter deutlich reduziert. Sollte man z.B. ein $ 5\times 5 $ Filter auf eine Eingabe von Tiefe $ d $ angewendet, so braucht man $ 5\times 5\times d $ Gewichte, um ein Feature-Map zu erzeugen. Nimmt man hingegen zwei aufeinanderfolgende \acsp{ConvL} mit $ 3\times 3$ Filtern, so braucht man nur $ 2(3\times 3\times d) $ Gewichte, um ein Feature-Map zu erzeugen. Drittens hat man bei kleinen Filtern nur eine langsame Reduzierung der Bilddimension, was den Entwurf von sehr tiefer \ac{CNN}s wie \textit{InceptionResNet} ermöglicht. Viertens können kleine Filter sehr lokale Merkmale extrahieren, so dass einfache und komplexe Informationen gleichzeitig erfasst werden.Die Anzahl der extrahierten Features ist enorm und werden gefiltert, wenn man tiefer im Netzwerk geht.
 
 Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einem Eingang mit einem Kanal. Im Folgenden werden verschiedene Arten beschrieben, wie die Faltungsoperation an einem Eingang mit mehreren Kanälen durchgeführt werden kann. Für die Erklärung von Konzepten wird folgendes als Eingabe der Faltungsschicht betrachtet.
 
@@ -1160,7 +1187,8 @@ Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einem Ei
  \end{cases}\]
 
 
-\subparagraph{Standard Convolution}.\\
+\paragraph{Standard Convolution}
+
 Die Standardfaltung funktioniert genau wie in der Abbildung(\ref{fig:Standardfaltung}).Für eine Eingabe $ I $ erzeugt die Standardfaltung Feature-Maps der Größe $(W_{out},H_{out}, 1) $, wobei $W_{out} $ und $H_{out} $ wie in der Gleichung \ref{eq:outputSize} berechnet werden.Für die Berechnung eines Feature-Map wird ein $ (F_w\times F_h\times D_{in}) $-Filter auf den Input angewendet. Dabei wird zuerst für jeden Kanal $ I_i :=I[:,:, i]$ die Faltungsoperation mit dem Filter $ F_i := F[:,:,i] $ durchgeführt und dann werden die Ergebnisse jeder Faltungsoperation aufsummiert, um das Feature-Map zu bilden.
 
 \begin{equation}\label{eq:outputSize}
@@ -1180,7 +1208,7 @@ Die Berechnungskosten der Standardfaltung für eine Eingabe $ I $ unter der Anna
 	\label{fig:Standardfaltung}
 \end{figure}
 
-\subparagraph{Depthwise Convolution}.\\
+\paragraph{Depthwise Convolution}
 Genau wie die Standardfaltung funktioniert die \textit{Depthwise Convolution}, außer dass die Teilergebnisse von Standardfaltung schon der Feature-Maps von der \textit{Depthwise Convolution} entsprechen.Festzustellen ist, dass die Anzahl von Feature-Maps immer proportional zur Anzahl der Kanäle des Inputs sein muss.Damit die Anzahl an Feature-Maps der \textit{Depthwise Convolution} mehr als die Anzahl der Kanäle des Inputs ist, muss ein so genannte \textit{Depth\_multiplier} $ \alpha $ definiert werden. Der \textit{Depth\_multiplier} $\in \N_{\ge1}$ gibt an, wie viele Filter pro Kanal verwendet werden müssen.  Die Abbildung(\ref{fig:Depthwise_faltung}) zeigt die Anwendung der  \textit{Depthwise Convolution} mit einem  $ \alpha=2 $ auf ein Farbbild.
 Die \textit{Depthwise Convolution} hat für eine Eingabe $ I $ unter der Annahme, dass Schrittgröße eins und Padding berechnet werden, einen rechnerischen Aufwand von:
 \begin{equation}\label{eq:DW_kost}
@@ -1193,14 +1221,16 @@ Die \textit{Depthwise Convolution} hat für eine Eingabe $ I $ unter der Annahme
 \end{figure}
 Wenn man die Gleichungen \ref{eq:SF_kost} und \ref{eq:DW_kost} betrachtet, stellt man schnell fest, dass \textit{Depthwise Convolution} im Vergleich zur Standardfaltung äußerst effizient ist. Der Nachteil von \textit{Depthwise Convolution} ist, dass jede generierte Feature-Map nur einen Kanal in Betracht zieht, was bedeutet, dass Kanäle, die nicht so viele wichtige Informationen enthalten, die gleiche Bedeutung erhalten wie Kanäle, die so viele Informationen enthalten.  
 
-\subparagraph{Pointwise Convolution}.\\
+\paragraph{Pointwise Convolution}
+
 Die \textit{Pointwise Convolution} funktioniert genau wie die Standardfaltung, nur dass die Größe der Filter und die Schrittgröße in der Standardfaltung variabel sind und in \textit{Pointwise Convolution} jeweils immer $ (1,1) $ . Also jedes erhaltene Teilergebnis ist nur die Skalierung eines Eingangskanals. Die \textit{Pointwise Convolution} hat für eine Eingabe $ I $ einen rechnerischen Aufwand von:
 \begin{equation}\label{eq:PT_kost}
 	 D_{in}\times W_{in}\times H_{in} \times n_f
 \end{equation}
 Die Hauptidee bei der Verwendung der \textit{Pointwise Convolution} ist es, die Korrelation zwischen den Eingangskanälen zu finden, oder lineare Kombinationen zu lernen und erleichtert die Reduzierung und Erhöhung der Anzahl der Kanäle, wenn es zu viele oder zu wenige Feature-Maps gibt. Es kann jedoch mit \textit{pointwise Convolution} kein Feature extrahieren.
-\textcolor{red}{changement de dimension}
-\subparagraph{Depthwise Separable Convolution} \label{DSC}
+
+\paragraph{Depthwise Separable Convolution} \label{DSC}
+
 Die \textit{Depthwise Separable Convolution}(DSC) besteht aus einer \textit{Depthwise Convolution}, gefolgt von einer \textit{Pointwise Convolution}.Sie kann also Features schneller filtern und kombinieren als die Standardfaltung. Die DSC hat einen rechnerischen Aufwand von:
 \begin{equation}\label{eq:DSC_kost}
 F_w\times F_h \times D_{in}\times W_{in}\times H_{in} + D_{in}\times W_{in}\times H_{in} \times n_f
@@ -1209,9 +1239,10 @@ F_w\times F_h \times D_{in}\times W_{in}\times H_{in} + D_{in}\times W_{in}\time
 Von \ref{eq:SF_kost} und \ref{eq:DSC_kost} aus sieht man, die DSC weniger Berechnung benötigt als Standardfaltung, und zwar $ \frac{1}{n_f} + \frac{1}{F_w\times F_h}$. Da die DSC zu wenig Parameter verwendet, werden die \ac{CNN}, die die DSC verwenden, als quantisiert bezeichnet.Die DSC ersetzt langsam und sicher die Standardfaltung und das kann man mit $ Xception $ und $ MobileNet $ beobachten.
 
 \textcolor{purple}{compare accuracy von Depthwise Separable Convolution and Standard Convolution}
-\subsection{ Besondere Konvolution Neuronale Netzwerke}
+
+\subsection{ Vergleich zwischen  Konvolution Neuronale Netzwerke}
 \subsubsection{AlexNet}
-Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat $ 60 $ Millionen Parametern und etwas $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}. Vor  AlexNet  gab es keine \acsp{CNN} mit so vielen Schichten, noch interessanter sind die Techniken zur Verbesserung der Leistung von  AlexNet :
+Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat etwa $ 60 $ Millionen Parametern und etwa $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}. Vor  AlexNet  gab es keine \acsp{CNN} mit so vielen Schichten, noch interessanter sind die Techniken zur Verbesserung der Leistung von  AlexNet :
 \begin{itemize}
 	\item \textbf{ReLU}: Vor AlexNet waren $ tanh $ und $ sigmoid $ die Standard Aktivierungsfunktionen, aber wegen ihrer Sättigung bei hohen oder sehr niedrigen Werten und der Tatsache, das sie in diesen Bereichen eine Steigung nahe bei null haben, verlangsamen sie stark die Gewichtsanpassungen, was nicht der Fall bei $ ReLU $ ist, das eine Steigung gleich null nur bei negativen Werten und bei positiven höheren Werte  eine Steigung nicht nahe bei null hat. Das Training von \ac{CNN} wird durch $ ReLU $  um ein Vielfaches schneller als ein Äquivalent mit $ tanh $ beschleunigt\cite{AlexNet}.
 	
@@ -1226,47 +1257,22 @@ Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} e
 \end{figure}
 
 
-AlexNet kann aufgrund seiner Größe($\sim240$MB) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man seit AlexNet ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ SqueezeNet $, $ Xception $ und $ MobileNet $ entstanden sind.
-
-
-\subsubsection{SqueezeNet}
-$ SqueezeNet $ von \cite[Han et al]{SqueezeNet} erreicht die Genauigkeit von AlexNet mit 50x weniger Parametern und  einer Größe kleiner als $ 0.5$MB. Die $ SqueezeNet $ Architektur und einige Variante davon können in Abbildung \ref{fig:SqueezeNet} entnommen werden. Zum Erreichen einer solchen Architektur werden drei Hauptstrategien und ein spezieller Block verwendet.Bezüglich dieser Strategien wurde zuerst die meisten $ 3\times3 $ Filter durch $ 1\times1 $ Filter ersetzt, was die Parameteranzahl stark reduziert, denn ein $ 1\times1 $ Filter nimmt $ 9\times $ weniger Parameter als ein $ 3\times3 $ Filter in Anspruch, dann wird die Anzahl der Eingangkanäle auf $ 3\times3 $ Filter verringern, denn die Tiefe eines Filters in einem \ac{ConvL} ist gleich die Tiefe vom \ac{ConvL} Input und ein Input mit einer großen Tiefe wird die Parameteranzahl deutlich zunehmen, obwohl Filter mit kleiner räumlicher Dimension benutzt werden. Die letzte Strategie besteht darin, die Reduzierung der räumlichen Dimension im Netzwerk zu verzögern, so werden Feature-Maps mit größerer Raumauflösung am Ende enthalten. \cite[Song Han et al]{SqueezeNet} sind der Meinung, dass größere Feature-Maps zu einer höheren Klassifizierungsgenauigkeit führen. 
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth ]{squeezenet}
-	\caption{ SqueezeNet Architekturen \cite{SqueezeNet} }
-	\label{fig:SqueezeNet}
-\end{figure}
-
-Um die Ziele der ersten und zweiten Strategien zu erreichen, wird ein neuer Baustein(\textit{fire module})(FM) eingeführt. Das FM besteht aus einem \textit{Squeeze}-(mit $ 1\times1 $ Filtern) und einem \textit{Expand}(mit $ 1\times1 $ und $ 3\times3 $ Filtern)-Block(siehe Abbildung\ref{fig:fire_module}). Der \textit{Squeeze} Block ermöglicht der Reduzierung der Dimensionalität, indem die Anzahl Feature-Maps verringert wird, während die wichtigsten Features erhalten bleiben und die Anwendung von $ ReLU $ nach dem \textit{Squeeze} Block ermöglicht dem Netzwerk, weitere Features zu lernen.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth ]{fire_module}
-	\caption{ fire\_module \cite{SqueezeNet} }
-	\label{fig:fire_module}
-\end{figure}
-
-Was der \textit{Expand} Block angeht, funktioniert der Block mit $ 1\times1 $ Filtern genauso wie der \textit{Squeeze} Block und der Block mit $ 3\times3 $ Filtern ermöglicht der Erlangung von Empfangsfelder(\textit{receptive field}), die in der Lage sind, lokale räumliche Informationen zu erfassen, was $ 1\times1 $ Filter nicht schaffen können.
-
-Wie es in Abbildung \ref{fig:SqueezeNet} zu sehen ist, kann eine Verbindung zwischen zwei Layers über eine oder mehrere Schichte überspringen.Solche Verbindungen werden \textit{Residual connections}(RC) genannt und Netze mit RCs gehören zu der Klasse von Residual Netzwerke (mehr dazu siehe \cite{ResNet}).
-Wie die Abbildung ?? zeigt, liefert \textit{SqueezeNet} mit Simple RCs  als die anderen Varianten
+AlexNet kann aufgrund seiner Größe($\sim240$MB) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man seit AlexNet ständig auf der Suche nach neuen Architekturen, die weniger Parameter und Speicherplatz brauchen und  gleichzeitig die Ergebnisse auf der Stand der Technik erreichen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $ Xception $ und $ MobileNet $ entstanden sind.
 
 \subsubsection{Xception}\label{Xception}
 \textit{Xception}(\cite{Xception}) basiert auf  \textit{InceptionV3}(\cite{InceptionV3}). 
-Die Inception-Modelle nutzen ein Inception-Block als Baustein. In einem Inception-Block werden mehrere Filter unterschiedlicher Größe separat auf eine Eingabe angewendet und die Ergebnisse jeder Faltungsoperation werden zusammengeführt.Die Verwendung von mehreren Filtern unterschiedlicher Größe ermöglicht eine schnellere Feature-Extraktion, da die kleinen Filter sich mit der Extraktion von sehr lokalen Features beschäftigen, während die großen Filter sich mit der Extraktion von globalen Features beschäftigen. Der Xception-Block (\ref{fig:Xception|MobileNet}) wird mehrmals wiederholt, um das Xception-Modell zu gestalten. Aus der Abbildung ?? sieht man an, dass Xception im Vergleich zu anderen Modellen relativ schnell ist.Die Anzahl der Parameter von Xception ist leider immer noch enorm ($ \sim22.000.000 $) .
+Die Inception-Modelle nutzen ein Inception-Block als Baustein. In einem Inception-Block werden mehrere Filter unterschiedlicher Größe separat auf eine Eingabe angewendet und die Ergebnisse jeder Faltungsoperation werden zusammengeführt.Die Verwendung von mehreren Filtern unterschiedlicher Größe ermöglicht eine schnellere Feature-Extraktion, da die kleinen Filter sich mit der Extraktion von sehr lokalen Features beschäftigen, während die großen Filter sich mit der Extraktion von globalen Features beschäftigen. Der Xception-Block (\ref{fig:Xception|MobileNet}) wird mehrmals wiederholt, um das Xception-Modell zu gestalten. Aus der Abbildung \textcolor{purple}{Vergleich Graph  } sieht man an, dass Xception im Vergleich zu anderen Modellen relativ schnell ist.Die Anzahl der Parameter von Xception ist leider immer noch enorm ($ \sim22.000.000 $) .
 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth ]{Convolution/Folie3}
-	\caption{ Link:Xception-Block. Recht: MobileNet-Block.}
+	\caption{Xception- und MobileNet-Baustein.}
 	\label{fig:Xception|MobileNet}
 \end{figure}
 
 \subsubsection{MobileNet}
-\textit{MobileNet}(\cite{MobileNet}) wie \textit{Xception} macht die \textit{Depthwise Separable Convolution} zunutze.Wie in der Abbildung(\ref{fig:Xception|MobileNet}) zu sehen ist, wurden \textit{Batch-Normalisierung und ReLU}- Layers vor und nach der $ 1\times1 $ Faltungschicht hinzugefügt, was eine schnelle Feature-Extraktion ermöglicht und die \textit{ReLU} Aktivierung erhöht die Nichtlinearität der Entscheidungsfunktion. \textit{MobileNet} nutzt etwas $\sim 3.500.000$ Parameter, was mindestens fünfmal weniger als die Parameteranzahl von \textit{Xception}  ist.
+\textit{MobileNet}(\cite{MobileNet}) wie \textit{Xception} macht die \textit{Depthwise Separable Convolution} zunutze.Wie in der Abbildung(\ref{fig:Xception|MobileNet}) zu sehen ist, wurden aber \textit{Batch-Normalisierung und ReLU6}- Layers vor und nach der $ 1\times1 $ Faltungschicht hinzugefügt, was eine schnelle Feature-Extraktion ermöglicht und die \textit{ReLU6} Aktivierung erhöht die Nichtlinearität der Entscheidungsfunktion. \textit{MobileNet} nutzt etwas $\sim 3.500.000$ Parameter, was mindestens sechsmal weniger als die Parameteranzahl von \textit{Xception} ist, was auch eine bessere Inferenz ermöglicht.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth,height=0.8\linewidth]{MobileNet}
@@ -1274,8 +1280,41 @@ Die Inception-Modelle nutzen ein Inception-Block als Baustein. In einem Inceptio
 	\label{fig:MobileNet}
 \end{figure}
 
-
-
+\subsubsection{TemkiNet}
+Inspiriert von den soeben beschriebenen \acsp{CNN} haben wir \textit{TemkiNet} und mehrere Variante davon entwickelt.Die Bausteine von \textit{TemkiNet} sind in der Abbildung \ref{fig:TEMKENG_NET} zu entnehmen
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth ]{Convolution/Folie4}
+	\caption{TemkiNet-Bausteine.}
+	\label{fig:TEMKENG_NET}
+\end{figure}
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Block & Schrittgröße & Outputgröße\\ \hline
+		conv\_Block &	$ 2\times2 $ &Bildgröße\\ \hline
+		Depthwise\_Block & $ 2\times2 $&Bildgröße/2\\ \hline
+		Depthwise\_Block & $ 1\times1 $&Bildgröße/2\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&Bildgröße/4\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&Bildgröße/4\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&Bildgröße/8\\ \hline
+		$ 3\times $Depthwise\_Block & $ 1\times1 $&Bildgröße/8\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&Bildgröße/16\\ \hline
+		$ 4\times $Depthwise\_Block & $ 1\times1 $&Bildgröße/16\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&Bildgröße/32\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&Bildgröße/32\\ \hline
+		Flatten & / & \\ \hline
+		Dense\_Block & / &$ 1024 $\\ \hline
+		FC & & $ 101/102 $\\ \hline
+		
+	\end{tabular}
+	\caption{TemkiNet Architektur}
+\end{table}
 \subsection{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimizer}\label{Optimizer}
 Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
 Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 

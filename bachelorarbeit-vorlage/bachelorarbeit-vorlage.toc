@@ -31,27 +31,27 @@
 \contentsline {section}{\numberline {4}Experiment}{28}{section.4}
 \contentsline {subsection}{\numberline {4.1}Analyse der Ergebnisse mit Hilfe von Metriken}{28}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Einfluss der Lernrate}{30}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Convolution Layers}{30}{subsection.4.3}
-\contentsline {subparagraph}{\nonumberline Standard Convolution}{31}{section*.36}
-\contentsline {subparagraph}{\nonumberline Depthwise Convolution}{32}{section*.38}
-\contentsline {subparagraph}{\nonumberline Pointwise Convolution}{33}{section*.40}
-\contentsline {subparagraph}{\nonumberline Depthwise Separable Convolution}{34}{section*.41}
-\contentsline {subsection}{\numberline {4.4}Besondere Konvolution Neuronale Netzwerke}{34}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}AlexNet}{34}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}SqueezeNet}{35}{subsubsection.4.4.2}
-\contentsline {subsubsection}{\numberline {4.4.3}Xception}{37}{subsubsection.4.4.3}
-\contentsline {subsubsection}{\numberline {4.4.4}MobileNet}{37}{subsubsection.4.4.4}
-\contentsline {subsection}{\numberline {4.5}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{38}{subsection.4.5}
-\contentsline {subsubsection}{\numberline {4.5.1}Adaptive Gradient Algorithm (AdaGrad)}{38}{subsubsection.4.5.1}
-\contentsline {subsubsection}{\numberline {4.5.2}Root Mean Square Propagation(RMSProp)}{39}{subsubsection.4.5.2}
-\contentsline {subsubsection}{\numberline {4.5.3}Adaptive Moment Estimation(Adam)}{40}{subsubsection.4.5.3}
+\contentsline {subsection}{\numberline {4.3}Convolution Layers}{31}{subsection.4.3}
+\contentsline {paragraph}{\numberline {4.3.0.1}Standard Convolution}{32}{paragraph.4.3.0.1}
+\contentsline {paragraph}{\numberline {4.3.0.2}Depthwise Convolution}{33}{paragraph.4.3.0.2}
+\contentsline {paragraph}{\numberline {4.3.0.3}Pointwise Convolution}{34}{paragraph.4.3.0.3}
+\contentsline {paragraph}{\numberline {4.3.0.4}Depthwise Separable Convolution}{34}{paragraph.4.3.0.4}
+\contentsline {subsection}{\numberline {4.4}Vergleich zwischen Konvolution Neuronale Netzwerke}{35}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}AlexNet}{35}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Xception}{35}{subsubsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.3}MobileNet}{36}{subsubsection.4.4.3}
+\contentsline {subsubsection}{\numberline {4.4.4}TemkiNet}{36}{subsubsection.4.4.4}
+\contentsline {subsection}{\numberline {4.5}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimizer}{37}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}Adaptive Gradient Algorithm (AdaGrad)}{37}{subsubsection.4.5.1}
+\contentsline {subsubsection}{\numberline {4.5.2}Root Mean Square Propagation(RMSProp)}{38}{subsubsection.4.5.2}
+\contentsline {subsubsection}{\numberline {4.5.3}Adaptive Moment Estimation(Adam)}{39}{subsubsection.4.5.3}
 \contentsline {subsection}{\numberline {4.6}Problem beim Training von Convolutional neuronale Netzwerke}{40}{subsection.4.6}
 \contentsline {subsubsection}{\numberline {4.6.1}Overfitting}{40}{subsubsection.4.6.1}
-\contentsline {subparagraph}{\nonumberline Data Augmentation}{41}{section*.47}
-\contentsline {subparagraph}{\nonumberline Dropout}{42}{section*.50}
-\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{43}{section*.52}
-\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{43}{section*.54}
-\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{44}{section*.55}
-\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{44}{section*.57}
+\contentsline {subparagraph}{\nonumberline Data Augmentation}{40}{section*.44}
+\contentsline {subparagraph}{\nonumberline Dropout}{42}{section*.47}
+\contentsline {subparagraph}{\nonumberline Funktionsweise von Dropout}{43}{section*.49}
+\contentsline {subparagraph}{\nonumberline Verhinderung der Koadaptationen zwischen Neuronen}{43}{section*.51}
+\contentsline {subparagraph}{\nonumberline Automatische Erh\IeC {\"o}hung von Training Daten und Regelung}{43}{section*.52}
+\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{44}{section*.54}
 \contentsline {subsubsection}{\numberline {4.6.2}Dataset}{46}{subsubsection.4.6.2}
 \contentsline {section}{\numberline {5}Literatur}{46}{section.5}
