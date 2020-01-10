@@ -49,14 +49,15 @@
 \contentsline {subsubsection}{\numberline {4.3.3}MobileNet}{35}{subsubsection.4.3.3}
 \contentsline {subsubsection}{\numberline {4.3.4}TemkiNet}{36}{subsubsection.4.3.4}
 \contentsline {subsection}{\numberline {4.4}Verbesserung der Leistung eines Convolution Neuronalen Netzwerks}{37}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Einfluss der Lernrate}{38}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}Algorithmen zur Optimierung des Gradientenabstiegsverfahren: Optimierer}{40}{subsection.4.6}
-\contentsline {subsubsection}{\numberline {4.6.1}Adaptive Gradient Algorithm (AdaGrad)}{40}{subsubsection.4.6.1}
-\contentsline {subsubsection}{\numberline {4.6.2}Root Mean Square Propagation(RMSProp)}{41}{subsubsection.4.6.2}
-\contentsline {subsubsection}{\numberline {4.6.3}Adaptive Moment Estimation(Adam)}{41}{subsubsection.4.6.3}
-\contentsline {subsection}{\numberline {4.7}Problem beim Training von Convolutional neuronale Netzwerke}{42}{subsection.4.7}
-\contentsline {subsubsection}{\numberline {4.7.1}Overfitting}{42}{subsubsection.4.7.1}
-\contentsline {subparagraph}{\nonumberline Data Augmentation}{42}{section*.51}
-\contentsline {subparagraph}{\nonumberline Dropout}{43}{section*.54}
-\contentsline {subparagraph}{\nonumberline Batch-Normalisierung}{46}{section*.58}
-\contentsline {subsubsection}{\numberline {4.7.2}Datensatz}{47}{subsubsection.4.7.2}
+\contentsline {subsubsection}{\numberline {4.4.1}Data Augmentation.}{37}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Optimierer.}{39}{subsubsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.3}Batch-Normalisierung.}{41}{subsubsection.4.4.3}
+\contentsline {subsubsection}{\numberline {4.4.4}Bildgr\IeC {\"o}\IeC {\ss }e.}{42}{subsubsection.4.4.4}
+\contentsline {subsubsection}{\numberline {4.4.5}Anzahl der Neuronen pro Schicht:}{43}{subsubsection.4.4.5}
+\contentsline {subsubsection}{\numberline {4.4.6}Aktivierungsfunktion.}{43}{subsubsection.4.4.6}
+\contentsline {subsubsection}{\numberline {4.4.7}Qualit\IeC {\"a}t des Datensatzes}{44}{subsubsection.4.4.7}
+\contentsline {subsection}{\numberline {4.5}Einfluss der Lernrate}{45}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Problem beim Training von Convolutional neuronale Netzwerke}{47}{subsection.4.6}
+\contentsline {subsubsection}{\numberline {4.6.1}Overfitting}{47}{subsubsection.4.6.1}
+\contentsline {subparagraph}{\nonumberline Dropout}{48}{section*.61}
+\contentsline {subsection}{\numberline {4.7}Extreme Version von \textit {TemkiNet.}}{49}{subsection.4.7}

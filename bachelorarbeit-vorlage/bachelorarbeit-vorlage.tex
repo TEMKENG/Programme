@@ -335,7 +335,7 @@ Um diese Faltungsoperation durchzuführen, müssen einige Hyperparameter vordefi
 	\end{table}
 	
 \subparagraph{\textit{Padding}.}
-	Mit einem großen Filter lernt man in der Regel "mehr"{} als mit einem kleinen.Aber wie es in der Tabelle \ref{tab:Stride and filter size} zu sehen ist, hat man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.Um die Ränder einer Eingabe zu füllen, werden sehr oft Nullen (\textit{zero padding}) verwendet, oder die Pixel, die an der Grenze liegen, werden wiederholt.\\
+	Mit einem großen Filter lernt man in der Regel \dq mehr\dq als mit einem kleinen.Aber wie es in der Tabelle \ref{tab:Stride and filter size} zu sehen ist, hat man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.Um die Ränder einer Eingabe zu füllen, werden sehr oft Nullen (\textit{zero padding}) verwendet, oder die Pixel, die an der Grenze liegen, werden wiederholt.\\
 
 In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{ConvL} mit dem Erlernen einfacher Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale. Das liegt daran, dass jede nachfolgende Schicht einen größeren Bereich des Originalbildes betrachten oder \glqq sehen \grqq{} kann.Nehmen wir an,dass die zwei ersten Layers eines \acsp{CNN} Filter von Größe $ 3\times 3 $  und ein \textit{Stride} $ =(1,1) $ verwenden.Die erste Schicht betrachte immer $ 3\times3 $ benachbarte Pixel des Originalbildes und speichert seine Aktivierung auf einem Pixel. Jetzt wenn die zweite \ac{ConvL}  $ 3\times3 $ benachbarte Pixel betrachtet, betrachtet sie eigentlich  $ 5\times5 $ benachbarte Pixel des Originalbildes.Wir können uns deshalb vorstellen, dass irgendwo in späteren Schichten Filter das gesamte Originalbild betrachten.
  
@@ -410,7 +410,7 @@ In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{
 	\label{fig:Faltungsoperation}
 \end{figure}
 
-\paragraph{Aktivierungsfunktion}
+\paragraph{Aktivierungsfunktion}\label{Aktivierungsfunktion}
 Das neuronale Netzwerk wird während des Trainings mit vielen Daten gespeist und das sollte in der Lage sein, aus diesen Daten zwischen relevanten und irrelevanten Informationen Unterschied zu machen.
 Die Aktivierungsfunktion auch Transferfunktion oder Aktivitätsfunktion genannt, hilf dem \ac{NN} bei der Durchführung dieser Trennung. Es gibt sehr viele Aktivierungsfunktionen und in folgenden werden wir sehen, dass eine Aktivierungsfunktion je nach zu lösende Aufgaben  vorzuziehen ist.\[\begin{cases}
 Y = f(\Sigma (Gewicht*Input + Bias))\\ f:= Aktivierungsfunktion
@@ -1224,7 +1224,7 @@ Das Xception-Model ersetzt alle Inception-Blöcke durch Xception-Blöcke (\ref{f
 \subsubsection{MobileNet}
 \textit{MobileNet}(\cite{MobileNet}) wie \textit{Xception} macht die \textit{Depthwise Separable Convolution} zunutze.Wie in der Abbildung(\ref{fig:Xception|MobileNet}) zu sehen ist, wurden aber \textit{Batch-Normalisierung und ReLU6}- Layers vor und nach der $ 1\times1 $ Faltungschicht hinzugefügt, was eine schnelle Feature-Extraktion ermöglicht und die \textit{ReLU6} Aktivierung erhöht die Nichtlinearität der Entscheidungsfunktion. \textit{MobileNet} nutzt etwas $\sim 3.5$ Millionen Parameter, was mindestens sechsmal weniger als die Parameteranzahl von \textit{Xception} ist, was auch eine bessere Inferenz ermöglicht.
 
-\subsubsection{TemkiNet}
+\subsubsection{TemkiNet}\label{exp:TEMKI}
 Inspiriert von den soeben beschriebenen \acsp{CNN} haben wir \textit{TemkiNet} entwickelt, deren Parameteranzahl aus $ 1.2 $ Millionen Parametern besteht,was im Vergleich zum anderen \acsp{NN} recht gering ist. Die Bausteine von \textit{TemkiNet} sind in der Abbildung \ref{fig:TEMKENG_NET} zu entnehmen.
 \begin{figure}[ht]
 	\centering
@@ -1242,20 +1242,20 @@ Da jede Schicht die gleiche Anzahl von Neuronen hat, ist die Implementierung von
 		\hline
 		Block & Schrittgröße & Outputgröße\\ \hline
 		conv\_Block &	$ 2\times2 $ &$ (100,100, 101) $\\ \hline
-		Depthwise\_Block & $ 2\times2 $&$ (50,50, 101) $\\ \hline
-		Depthwise\_Block & $ 1\times1 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 2\times2 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block 1& $ 1\times1 $&$ (50,50, 101) $\\ \hline
 		
-		Depthwise\_Block & $ 2\times2 $&$ (25,25, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (25,25, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 2\times2 $&$ (25,25, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block 1 & $ 1\times1 $&$ (25,25, 101) $\\ \hline
 		
-		Depthwise\_Block & $ 2\times2 $&$ (12,12, 101) $\\ \hline
-		$ 3\times $Depthwise\_Block & $ 1\times1 $&$ (12,12, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 2\times2 $&$ (12,12, 101) $\\ \hline
+		$ 3\times $Depthwise\_Block 1 & $ 1\times1 $&$ (12,12, 101) $\\ \hline
 		
-		Depthwise\_Block & $ 2\times2 $&$ (6,6, 101) $\\ \hline
-		$ 4\times $Depthwise\_Block & $ 1\times1 $&$ (6,6, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 2\times2 $&$ (6,6, 101) $\\ \hline
+		$ 4\times $Depthwise\_Block 1 & $ 1\times1 $&$ (6,6, 101) $\\ \hline
 		
-		Depthwise\_Block & $ 2\times2 $&$ (3,3, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (3,3, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 2\times2 $&$ (3,3, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (3,3, 101) $\\ \hline
 		Flatten & / &$ 909 $ \\ \hline
 		Dense\_Block & / &$ 1024 $\\ \hline
 		FC & & $ 101 $\\ \hline
@@ -1273,8 +1273,152 @@ Im Laufe dieser Arbeit werden die verschiedenen Versionen allmählich vorgestell
 Es ist sehr wichtig, eine geeignete Architektur zu finden, aber leider reicht es nicht aus, um zu gewährleisten, dass sehr gute Ergebnisse erzielt werden.
 Im Folgenden werden wir einige Methoden, Techniken oder Hyperparameter untersuchen, die zur Verbesserung der Netzwerk-Performance eingesetzt werden können.
 
+\subsubsection{Data Augmentation.}\label{Data Augmentation}
+Die Datenvermehrung(\textit{Data Augmentation}) 
+Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netzwerke.Sagen, dass ein Datensatz groß oder ausreichend für das Training eines \ac{CNN} ist, hängt nur von der Größe des \ac{CNN} ab und da die \acsp{CNN}, die gute Leistungen erzielen, leider aus vielen Parametern bestehen, ist für jedes Problem des maschinellen Lernens nahezu unmöglich, ausreichende Daten zu finden.Anstatt immer neue Daten zu sammeln, um die Netzwerkleistung zu verbessern, können wir die Leistung des Modells verbessern, indem wir neue Daten aus bestehenden Daten generieren.\\
+Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden, Parallelverschiebungen und die Gauß'sches Rauschen.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{ImageDataAugmaentation.png}
+	\caption{Anwendung von \textit{ImageDataAugmentation} }
+	\label{fig:ImageDataAugmentation}
+\end{figure}
+
+Für diese Arbeit wurden drei Ansätze zur Erhöhung des Datensatzes verwendet:
+Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben. Der zweite Ansatz verwendet keinen größeren Datensatz, sondern immer das Original. Wenn Samplen aus dem Datensatz in das Netzwerk eingeführt werden, werden sie entweder transformiert oder direkt übertragen.Die \textit{KERAS} Funktion \textit{ImageDataGeneerator} bietet die Möglichkeit, Daten zur Laufzeit umzuwandeln. Vor dem Trainingsanfang werden alle Transformationen, die für jede Sample aus dem Datensatz durchgeführt werden können, definiert und beim Einspeisen einer Sample ins Netzwerk wird eine Transformation zufällig auf die Sample durchgeführt. Die Netzwerkeingabe ändert sich also ständig. Das interessanteste an \textit{ImageDataGenerator} ist, dass es mehrere Transformationen gleichzeitig anwenden kann(siehe Abbildung \ref{fig:ImageDataAugmentation}). Der dritte Ansatz ist die gleichzeitige Anwendung der beiden anderen Ansätze.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{DataAugmentation.png}
+	\begin{center}
+		\begin{tabular}{r@{: }l r@{: }l}
+			$ 0 $& Erster Ansatz	& &	 \\
+			$ 1 $ & Dritter Ansatz &	$ 2 $ & Zweiter Ansatz\\
+			Imagegröße & (100, 100,3) &  Lernrate & $ =0.001 $
+		\end{tabular}
+		
+	\end{center}
+	\caption{ Vergleich von Datenvermehrungstechniken}
+	\label{fig:DataAugmentation}
+\end{figure}
+
+
+Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Daten durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.
+
+Obwohl der erste und dritte Ansatz mehr Daten haben und daher bessere Ergebnisse liefern sollten, zeigt die Abbildung \ref{fig:DataAugmentation}, dass die drei Ansätze zu demselben Ergebnis($ \sim 62\% $ Genauigkeit) führen.Das liegt daran, dass die Transformationen, die zur Erweiterung des Datensatzes vor Trainingsbeginn verwendet werden, auch während des Trainings verwendet werden, was dazu führt, dass ein Bild in derselbe Epoche mehrmals ins Netzwerk eingespeist werden kann, was das Netzwerk dazu bringt, diesem Bild mehr Bedeutung zu verleihen.Eine direkte Folge davon ist die Überanpassung des ersten und dritten Ansatzes, die in der Abbildung \ref{fig:DataAugmentation} zu beobachten ist.Dennoch der erste und dritte Ansatz reduzieren im Vergleich zum zweiten deutlich die benötigte Trainingszeit, während der zweite Ansatz das CNN robuster macht.
+\subsubsection{Optimierer.}\label{Optimizer}
+Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
+Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 \begin{enumerate}
-	\item \textbf{Bildgröße:}	
+	
+
+\item \textbf{Adaptive Gradient Algorithm (AdaGrad)}\\
+AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
+
+\begin{equation}\label{adagrad}
+\begin{aligned}
+\alpha_{t}=&\sum_{i = 1}^{t}{(g_{i-1})^2} &
+\theta_{t+1} =& \theta_{t} -\eta_{t} g_t \\ \eta_{t} =& \frac{\eta}{\sqrt{\alpha_{t}}+\epsilon}
+\end{aligned}
+\end{equation}
+\begin{center}
+	Voreingestellte Parameter(\textit{KERAS}) :
+	\begin{tabular}{r@{= }l c@{= }c r@{= }l}
+		$ \alpha_{0} $& 0.0 & $ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
+	\end{tabular}
+\end{center}
+Dabei wird am Trainingsanfang eine Lernrate für jeden Parameter definiert und im Trainingsverlauf separat angepasst. 
+Dieses Verfahren eignet sich gut für spärliche Daten, denn es gibt häufig auftretende Merkmale sehr niedrige Lernraten und seltene Merkmale hohe Lernraten, wobei die Intuition ist, dass jedes Mal, wenn eine seltene Eigenschaft gesehen wird, sollte der Lernende mehr aufpassen. Somit erleichtert die Anpassung das Auffinden und Identifizieren sehr voraussehbarer, aber vergleichsweise seltener Merkmale.\cite{AdaGrad}.Wie in der Gleichung \eqref{adagrad} festzustellen,nach einer bestimmten Anzahl von Iterationen haben wir keine Verbesserung der Netzleistung, denn je größer $ t $ wird, desto kleiner $ \eta_{t} $ wird und irgendwann wird $ \eta_{t} $ so klein, dass $ \eta_{t}g_{t} $ fast gleich null ist.
+
+\item \textbf{Root Mean Square Propagation(RMSProp)}\\
+RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur Anpassung der Netzparameter basiert der RMSProp Optimizer auf den Durchschnitt der aktuellen Größen der Gradienten statt auf der Summe der ersten Moment wie in AdaGrad.Da $ E[g^2]_t $ nicht schneller als $ \alpha_{t} $\eqref{adagrad} ansteigt, wird die radikal sinkenden Lernraten von Adagrad deutlich verlangsamt.Die Parameteranpassungen richten sich nach der folgenden Gleichung:
+\begin{equation}\label{RMSProp}
+\begin{split}
+E[g^2]_t =\alpha E[g^2]_{t-1} +(1-\alpha)g^2_{t}\\
+\theta_{t+1} = \theta_{t} -\frac{\eta}{\sqrt{E[g^2]_t}+\epsilon} g_t, \quad  \epsilon \approx 0
+\end{split}
+\end{equation}
+Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
+
+\item \textbf{Adaptive Moment Estimation(Adam)}\\
+Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
+Adam weist die Hauptvorteile von AdaGrad, das mit spärlichen Gradienten gut funktioniert, und RMSProp, das einige Probleme von AdaGrad löst und das für nicht-konvexe Optimierung geeignet ist,auf.Wie die Parameteranpassung von Adam Optimizer genau funktioniert, ergibt sich aus der folgenden Gleichung: 
+\begin{equation}\label{ADAM}
+\begin{aligned}
+m_{t}=& \beta_{1}m_{t-1}+(1-\beta_{1})g_{t}, &  \widehat{m}_{t} =& \dfrac{m_{t}}{1-\beta_{1}^t}\\
+v_{t}=& \beta_{2}v_{t-1}+(1-\beta_{2})g^2_t,&\widehat{v}_{t} =&\dfrac{v_t}{1-\beta_{2}^t}\\
+\theta_{t+1} =& \theta_{t} -\dfrac{\eta}{\sqrt{\widehat{v}_{t}}+\epsilon}\widehat{m}_{t}
+\end{aligned}
+\end{equation}
+\begin{center}
+	Voreingestellte Parameter(\textit{KERAS}) :
+	\begin{tabular}{r@{: }l r@{: }l}
+		$ \beta_{1}$ & 0.9 &$ \beta_{2} $& 0.999\\
+		$ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
+	\end{tabular}
+\end{center}
+
+Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Implementierung, effizienter Nutzung der Speicherplatz und seine Invarianz zur diagonalen Neuskalierung der Gradienten.
+\item \textbf{Vergleich.}\\
+Die Ergebnisse in der Tabelle \ref{tab:Optimierer} stimmen perfekt mit der soeben beschriebenen Theorie überein, die aussagt, dass die besten Ergebnisse mit dem $ Adam $-Optimierer erzielt werden sollen. Wir stellen auch fest, dass Optimierer sehr empfindlich auf eine kleine Veränderung der Lernrate reagieren. 
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{*{3}{|c}| }
+		\hline
+		Optimierer 	& Genauigkeit & Lernrate\\ \hline
+		$ Adagrad $	&$ 23.21\% $  &$ 0.001$ \\ \hline
+		$ Adagrad $	&$ 51.65\% $  &$ 0.005$ \\ \hline
+		$ SGD $		&$ 55.01\% $  &$0.001$ \\ \hline	
+		$ rmsprop $	&$ 55.34\% $  &$0.001 h$\\ \hline
+		$ rmsprop$	&$ 59.54\% $  &$ 0.0001$\\ \hline
+		$ Adam$		&$ 26.70\% $  &$ 0.001$\\ \hline
+		$ Adam$		&$ 61.82\% $  &$ 0.0001$\\ \hline
+	\end{tabular}
+	\caption{Vergleich zwischen Optimierern}
+	\label{tab:Optimierer}
+\end{table}
+
+\end{enumerate}
+\subsubsection{Batch-Normalisierung.}\label{Batch-Normalisierung}
+Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür ist zum Beispiel die Tatsache, dass die Parameter einer Schicht während des Trainings tiefer neuronaler Netze immer unter der Annahme, dass sich die Parameter anderer Schichten nicht ändern, aktualisiert werden und da alle Schichten während des Updates geändert werden, verfolgt das Optimierungsverfahren ein Minimum, das sich ständig bewegt. Ein anderer Grund dafür ist die ständigen Veränderungen im Laufe des Trainings in die Verteilung des Netzinputs, diese Veränderung wird von \cite{bactchnormalisation} als interne kovariate Verschiebung(\textit{Internal Covariate Shift}) genannt und um dieses Problem zu lösen, wird vorgeschlagen, die Netzwerkeingabe zu normalisieren. Aber dieser Ansatz bringt nicht so viel, wenn das \ac{NN} sehr tief ist, denn nur der Netzinput profitiert von der Normalisierung und die kleinen Veränderungen in versteckte Schichten werden sich immer mehr verstärken, je tiefer man das Netz durchläuft. Mit der Ausbreitung tiefer \acsp{NN} dehnt die Idee der Datennormalisierung auch auf versteckte Schichten tiefer \acsp{NN} aus. Bei der BN werden die Eingaben in einem Netzwerk, die entweder auf die Aktivierungen einer vorherigen Schicht oder auf direkte Eingaben angewendet wird, so standardisiert, dass der Mittelwert in der Nähe von null liegt und die Standardabweichung in der Nähe von eins liegt. Die BN wird über Mini-Batches und nicht über den gesamten Trainingssatz durchgeführt, daher enthalten wir nur Näherungen an tatsächliche Werte der Standardabweichung und des Mittelwerts über das Trainingssatzes, aber wir gewinnen an Geschwindigkeit und an Speicherplatzverbrauch.Der Algorithmus \ref{alg:bactchnormalisation} gibt die formale Beschreibung des BN  an.
+
+\begin{algorithm}
+	\KwIn{Mini-Batch:  $ B=\{x_{1...m}\} $, Lernbare Parameter   $ \beta, \gamma $ }
+	\KwOut{$ y_i = BN_{\beta, \gamma}(x_i) $}
+	\DontPrintSemicolon
+
+ 	Mini-Batch Mittelwert  :  $ \mu_\beta=\frac{1}{m}\sum_{i = 1}^{m}x_i $;\\
+	Mini-Batch Standardabweichung :$  \sigma_\beta^2=\frac{1}{m}\sum_{i = 1}^{m}(x_i- \mu_\beta)^2 $\\
+	Normalisierung:  $ \widehat{x_i} = \frac{x_i - \mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}} $\\
+	Skalierung und Verschiebung :$ {y_i} = \gamma\widehat{x_i} + \beta \equiv BN_{\gamma, \beta} $
+	\caption{Batch-Normalisierung-Algorithmus \cite{bactchnormalisation}.}
+	\label{alg:bactchnormalisation}
+\end{algorithm}
+
+Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekommen wir die gleiche Verteilung wie vor der Batch-Normalisierung, d.h die Eingabe war also schon normalisiert. Interessanterweise kann das Netz während des Trainings eine bessere Verteilung als die erwünschte finden, denn $\gamma$ und $\beta$ sind lernbare Parameter.
+
+Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
+Zum anderen wird die interne kovariate Verschiebung geringer, was das Training beschleunigt, in einigen Fällen durch Halbierung der Epochen oder besser. Noch dazu wird das Netz durch die BN in gewissem Maße reguliert, daher wird die Verwendung von Dropout bzw. Regulierungstechnik reduziert oder sogar überflüssig und somit eine Verbesserung der Verallgemeinerungsgenauigkeit.
+
+Aber die Verwendung von BN scheint keine Wirkung auf \textit{TemkiNet} zu haben, wenn die Lernrate zu klein ist und die Experimente zeigen, dass die Anwendung der Batch-Normalisierung bei Verwendung eine kleine Lernrate überflüssig ist.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{*{3}{|c}| }
+		\hline
+		Batch-Normalisierung 	& Genauigkeit & Lernrate\\ \hline
+		$ Ja $		&$ 55.01\% $  &$0.001$ 	\\ \hline	
+		$ Nein $	&$28.57 \% $  &$0.001 $	\\ \hline
+		$ Ja $		&$ 61.82\% $  &$0.0001$	\\ \hline
+		$ Nein $	&$ 62.23\% $  &$0.0001$	\\ \hline
+
+	\end{tabular}
+	\caption{Einfluss der Batch-Normalisierung auf \textit{TemkiNet.}}
+	\label{tab:batchnormalisierung}
+\end{table}
+ 
+\subsubsection{Bildgröße.}	
 	Die Bilder in einem Datensatz haben in den meisten Fällen nicht die gleiche räumliche Dimension, und leider erfordert das Batch-Training nur gleich große Einträge, so dass alle Bilder vor der Verarbeitung in der Größe angepasst werden müssen, und eine direkte Folge davon ist der Verlust von Informationen.Die Wirkung dieses Informationsverlusts wird in der Tabelle\ref{tab:Bildqualtaet} gut illustriert.
 	
 	
@@ -1303,19 +1447,75 @@ Im Folgenden werden wir einige Methoden, Techniken oder Hyperparameter untersuch
 %		\label{fig:bildgroesse}
 %	\end{figure}
 Aus der Tabelle \ref{tab:Bildqualtaet} stellt man fest, dass je größer die Eingabe, desto besser die Leistung des Netzwerkes, desto mehr Parameter bzw. Speicherplatz wird benötigt oder desto länger die Dauer der Inferenz.
-	\item Aktivierung.
-		\begin{itemize}
-			\item ReLU6.
-			\item Tanh.						
-			\item LeakyReLU.
-		\end{itemize}
-	\item Optimierer.
-		\begin{itemize}
-			\item AdaGrad.
-			\item RMSProp.
-			\item Adam.
-		\end{itemize}
-	\item Batch-Normalisierung.
+
+\subsubsection{Anzahl der Neuronen pro Schicht:}
+Wie in \ref{exp:TEMKI} erwähnt, alle \acsp{ConvL} in \textit{TemkiNet} die gleiche Anzahl von Neuronen haben. Die Tabelle \ref{tab:units} oder Abbildung \ref{fig:units} \textcolor{red}{??} zeigt, wie die Anzahl der Feature-Maps pro Schicht die Netzwerkleistung beeinflusst.Die Abbildung \ref{fig:units} zeigt, dass die \textit{TemkiNet}-Architektur mit weniger Einheiten pro Schicht besser arbeitet und  weniger unter Overfitting leidet.Zwar bringt die Erhöhung der Einheiten pro Schicht eine Verbesserung der Netzwerkleistung, aber es lohnt sich nicht, wenn man sich den Speicherbedarf ansieht.
+	\begin{table}[ht]
+	\centering
+	\begin{tabular}{*{3}{|c}| }
+		\hline
+		Einheit & Genauigkeit & \#Parameter \\ \hline
+		$ 101$	&$ 60.52\% $ &$1.243.683 $ \\ \hline
+		$ 202$	&$ 62.12\% $ &$2.725.555 $ \\ \hline	
+		$ 303$	&$ 61.53\% $ &$4.554.261 $ \\ \hline
+	\end{tabular}
+	\caption{Einfluss der Anzahl von Neuronen pro Schicht.}
+	\label{tab:units}
+\end{table}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{units}
+	\caption{Einfluss der Anzahl von Neuronen pro Schicht.}
+	\label{fig:units}
+\end{figure}
+
+\subsubsection{ Aktivierungsfunktion.}
+Wie in Absatz \ref{Aktivierungsfunktion} gesehen, ist es vorteilhaft, wenn eine Aktivierungsfunktion bestimmte Eigenschaften besitzt.Nach der Tabelle \ref{tab:Aktivierungsfunktion} erzielen die Variante von \textit{ReLU} die besseren Ergebnisse und die Experimente zeigen, dass die \textit{LeakyReLU}-Funktion nicht nur das beste Ergebnis gibt, sondern auch am stabilsten und schnellsten ist.
+	\begin{table}[ht]
+	\centering
+	\begin{tabular}{*{3}{|c}| }
+		\hline
+		Aktivierung & Genauigkeit & \#Parameter \\ \hline
+		$ Tanh$		&$ 06.83\% $ &$1.418.817$ \\ \hline
+		$ ReLU6$	&$ 58.99\% $ &$1.418.817 $ \\ \hline	
+		$ PReLU$	&$ 59.70\% $ &$3.976.757 $ \\ \hline
+		$ LeakyReLU$&$ 61.83\% $ &$1.418.817 $ \\ \hline
+	
+	\end{tabular}
+	\caption{Vergleich zwischen Aktivierungsfunktionen.}
+	\label{tab:Aktivierungsfunktion}
+\end{table}
+
+\subsubsection{Qualität des Datensatzes}
+In diesem Teil der Arbeit untersuchen wir, wie die Qualität des Datensatzes die Leistung des Netzwerks beeinflussen kann. Dazu nutzen wir die beiden \textit{Food}-101-Datensätze.Die Abbildung\ref{fig:Dataset_problem} zeigt einige Bilder und zugeordnete Labels.Egal wie gut ein \ac{CNN} trainiert ist, es gibt keine Chance, dass es die gute Antwort gibt, wenn es solchen Input bekommt.  Wie in Abbildung \ref{fig:Dataset_problem} und in Tabelle \ref{tab:Bildqualitaet} zu sehen ist, ist es notwendig, bei der Aufteilung des Datensatzes eine bessere Bildqualität für den Validierungsdatensatz oder den Testdatensatz auszuwählen.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{Dataset_problem}
+	\caption{Problem mit Datensätzen.}
+	\label{fig:Dataset_problem}
+\end{figure}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{*{4}{|c}| }
+		\hline
+		Datensatz & Bildgröße & Genauigkeit & \#Parameter \\ \hline
+		food-101-T&$ 100\times100 $&$ 61.82\% $ &$ 1.418.817 $ \\ \hline
+		food-101-O&$ 100\times100 $&$ 67.08\% $ &$ 1.418.817 $  \\ \hline
+		
+		food-101-T&$ 150\times150 $&$ 64.87\% $ &$ 2.142.785 $  \\ \hline
+		food-101-O&$ 150\times150 $&$ 71.56\% $ &$ 2.142.785 $  \\ \hline
+		
+		food-101-T&$ 224\times224 $&$ 67.69\% $ &$  5.546.659 $  \\ \hline
+		food-101-O&$ 224\times224 $&$ 73.60\% $ &$ 5.546.659 $  \\ \hline
+		\hline
+	\end{tabular}
+	\caption{Einfluss der Qualität des Datensatzes }
+	\label{tab:Bildqualitaet}
+\end{table}
+\begin{enumerate}
 	\item Dropout.
 		\begin{itemize}
 			\item $ 0.1 $
@@ -1334,6 +1534,7 @@ Aus der Tabelle \ref{tab:Bildqualtaet} stellt man fest, dass je größer die Ein
 			\item Food-101-6.
 			\item Food-101-SVD. 
 		\end{itemize}
+
 \end{enumerate}
 
 \subsection{ Einfluss der Lernrate}\label{Experiment:Lernrate}
@@ -1389,58 +1590,7 @@ Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Min
 
 \textcolor{purple}{Vergleich zwischen normale LearningRateScheduler und meine}
 
-\subsection{Algorithmen zur Optimierung des Gradientenabstiegsverfahren:	Optimierer}\label{Optimizer}
-Die Wahl des Optimierungsalgorithmus für ein \ac{CNN} kann den Unterschied zwischen guten Ergebnissen in Minuten, Stunden und Tagen ausmachen.Zum besserer Anwendung der Gradientenabstiegsverfahren wurden mehrere Optimierte Lernverfahren entwickelt. Im folgenden wird ein kurzer Einblick über die bekanntesten Lernverfahren(\textit{Optimizer})  gegeben.\\
-Alle heutige Optimizer haben SGD als Vorfahren und der Hauptnachteil von SGD ist , dass es die gleiche Lernrate für die Anpassung aller Netzwerkparameter verwendet und diese Lernrate wird auch während des Trainings nie geändert. 
 
-\subsubsection{Adaptive Gradient Algorithm (AdaGrad)}
-AdaGrad bietet während des Netztrainings nicht nur die Möglichkeit, die Lernrate zu verändern, sondern auch für jeden Parameter eine geeignete Lernrate zu finden. Die AdaGrad-Aktualisierungsregel ergibt sich aus der folgenden Formel:
- 
-\begin{equation}\label{adagrad}
-\begin{aligned}
-\alpha_{t}=&\sum_{i = 1}^{t}{(g_{i-1})^2} &
-\theta_{t+1} =& \theta_{t} -\eta_{t} g_t \\ \eta_{t} =& \frac{\eta}{\sqrt{\alpha_{t}}+\epsilon}
-\end{aligned}
-\end{equation}
-\begin{center}
-	Voreingestellte Parameter(\textit{KERAS}) :
-	\begin{tabular}{r@{= }l c@{= }c r@{= }l}
-		$ \alpha_{0} $& 0.0 & $ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
-	\end{tabular}
-\end{center}
-Dabei wird am Trainingsanfang eine Lernrate für jeden Parameter definiert und im Trainingsverlauf separat angepasst. 
-Dieses Verfahren eignet sich gut für spärliche Daten, denn es gibt häufig auftretende Merkmale sehr niedrige Lernraten und seltene Merkmale hohe Lernraten, wobei die Intuition ist, dass jedes Mal, wenn eine seltene Eigenschaft gesehen wird, sollte der Lernende mehr aufpassen. Somit erleichtert die Anpassung das Auffinden und Identifizieren sehr voraussehbarer, aber vergleichsweise seltener Merkmale.\cite{AdaGrad}.Wie in der Gleichung \eqref{adagrad} festzustellen,nach einer bestimmten Anzahl von Iterationen haben wir keine Verbesserung der Netzleistung, denn je größer $ t $ wird, desto kleiner $ \eta_{t} $ wird und irgendwann wird $ \eta_{t} $ so klein, dass $ \eta_{t}g_{t} $ fast gleich null ist.
-
-\subsubsection{Root Mean Square Propagation(RMSProp)}
-RMSProp wie AdaGrad findet für jeden Parameter eine geeignete Lernrate und zur Anpassung der Netzparameter basiert der RMSProp Optimizer auf den Durchschnitt der aktuellen Größen der Gradienten statt auf der Summe der ersten Moment wie in AdaGrad.Da $ E[g^2]_t $ nicht schneller als $ \alpha_{t} $\eqref{adagrad} ansteigt, wird die radikal sinkenden Lernraten von Adagrad deutlich verlangsamt.Die Parameteranpassungen richten sich nach der folgenden Gleichung:
-\begin{equation}\label{RMSProp}
-\begin{split}
-E[g^2]_t =\alpha E[g^2]_{t-1} +(1-\alpha)g^2_{t}\\
-\theta_{t+1} = \theta_{t} -\frac{\eta}{\sqrt{E[g^2]_t}+\epsilon} g_t, \quad  \epsilon \approx 0
-\end{split}
-\end{equation}
-Der RMSProp funktioniert besser bei Online- und nicht-stationären Problemen.
-
-\subsubsection{Adaptive Moment Estimation(Adam)}
-Der Adam\cite{adam} Optimizer ist auch ein adaptiver Algorithmus,der die ersten und zweiten Momente der Gradienten schätzt, um individuelle adaptive Lernraten für verschiedene Parameter zu berechnen.
-Adam weist die Hauptvorteile von AdaGrad, das mit spärlichen Gradienten gut funktioniert, und RMSProp, das einige Probleme von AdaGrad löst und das für nicht-konvexe Optimierung geeignet ist,auf.Wie die Parameteranpassung von Adam Optimizer genau funktioniert, ergibt sich aus der folgenden Gleichung: 
-\begin{equation}\label{ADAM}
-\begin{aligned}
-m_{t}=& \beta_{1}m_{t-1}+(1-\beta_{1})g_{t}, &  \widehat{m}_{t} =& \dfrac{m_{t}}{1-\beta_{1}^t}\\
-v_{t}=& \beta_{2}v_{t-1}+(1-\beta_{2})g^2_t,&\widehat{v}_{t} =&\dfrac{v_t}{1-\beta_{2}^t}\\
-\theta_{t+1} =& \theta_{t} -\dfrac{\eta}{\sqrt{\widehat{v}_{t}}+\epsilon}\widehat{m}_{t}
-\end{aligned}
-\end{equation}
-\begin{center}
-	Voreingestellte Parameter(\textit{KERAS}) :
-	\begin{tabular}{r@{: }l r@{: }l}
-		$ \beta_{1}$ & 0.9 &$ \beta_{2} $& 0.999\\
-		$ \eta$& 0.001& $ \epsilon $ & $ 10^{-7} $
-	\end{tabular}
-\end{center}
-
-Zu weiteren Vorteile der Nutzung von Adam gehört auch seine Einfachheit zur Implementierung, effizienter Nutzung der Speicherplatz und seine Invarianz zur diagonalen Neuskalierung der Gradienten.
-\\ \textcolor{purple}{Kleines Experiment}
 
 
 \subsection{Problem beim Training von  Convolutional   neuronale Netzwerke}
@@ -1454,39 +1604,7 @@ Wenn ein von der Maschine gelerntes Modell zu gut auf die Trainingsdaten abgesti
 
 %\paragraph{Strategie gegen Overfitting}
 
-\subparagraph{Data Augmentation}\label{Data Augmentation}
-Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netzwerke.Sagen, dass ein Datensatz groß oder ausreichend für das Training eines \ac{CNN} ist, hängt nur von der Größe des \ac{CNN} ab und da die \acsp{CNN}, die gute Leistungen erzielen, leider aus vielen Parametern bestehen, ist für jedes Problem des maschinellen Lernens nahezu unmöglich, ausreichende Daten zu finden.Anstatt immer neue Daten zu sammeln, um die Netzwerkleistung zu verbessern, können wir die Leistung des Modells verbessern, indem wir neue Daten aus bestehenden Daten generieren.\\
-Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden, Parallelverschiebungen und die Gauß'sches Rauschen.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{ImageDataAugmaentation.png}
-	\caption{Anwendung von \textit{ImageDataAugmentation} }
-	\label{fig:ImageDataAugmentation}
-\end{figure}
-
-Für diese Arbeit wurden drei Ansätze zur Erhöhung des Datensatzes verwendet:
-Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben. Der zweite Ansatz verwendet keinen größeren Datensatz, sondern immer das Original. Wenn Samplen aus dem Datensatz in das Netzwerk eingeführt werden, werden sie entweder transformiert oder direkt übertragen.Die \textit{KERAS} Funktion \textit{ImageDataGeneerator} bietet die Möglichkeit, Daten zur Laufzeit umzuwandeln. Vor dem Trainingsanfang werden alle Transformationen, die für jede Sample aus dem Datensatz durchgeführt werden können, definiert und beim Einspeisen einer Sample ins Netzwerk wird eine Transformation zufällig auf die Sample durchgeführt. Die Netzwerkeingabe ändert sich also ständig. Das interessanteste an \textit{ImageDataGenerator} ist, dass es mehrere Transformationen gleichzeitig anwenden kann(siehe Abbildung \ref{fig:ImageDataAugmentation}). Der dritte Ansatz ist die gleichzeitige Anwendung der beiden anderen Ansätze.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth]{DataAugmentation.png}
-	\begin{center}
-		\begin{tabular}{r@{: }l r@{: }l}
-		$ 0\_ $& Erster Ansatz	& &	 \\
-		$ 1\_ $ & Dritter Ansatz &	$ 2\_ $ & Zweiter Ansatz\\
-			   Imagegröße & (100, 100,3) &  Lernrate & $ =0.001 $
-		\end{tabular}
-		
-	\end{center}
-	\caption{ Vergleich von Datenvermehrungstechniken}
-	\label{fig:DataAugmentation}
-\end{figure}
-
-
-Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Daten durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.
-
-Obwohl der erste und zweite Ansatz mehr Daten haben und daher bessere Ergebnisse liefern sollten, zeigt die Abbildung \ref{fig:DataAugmentation}, dass die drei Ansätze zu demselben Ergebnis($ \sim 62\% $ Genauigkeit) führen.Das liegt daran, dass die Transformationen, die zur Erweiterung des Datensatzes vor Trainingsbeginn verwendet werden, auch während des Trainings verwendet werden, was dazu führt, dass ein Bild in derselbe Epoche mehrmals ins Netzwerk eingespeist wird, was das Netzwerk dazu bringt, diesen Bildern mehr Bedeutung zu verleihen.Eine direkte Folge davon ist die Überanpassung des ersten und zweiten Ansatzes, die in der Abbildung \ref{fig:DataAugmentation} zu beobachten ist.Dennoch der erste und dritte Ansatz reduzieren im Vergleich zum zweiten deutlich die benötigte Trainingszeit, während der zweite Ansatz das CNN robuster macht.
 
 \subparagraph{Dropout}  \label{Dropout}
 Künstliche Neurone sind von biologischen Neuronen inspiriert, aber die Beiden unterscheidet sich sehr voneinander und einer der wichtigen Unterschiede ist, dass biologische Neuronen unvollkommene Maschinen sind, die sehr oft nicht richtig funktioniert und das ist a priori nie den Fall bei  künstlichen Neuronen. Wir könnten also glauben, dass \ac{KNN} die biologische übertreffen könnten.Es sei denn, dass diese Funktionsstörung von biologischen Neuronen nicht eine Schwäche ist, sondern eher eine Stärke ist.Eine der verblüffenden Entdeckungen in \ac{KI} Bereich ist, dass es wünschenswert ist, künstliche Neuronen von Zeit zu Zeit zu Fehlfunktionen zu bringen\cite{1}. \textcolor{blue}{Jetzt können wir uns fragen, wie Dysfunktion von Neuronen die Performances \acsp{CNN} verbessern kann}.Die zufällige Hinzufügen von Dysfunktionen in einer Schicht der \ac{CNN} wird \textit{Dropout} benannt und wurde von \cite[Geoffrey E. et al]{2} eingeführt.
@@ -1530,58 +1648,127 @@ Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:Dro
 Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
 %\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
 \end{itemize}
-\subparagraph{Batch-Normalisierung}\label{Batch-Normalisierung}
-Das Training tiefer neuronaler Netze ist sehr kompliziert und ein Grund dafür ist zum Beispiel die Tatsache, dass die Parameter einer Schicht während des Trainings tiefer neuronaler Netze immer unter der Annahme, dass sich die Parameter anderer Schichten nicht ändern, aktualisiert werden und da alle Schichten während des Updates geändert werden, verfolgt das Optimierungsverfahren ein Minimum, das sich ständig bewegt. Ein anderer Grund dafür ist die ständigen Veränderungen im Laufe des Trainings in die Verteilung des Netzinputs, diese Veränderung wird von \cite{bactchnormalisation} als interne kovariate Verschiebung(\textit{Internal Covariate Shift}) genannt.Zur Lösung dieser Probleme schlagen \textit{LeCunn et al}\cite{LeCun} vor dem Training das Netzinput zu normalisieren. Aber dieser Ansatz bringt nicht so viel, wenn das \ac{NN} wirklich tief ist, denn nur der Netzinput profitiert von der Normalisierung und die kleinen Veränderungen in versteckte Schichten werden sich immer mehr verstärken, je tiefer man das Netz durchläuft. Mit der Ausbreitung tiefer \acsp{NN} dehnt Batch-Normalisierung(BN)\cite{bactchnormalisation} diese Idee der Datennormalisierung auf versteckte Schichten tiefer \acsp{NN} aus. Bei der BN werden die Eingaben in einem Netzwerk standardisiert, die entweder auf die Aktivierungen einer vorherigen Schicht oder auf direkte Eingaben angewendet wird, so standardisiert, dass der Mittelwert in der Nähe von null liegt und die Standardabweichung in der Nähe von eins liegt. Die BN wird über Mini-Batches und nicht über den gesamten Trainingssatz durchgeführt, daher enthalten wir nur Näherungen an tatsächliche Werte der Standardabweichung und des Mittelwerts über das Trainingssatzes, aber wir gewinnen an Geschwindigkeit und an Speicherplatzverbrauch.Die Gleichung \eqref{BNA} gibt die formale Beschreibung des BN Algorithmus an.
-\begin{center}
-	Batch-Normalisierungstransformation, angewendet auf Aktivierung x über einen Mini-Batch
-\end{center}
-\begin{subequations}
-	\begin{align*}
-	\textbf{Input:} & \text{  Werte von x über einer Mini-Batch: } B=\{x_{1...m}\}\\
-	& \text{Lernbare Parameter  } \beta, \gamma \\
-	\textbf{Output:} & \{ y_i = BN_{\beta, \gamma}(x_i)\}
-	\end{align*}
-	\begin{align}
-	\text{Mini-Batch Mittelwert  : } &\mu_\beta=\frac{1}{m}\sum_{i = 1}^{m}x_i \\
-	\text{ Mini-Batch Standardabweichung :} &\sigma_\beta^2=\frac{1}{m}\sum_{i = 1}^{m}(x_i- \mu_\beta)^2 \\
-	\text{Normalisierung:} & \widehat{x_i} = \frac{x_i - \mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}} \\
-	\text{Skalierung und Verschiebung :} & {y_i} = \gamma\widehat{x_i} + \beta \equiv BN_{\gamma, \beta}
-	\end{align}
-	\label{BNA}
-\end{subequations}
-Wenn $\gamma = \sqrt{\sigma_\beta^2 + \epsilon}$ und $\beta = \mu_\beta $, bekommen wir die gleiche Verteilung wie vor der Batch-Normalisierung, d.h die Eingabe war also schon normalisiert. Interessanterweise kann das Netz während des Trainings eine bessere Verteilung als die erwünschte finden, denn $\gamma$ und $\beta$ sind lernbare Parameter.
 
-Durch die BN kann zum einen eine hohe Lernrate verwendet,was in tiefer \acsp{NN} ohne BN dazu führen kann, dass die Gradienten explodieren oder verschwinden und in schlechten lokalen Minima stecken bleiben.Die Verwendung einer höhere Lernrate ermöglicht einer schnellere Konvergenz.
-Zum anderen wird die interne kovariate Verschiebung geringer, was das Training beschleunigt, in einigen Fällen durch Halbierung der Epochen oder besser. Noch dazu wird das Netz durch die BN in gewissem Maße reguliert, daher wird die Verwendung von Dropout bzw. Regulierungstechnik reduziert oder sogar überflüssig und somit eine Verbesserung der Verallgemeinerungsgenauigkeit.
-\subsubsection{Datensatz}
-In diesem Teil der Arbeit untersuchen wir, wie die Qualität des Datensatzes die Leistung des Netzwerks beeinflusst. Dazu nutzen wir die beiden Food-101-Datensätze.Die Abbildung\ref{fig:Dataset_problem} zeigt einige Bilder und zugeordnete Labels.Egal wie gut ein \ac{CNN} trainiert ist, es gibt keine Chance, dass es die gute Antwort gibt, wenn es solchen Input bekommt.  Wie in Abbildung \ref{fig:Dataset_problem} und in Tabelle \ref{tab:Bildqualitaet} zu sehen ist, ist es notwendig, bei der Aufteilung des Datensatzes eine bessere Bildqualität für den Validierungsdatensatz oder den Testdatensatz auszuwählen.
 
-\begin{figure}[ht]
+\subsection{Extreme Version von \textit{TemkiNet.}}
+\begin{table}
 	\centering
-	\includegraphics[width=\textwidth]{Dataset_problem}
-	\caption{Problem mit Datensätzen.}
-	\label{fig:Dataset_problem}
-\end{figure}
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{*{4}{|c}| }
+	\begin{tabular}{|c|c|c|}
 		\hline
-		Datensatz & Bildgröße & Genauigkeit & \#Parameter \\ \hline
-		food-101-T&$ 100\times100 $&$ 61.82\% $ &$ 1.418.817 $ \\ \hline
-		food-101-O&$ 100\times100 $&$ 67.08\% $ &$ 1.418.817 $  \\ \hline
+		Block & Schrittgröße & Outputgröße\\ \hline
+		conv\_Block &	$ 2\times2 $ &$ (100,100, 101) $\\ \hline
+		 Max-Pool-Block  & $ 2\times2 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block 1 & $ 1\times1 $&$ (50,50, 101) $\\ \hline
 		
-		food-101-T&$ 150\times150 $&$ 64.87\% $ &$ 2.142.785 $  \\ \hline
-		food-101-O&$ 150\times150 $&$ 71.56\% $ &$ 2.142.785 $  \\ \hline
+		 Max-Pool-Block & $ 2\times2 $&$ (25,25, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (25,25, 101) $\\ \hline
 		
-		food-101-T&$ 224\times224 $&$ 67.69\% $ &$  5.546.659 $  \\ \hline
-		food-101-O&$ 224\times224 $&$ 71.12\% $ &$ 5.546.659 $  \\ \hline
-		\hline
+		 Max-Pool-Block  & $ 2\times2 $&$ (12,12, 101) $\\ \hline
+		$ 3\times $Depthwise\_Block 1& $ 1\times1 $&$ (12,12, 101) $\\ \hline
+		
+		 Max-Pool-Block  & $ 2\times2 $&$ (6,6, 101) $\\ \hline
+		$ 4\times $Depthwise\_Block 1 & $ 1\times1 $&$ (6,6, 101) $\\ \hline
+		
+		 Max-Pool-Block   & $ 2\times2 $&$ (3,3, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (3,3, 101) $\\ \hline
+		GlobalAveragePooling2D & / &$ 101 $ \\ \hline
+		Flatten & / &$ 101 $ \\ \hline
+		
 	\end{tabular}
-	\caption{Einfluss der Qualität des Datensatzes }
-	\label{tab:Bildqualitaet}
+	\caption{\textit{TemkiNet} Extrator\_Block von einigen Extremversion  mit $ 101 $ Feature-Maps pro \ac{ConvL}}
+	\label{tab:Temki_Architectur1}
 \end{table}
 
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Block & Schrittgröße & Outputgröße\\ \hline		
+		Dense\_Block & / &$ 505 $\\ \hline
+		Dense\_Block & / &$ 505 $\\ \hline
+		FC & & $ 101 $\\ \hline
+	\end{tabular}
+	\caption{\textit{TemkiNet} 1 Klassifikator\_Block}
+	\label{tab:Temki_Architectur 1}
+\end{table}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Block & Schrittgröße & Outputgröße\\ \hline
+		Dense\_Block & / &$ 404 $\\ \hline
+		Dense\_Block & / &$ 404 $\\ \hline
+		FC & & $ 101 $\\ \hline
+		
+	\end{tabular}
+	\caption{\textit{TemkiNet} 2 Klassifikator\_Block}
+	\label{tab:Temki_Architectur 2}
+\end{table}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Block & Schrittgröße & Outputgröße\\ \hline
+		Dense\_Block & / &$ 303 $\\ \hline
+		Dense\_Block & / &$ 303 $\\ \hline
+		Dense\_Block & / &$ 303 $\\ \hline
+		FC & & $ 101 $\\ \hline
+		
+	\end{tabular}
+	\caption{\textit{TemkiNet} 3 Klassifikator\_Block }
+	\label{tab:Temki_Architectur 3}
+\end{table}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Block & Schrittgröße & Outputgröße\\ \hline
+		conv\_Block &	$ 2\times2 $ &$ (100,100, 101) $\\ \hline
+		Depthwise\_Block & $ 2\times2 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block & $ 1\times1 $&$ (50,50, 101) $\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&$ (25,25, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (25,25, 101) $\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&$ (12,12, 101) $\\ \hline
+		$ 3\times $Depthwise\_Block & $ 1\times1 $&$ (12,12, 101) $\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&$ (6,6, 101) $\\ \hline
+		$ 4\times $Depthwise\_Block & $ 1\times1 $&$ (6,6, 101) $\\ \hline
+		
+		Depthwise\_Block & $ 2\times2 $&$ (3,3, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (3,3, 101) $\\ \hline
+		GlobalAveragePooling2D & /& $ 101 $\\ \hline
+		Flatten & / &$ 101 $ \\ \hline
+		Dense\_Block & / &$ 202 $\\ \hline
+		Dense\_Block & / &$ 202 $\\ \hline
+		Dense\_Block & / &$ 202 $\\ \hline
+		FC & & $ 101 $\\ \hline
+		
+	\end{tabular}
+	\caption{TemkiNet 4 Architektur mit $ 101 $ Feature-Maps pro \ac{ConvL}  }
+	\label{tab:Temki_Architectur 4}
+\end{table}
+\begin{table}
+	\centering
+	\begin{tabular}{*{5}{|c}| }
+		\hline
+		Modell & Bildgröße & Genauigkeit & \#Parameter& Inferenz \\ \hline
+		\textit{TemkiNet}&$ 100\times100 $&$ 61.82\% $ &$ 1.418.817 $& \\ \hline
+		\textit{TemkiNet\_1}&$ 100\times100 $&$ 60.78\% $ &$781.437 $ & \\ \hline
+		\textit{TemkiNet\_2}&$ 100\times100 $&$ ??\% $ &$668.216$  &\\ \hline
+		\textit{TemkiNet\_3}&$ 100\times100 $&$ 59.66\% $ &$ 668.721$  &\\ \hline
+		\textit{TemkiNet\_4}&$ 100\times100 $&$ 58.47\% $ &$ 668.721$  &\\ \hline
+		
+		\textit{TemkiNet}&$ 150\times150 $&$ 64.87\% $ &$ 2.142.785 $  &\\ \hline
+		\textit{TemkiNet\_1}&$ 150\times150 $&$ 64.88\% $ &$ 781.437$ & \\ \hline
+	\end{tabular}
+	\caption{Variante von \textit{TemkiNet.}}
+	\label{tab:Bildqualitaetf}
+\end{table}
 \bibliographystyle{acm}
 
 \begin{thebibliography}{lem00}
