@@ -120,17 +120,17 @@
 %
 %\section{Abkürzungsverzeichnis}
 \begin{acronym}[THIBAUT]
-	\acro{KNN}{Künstliches neuronales Netzwerk}
-	\acro{CNN}{Convolutional Neural Network}
-	\acro{KI}{Künstliche Intelligenz}
-	\acro{NN}{neuronales Netz}
-	\acro{ConvL}{Convolutional Layer}
-	\acro{FCL}{Fully Connected Layer}
 	\acro{PooL}{Pooling Layer}
-	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
-	\acro{DNN}{Tiefe neuronale Netze}
+	\acro{NN}{neuronales Netz}
 	\acro{ML}{Maschine Lernen}
+	\acro{ConvL}{Convolutional Layer}
+	\acro{KI}{Künstliche Intelligenz}
+	\acro{DNN}{Tiefe neuronale Netze}
+	\acro{FCL}{Fully Connected Layer}
+	\acro{CNN}{Convolutional Neural Network}
 	\acro{DSC}{Depthwise Separable Convolution}
+	\acro{KNN}{Künstliches neuronales Netzwerk}
+	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
 \end{acronym}
 \newpage
 \section{Einleitung}
@@ -1040,17 +1040,10 @@ Aufgrund seiner Automatisierung und Effizienz wird das Pruning in Zukunft sicher
 
 \subsection{ Quantisierung von neuronalen Netzwerken}
 Im Allgemein wird von Quantisierung gesprochen, wenn es versucht wird, sich den Werten einer großen Menge mit denen einer kleineren Menge zu nähern. Im \ac{ML} ist die Quantisierung der Prozess der Transformation eines ML-Programms in eine approximierte Darstellung mit verfügbaren Operationen mit geringerer Genauigkeit.
-\begin{center}
-	\textbf{Methoden}
-	\begin{itemize}
-		\item  Matrixfaktorisierung
-		\item Vektorquantisierung
-		\item low-bit Quantisierung
-	\end{itemize}
-\end{center}
-\textbf{Matrixfaktorisierung}\\
+Es gibt eine zahlreiche Menge von Techniken, um ein ML-Programm zu quantisieren, aber wir werden in folgenden uns nur auf die bekanntesten Quantifizierungstechniken konzentrieren.
+\subsubsection{Matrixfaktorisierung}
 Die Matrixfaktorisierung versucht, eine Matrix durch die Singulärwertzerlegung($ SVD $) zu approximieren.
-Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n} $ verwendet eine Matrix $ B \in \R^{m\times n}  $ vom Rang $ k \le \min(m, n) $, siehe Gleichung(\ref{eq:SVD}), wobei $ U $ und $ V $ orthogonale Matrizen und $ S $ eine Diagonalmatrix, deren Diagonaleinträge Singulärwerte heißen und bei Betrachtung von oben nach unten monoton abnehmen. Sollte man $ B $ direkt speichern, so hat man keine Kompression gemacht, sondern nur Informationen und Rechenzeiten verschwendet, denn die Matrizen $ A $ und $ B $ haben die gleiche Dimension, also liegt der Hauptvorteil von der Matrixfaktorisierung darin, wie die Matrix $ B $ gespeichert wird.
+Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n} $ verwendet eine Matrix $ B \in \R^{m\times n}  $ vom Rang $ k \le \min(m, n) $, siehe Gleichung(\ref{eq:SVD}), wobei $ U $ und $ V $ orthogonale Matrizen und $ S $ eine Diagonalmatrix, deren Diagonaleinträge Singulärwerte heißen und bei Betrachtung von oben nach unten monoton abnehmen, sind. Sollte man $ B $ direkt speichern, so hat man keine Kompression gemacht, sondern nur Informationen und Rechenzeiten verschwendet, denn die Matrizen $ A $ und $ B $ haben die gleiche Dimension, also liegt der Hauptvorteil von der Matrixfaktorisierung darin, wie die Matrix $ B $ gespeichert wird.
 
 \begin{equation}\label{eq:SVD}
 	\begin{array}{l}
@@ -1074,11 +1067,11 @@ Angenommen bildet die zu approximierenden NN-Parameter ein Bild, dann zeigt die 
 \end{figure}
 Wie man in der Abbildung \ref{fig:matrix_fatorization} sieht, reichen  relativ wenige Singulärwerte (ca. $ 5 $) schon aus, um die groben Konturen zu erkennen. Details erkennt man bei ca. $ 10 $ Singulärwerten schon. Generell wird das Bild mit mehr Singulärwerten schärfer.
 
-\textbf{Quantisierung mit weniger Bits(Low-bit Quantization)}\\
+\subsubsection{Quantisierung mit weniger Bits(Low-bit Quantization)}
 Im Bereich des \textit{Deep Learning} ist das Standard numerische Format für Forschung und Einsatz bisher 32-Bit Fließkommazahlen oder FP32, denn es bietet ein bessere Genauigkeit, aber die anderen Formaten wie 8-,4-,2- oder 1-Bits werden auch verwendet, obwohl sie mehr oder weniger ein Verlust an Genauigkeit aufweisen.
 Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen kleinen Verlust der Netzleistung zur Folge, sondern auch die Verwendung von deutlich reduzierter Bandbreite und Speicherplatz. Noch dazu beschleunigt die Quantisierung die Berechnungen, denn die ganzzahlige Berechnung zum Beispiel ist schneller als die Fließkommaberechnung.
 
-Bei Quantisierung mit wenige Bits geht es mehr oder weniger um die Abbildung eine großen Bereiches auf einen kleinen und dazu werden zwei Hauptwerte benötigt: der dynamische Bereich des Tensors und ein Skalierungsfaktor. Angenommen haben wir einen dynamischen Bereich $ [0,500] $ und einen Skalierungsfaktor:$ 5 $, dann ergibt sich der neue Bereich $ [0, 100] $, es wird also Werte zwischen $ [5k, 5(k+1)] $ oder $ [5k -0.5, 5k +0.5] $ auf $ 5k $ abgebildet. Es ist sinnvoller,  die Skalierungsfaktors unter Berücksichtigung der Anzahl und der Verteilung der Werte in dynamischen Bereich des Tensors auszuwählen, sonst können zu viel Informationen verloren gehen.
+Bei Quantisierung mit wenige Bits geht es mehr oder weniger um die Abbildung eine großen Bereiches auf einen kleinen und dazu werden zwei Hauptwerte benötigt: der dynamische Bereich des Tensors und ein Skalierungsfaktor. Angenommen haben wir einen dynamischen Bereich $ [0,500] $ und einen Skalierungsfaktor$= 5 $, dann ergibt sich der neue Bereich $ [0, 100] $, es wird also Werte zwischen $ [5k, 5(k+1)] $ oder $ [5k -0.5, 5k +0.5] $ auf $ 5k $ abgebildet. Es ist sinnvoller,  die Skalierungsfaktors unter Berücksichtigung der Anzahl und der Verteilung der Werte in dynamischen Bereich des Tensors auszuwählen, sonst können zu viel Informationen verloren gehen.
 
 Sobald ein anderes Format mit weniger Bits als FP32 verwendet, spricht man in \ac{ML} von Quantisierung.
 Als Hauptvorteile von Quantisierung haben wir:Erstens wenn wir ein Modell mit FP32-Format durch das gleiche Modell mit 16-Bit Float(FP16), 8-Bit Integer(INT8)  oder 4-Bit Integer(INT4)  ersetzen, reduzieren wir den Speicherbedarf um die Hälfte,um ein Viertel bzw. um ein Achtel.Zweitens sind die Hardwares so programmiert, dass die integer Operationen im Vergleich zu FP32-Operationen schneller und energieeffizienter sind und drittens wird die Bandbreite durch die Verwendung von kleineren Modellen und dynamischen Werten stark reduziert.
@@ -1086,9 +1079,9 @@ Als Hauptvorteile von Quantisierung haben wir:Erstens wenn wir ein Modell mit FP
 Zur einer effizienteren Auswahl der Skalierfaktoren pro Schicht bzw. pro Filter ist es notwendig, Statistiken  über das \ac{NN} zu sammeln und das kann \textit{offline} oder \textit{online} gemacht werden. Bei der \textit{Offline} Berechnung werden vor der Bereitstellung des Modells einigen Statistiken gesammelt, entweder während des Trainings oder durch die Ausführung einiger Epochen auf dem trainierten FP32-Modell und basierend auf diesen Statistiken werden die verschiedenen Skalierfaktoren berechnet und nach der Bereitstellung des Modells festgelegt.Bei dieser Methode besteht die Gefahr, dass zur Laufzeit die Werte, die außerhalb des zuvor definierten Bereichs auftreten, abgeschnitten werden, was zu einer Verschlechterung der Genauigkeit führen kann.Bei der \textit{online} werden die \textit{Min/Max}-Werte für jeden Tensor dynamisch zur Laufzeit berechnet. Bei dieser Methode kann es nicht zu einer Beschneidung kommen, jedoch können die zusätzlichen Rechenressourcen, die zur Berechnung der Min/Max-Werte zur Laufzeit benötigt werden, unerschwinglich sein.\cite{quantization1}
 
 Es gibt zwei Quantifizierungsszenarien.Die erste ist das vollständige Training eines Modells mit einer gewünschten niedrigeren Bit-Genauigkeit(\textit{bit precission})(kleiner als 32 Bits).Das Training mit sehr geringer Genauigkeit ermöglicht ein potenziell schnelles Training und Inferenz, aber der Hauptproblem mit diesem Ansatz ist, dass Netzparameter nur bestimmte Werte annehmen können, so ist die Aktualisierung der Netzparameter bzw. das Backpropagation nicht mehr wohldefiniert \cite{quantizationYoni}.
-Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Im Allgemeinen gilt: Je geringer die Bitgenauigkeit, desto größer ist der Verlust der Genauigkeit und um diesen Leistungsabfall zu überwinden, wird sehr oft das \ac{NN} erneuert trainiert oder wird auf eine hybride Quantisierung, die zur Quantisierung verschiedene Formaten z.B. INT8 für die Gewichte und FP32 für die Aktivierung gleichzeitig verwendet,  zurückgegriffen.
+Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Im Allgemeinen gilt: Je geringer die Bitgenauigkeit, desto größer ist der Verlust der Genauigkeit und um diesen Leistungsabfall zu überwinden, wird sehr oft das \ac{NN} erneuert trainiert oder wird auf eine hybride Quantisierung zurückgegriffen, die zur Quantisierung verschiedene Formaten z.B. INT8 für die Gewichte und FP32 für die Aktivierung gleichzeitig verwendet.
 
-Vor kurzem haben \cite[Yoni et al]{quantizationYoni} zur  Quantisierung  das lineare Quantisierungsproblem als ein \textit{Minimum Mean Squared Error} (MMSE) Problem formuliert und gelöst.Sie sind in der Lage, die trainierten Modelle zu quantisieren, ohne das \ac{NN} erneuert trainieren zu haben um seine Genauigkeit wiederherzustellen und benutzen dabei nur das INT4-Format. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz den geringeren Genauigkeitsverlust als alle Quantisierungsverfahren auf.
+Vor kurzem haben \cite[Yoni et al]{quantizationYoni} zur  Quantisierung  das lineare Quantisierungsproblem als ein \textit{Minimum Mean Squared Error} (MMSE) Problem formuliert und gelöst.Sie sind in der Lage, die trainierten Modelle zu quantisieren, ohne das \ac{NN} erneuert trainieren zu haben, um seine Genauigkeit wiederherzustellen und benutzen dabei nur das INT4-Format. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz einen geringeren Genauigkeitsverlust als alle anderen Quantisierungsverfahren auf.
 
 Wie oben erwähnt, eine Quantisierung mit zu weniger Bit führt zu einem großen Genauigkeitsverlust, aber \cite[Yoni et al]{quantizationYoni} haben gezeigt, dass Die Quantisierung mit INT4-Format zu einem besseren Ergebnis führen kann. Das sollte daran liegen, dass sie fürs Approximieren eines Tensors, der gegenüber der Quantisierung sehr empfindlich ist, statt nur einen Tensor mehrere Tensors im INT4-Format benutzen.
 
@@ -1675,7 +1668,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 		Flatten & / &$ 101 $ \\ \hline
 		
 	\end{tabular}
-	\caption{\textit{TemkiNet} Extrator\_Block von einigen Extremversion  mit $ 101 $ Feature-Maps pro \ac{ConvL}}
+	\caption{\textit{TemkiNet} Extratorblock von einigen Extremversion  mit $ 101 $ Feature-Maps pro \ac{ConvL}}
 	\label{tab:Temki_Architectur1}
 \end{table}
 
@@ -1688,7 +1681,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 		Dense\_Block & / &$ 505 $\\ \hline
 		FC & & $ 101 $\\ \hline
 	\end{tabular}
-	\caption{\textit{TemkiNet} 1 Klassifikator\_Block}
+	\caption{\textit{TemkiNet} 1 Klassifikatorblock}
 	\label{tab:Temki_Architectur 1}
 \end{table}
 
@@ -1702,7 +1695,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 		FC & & $ 101 $\\ \hline
 		
 	\end{tabular}
-	\caption{\textit{TemkiNet} 2 Klassifikator\_Block}
+	\caption{\textit{TemkiNet} 2 Klassifikatorblock}
 	\label{tab:Temki_Architectur 2}
 \end{table}
 
@@ -1717,7 +1710,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 		FC & & $ 101 $\\ \hline
 		
 	\end{tabular}
-	\caption{\textit{TemkiNet} 3 Klassifikator\_Block }
+	\caption{\textit{TemkiNet} 3 Klassifikatorblock }
 	\label{tab:Temki_Architectur 3}
 \end{table}
 
@@ -1769,6 +1762,11 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\caption{Variante von \textit{TemkiNet.}}
 	\label{tab:Bildqualitaetf}
 \end{table}
+
+\subsection{Erhöhung der Inferenzzeit und Verringerung  des Speicherbedarfs }
+\subsubsection{Quantisierung}
+\subsubsection{Pruning}
+
 \bibliographystyle{acm}
 
 \begin{thebibliography}{lem00}

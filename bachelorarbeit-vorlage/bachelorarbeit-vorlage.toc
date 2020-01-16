@@ -35,6 +35,8 @@
 \contentsline {section}{\numberline {3}Kompression von \ac {DNN}}{21}{section.3}
 \contentsline {subsection}{\numberline {3.1}Pruning Network}{22}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Quantisierung von neuronalen Netzwerken}{26}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Matrixfaktorisierung}{26}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Quantisierung mit weniger Bits(Low-bit Quantization)}{27}{subsubsection.3.2.2}
 \contentsline {subsection}{\numberline {3.3}Huffman Codierung}{29}{subsection.3.3}
 \contentsline {section}{\numberline {4}Experiment}{29}{section.4}
 \contentsline {subsection}{\numberline {4.1}Analyse der Ergebnisse mit Hilfe von Metriken}{29}{subsection.4.1}
@@ -61,3 +63,6 @@
 \contentsline {subsubsection}{\numberline {4.6.1}Overfitting}{47}{subsubsection.4.6.1}
 \contentsline {subparagraph}{\nonumberline Dropout}{48}{section*.61}
 \contentsline {subsection}{\numberline {4.7}Extreme Version von \textit {TemkiNet.}}{49}{subsection.4.7}
+\contentsline {subsection}{\numberline {4.8}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{49}{subsection.4.8}
+\contentsline {subsubsection}{\numberline {4.8.1}Quantisierung}{49}{subsubsection.4.8.1}
+\contentsline {subsubsection}{\numberline {4.8.2}Pruning}{49}{subsubsection.4.8.2}
