@@ -1,68 +1,75 @@
 \babel@toc {ngerman}{}
 \babel@toc {ngerman}{}
 \contentsline {section}{\numberline {1}Einleitung}{6}{section.1}
-\contentsline {section}{\numberline {2}Grundlagen}{7}{section.2}
-\contentsline {subsection}{\numberline {2.1}K\IeC {\"u}nstliche neuronale Netzwerke}{7}{subsection.2.1}
-\contentsline {subsubsection}{\numberline {2.1.1}K\IeC {\"u}nstliches Neuron}{7}{subsubsection.2.1.1}
-\contentsline {subsubsection}{\numberline {2.1.2}Merkmalskarten(Feature-Maps)}{7}{subsubsection.2.1.2}
-\contentsline {subsubsection}{\numberline {2.1.3}Filters}{8}{subsubsection.2.1.3}
-\contentsline {subsubsection}{\numberline {2.1.4}Entwicklung von K\IeC {\"u}nstlichen Neuronalen Netzen}{8}{subsubsection.2.1.4}
-\contentsline {subsection}{\numberline {2.2}Convolutional Neural Network}{8}{subsection.2.2}
-\contentsline {subsubsection}{\numberline {2.2.1}Feedforward}{8}{subsubsection.2.2.1}
-\contentsline {paragraph}{\numberline {2.2.1.1}Input Layer}{8}{paragraph.2.2.1.1}
-\contentsline {paragraph}{\numberline {2.2.1.2}Faltungsschicht}{9}{paragraph.2.2.1.2}
-\contentsline {subparagraph}{\nonumberline Die Anzahl und Gr\IeC {\"o}\IeC {\ss }e von Filtern.}{9}{section*.10}
-\contentsline {subparagraph}{\nonumberline Die Schrittgr\IeC {\"o}\IeC {\ss }e}{9}{section*.12}
-\contentsline {subparagraph}{\nonumberline \textit {Padding}.}{10}{section*.14}
-\contentsline {paragraph}{\numberline {2.2.1.3}Aktivierungsfunktion}{11}{paragraph.2.2.1.3}
-\contentsline {subparagraph}{\nonumberline Logistische Funktion}{13}{section*.18}
-\contentsline {subparagraph}{\nonumberline Tangens Hyperbolicus}{13}{section*.20}
-\contentsline {subparagraph}{\nonumberline Rectified Linear Unit}{13}{section*.22}
-\contentsline {subparagraph}{\nonumberline Leaky ReLU Funktion}{14}{section*.24}
-\contentsline {subparagraph}{\nonumberline Softmax}{14}{section*.26}
-\contentsline {paragraph}{\numberline {2.2.1.4}Pooling Layer}{15}{paragraph.2.2.1.4}
-\contentsline {paragraph}{\numberline {2.2.1.5}Multi-layer Perzeptron (Fully Connected Layer)}{15}{paragraph.2.2.1.5}
-\contentsline {subsubsection}{\numberline {2.2.2}Backforward}{16}{subsubsection.2.2.2}
-\contentsline {paragraph}{\numberline {2.2.2.1}Fehlerfunktion}{16}{paragraph.2.2.2.1}
-\contentsline {paragraph}{\numberline {2.2.2.2}Gradient}{17}{paragraph.2.2.2.2}
-\contentsline {paragraph}{\numberline {2.2.2.3}Lernrate}{17}{paragraph.2.2.2.3}
-\contentsline {paragraph}{\numberline {2.2.2.4}Gradientenabstiegsverfahren}{17}{paragraph.2.2.2.4}
-\contentsline {subparagraph}{\nonumberline Ablauf eines Gradientenverfahrens im \ac {DNN}.}{18}{section*.30}
+\contentsline {subsection}{\numberline {1.1}Motivation}{6}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Ziel der Arbeit.}{7}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Aufbau der Arbeit.}{7}{subsection.1.3}
+\contentsline {section}{\numberline {2}Grundlagen}{8}{section.2}
+\contentsline {subsection}{\numberline {2.1}K\IeC {\"u}nstliche neuronale Netzwerke}{8}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}K\IeC {\"u}nstliches Neuron}{8}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Merkmalskarten(Feature-Maps)}{8}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.3}Filters}{9}{subsubsection.2.1.3}
+\contentsline {subsubsection}{\numberline {2.1.4}Entwicklung von K\IeC {\"u}nstlichen Neuronalen Netzen}{9}{subsubsection.2.1.4}
+\contentsline {subsection}{\numberline {2.2}Convolutional Neural Network}{9}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Feedforward}{9}{subsubsection.2.2.1}
+\contentsline {paragraph}{\numberline {2.2.1.1}Input Layer}{9}{paragraph.2.2.1.1}
+\contentsline {paragraph}{\numberline {2.2.1.2}Faltungsschicht}{10}{paragraph.2.2.1.2}
+\contentsline {subparagraph}{\nonumberline Die Anzahl und Gr\IeC {\"o}\IeC {\ss }e von Filtern.}{10}{section*.10}
+\contentsline {subparagraph}{\nonumberline Die Schrittgr\IeC {\"o}\IeC {\ss }e}{10}{section*.12}
+\contentsline {subparagraph}{\nonumberline \textit {Padding}.}{11}{section*.14}
+\contentsline {paragraph}{\numberline {2.2.1.3}Aktivierungsfunktion}{12}{paragraph.2.2.1.3}
+\contentsline {subparagraph}{\nonumberline Logistische Funktion}{14}{section*.18}
+\contentsline {subparagraph}{\nonumberline Tangens Hyperbolicus}{14}{section*.20}
+\contentsline {subparagraph}{\nonumberline Rectified Linear Unit}{14}{section*.22}
+\contentsline {subparagraph}{\nonumberline Leaky ReLU Funktion}{15}{section*.24}
+\contentsline {subparagraph}{\nonumberline Softmax}{15}{section*.26}
+\contentsline {paragraph}{\numberline {2.2.1.4}Pooling Layer}{16}{paragraph.2.2.1.4}
+\contentsline {paragraph}{\numberline {2.2.1.5}Multi-layer Perzeptron (Fully Connected Layer)}{16}{paragraph.2.2.1.5}
+\contentsline {subsubsection}{\numberline {2.2.2}Backforward}{17}{subsubsection.2.2.2}
+\contentsline {paragraph}{\numberline {2.2.2.1}Fehlerfunktion}{17}{paragraph.2.2.2.1}
+\contentsline {paragraph}{\numberline {2.2.2.2}Gradient}{18}{paragraph.2.2.2.2}
+\contentsline {paragraph}{\numberline {2.2.2.3}Lernrate}{18}{paragraph.2.2.2.3}
+\contentsline {paragraph}{\numberline {2.2.2.4}Gradientenabstiegsverfahren}{19}{paragraph.2.2.2.4}
+\contentsline {subparagraph}{\nonumberline Ablauf eines Gradientenverfahrens im \ac {DNN}.}{19}{section*.30}
 \contentsline {subparagraph}{\nonumberline Variante des Gradientenverfahrens}{19}{section*.32}
-\contentsline {subsection}{\numberline {2.3}Datens\IeC {\"a}tze und Bibliothek}{20}{subsection.2.3}
-\contentsline {subsubsection}{\numberline {2.3.1}Datens\IeC {\"a}tze}{20}{subsubsection.2.3.1}
-\contentsline {subsubsection}{\numberline {2.3.2}Bibliotheken}{21}{subsubsection.2.3.2}
-\contentsline {section}{\numberline {3}Kompression von \ac {DNN}}{21}{section.3}
-\contentsline {subsection}{\numberline {3.1}Pruning Network}{22}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Quantisierung von neuronalen Netzwerken}{26}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Matrixfaktorisierung}{26}{subsubsection.3.2.1}
-\contentsline {subsubsection}{\numberline {3.2.2}Quantisierung mit weniger Bits(Low-bit Quantization)}{27}{subsubsection.3.2.2}
-\contentsline {subsection}{\numberline {3.3}Huffman Codierung}{29}{subsection.3.3}
-\contentsline {section}{\numberline {4}Experiment}{29}{section.4}
-\contentsline {subsection}{\numberline {4.1}Analyse der Ergebnisse mit Hilfe von Metriken}{29}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Convolution Layers}{30}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Standard Convolution}{31}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Depthwise Convolution}{31}{subsubsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.3}Pointwise Convolution}{32}{subsubsection.4.2.3}
-\contentsline {subsubsection}{\numberline {4.2.4}Depthwise Separable Convolution}{32}{subsubsection.4.2.4}
-\contentsline {subsection}{\numberline {4.3}Vergleich zwischen Konvolution Neuronale Netzwerke}{33}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}AlexNet}{33}{subsubsection.4.3.1}
-\contentsline {subsubsection}{\numberline {4.3.2}Xception}{35}{subsubsection.4.3.2}
-\contentsline {subsubsection}{\numberline {4.3.3}MobileNet}{35}{subsubsection.4.3.3}
-\contentsline {subsubsection}{\numberline {4.3.4}TemkiNet}{36}{subsubsection.4.3.4}
-\contentsline {subsection}{\numberline {4.4}Verbesserung der Leistung eines Convolution Neuronalen Netzwerks}{37}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}Data Augmentation.}{37}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}Optimierer.}{39}{subsubsection.4.4.2}
-\contentsline {subsubsection}{\numberline {4.4.3}Batch-Normalisierung.}{41}{subsubsection.4.4.3}
-\contentsline {subsubsection}{\numberline {4.4.4}Bildgr\IeC {\"o}\IeC {\ss }e.}{42}{subsubsection.4.4.4}
-\contentsline {subsubsection}{\numberline {4.4.5}Anzahl der Neuronen pro Schicht:}{43}{subsubsection.4.4.5}
-\contentsline {subsubsection}{\numberline {4.4.6}Aktivierungsfunktion.}{43}{subsubsection.4.4.6}
-\contentsline {subsubsection}{\numberline {4.4.7}Qualit\IeC {\"a}t des Datensatzes}{44}{subsubsection.4.4.7}
-\contentsline {subsection}{\numberline {4.5}Einfluss der Lernrate}{45}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}Problem beim Training von Convolutional neuronale Netzwerke}{47}{subsection.4.6}
-\contentsline {subsubsection}{\numberline {4.6.1}Overfitting}{47}{subsubsection.4.6.1}
-\contentsline {subparagraph}{\nonumberline Dropout}{48}{section*.61}
-\contentsline {subsection}{\numberline {4.7}Extreme Version von \textit {TemkiNet.}}{49}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{49}{subsection.4.8}
-\contentsline {subsubsection}{\numberline {4.8.1}Quantisierung}{49}{subsubsection.4.8.1}
-\contentsline {subsubsection}{\numberline {4.8.2}Pruning}{49}{subsubsection.4.8.2}
+\contentsline {subsection}{\numberline {2.3}Datens\IeC {\"a}tze und Bibliothek}{22}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Datens\IeC {\"a}tze}{22}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Bibliotheken}{22}{subsubsection.2.3.2}
+\contentsline {section}{\numberline {3}Kompression von \ac {DNN}}{23}{section.3}
+\contentsline {subsection}{\numberline {3.1}Pruning Network}{23}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Quantisierung von neuronalen Netzwerken}{27}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Matrixfaktorisierung}{27}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Quantisierung mit weniger Bits(Low-bit Quantization)}{28}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Huffman Codierung}{30}{subsection.3.3}
+\contentsline {section}{\numberline {4}Experiment}{30}{section.4}
+\contentsline {subsection}{\numberline {4.1}Analyse der Ergebnisse mit Hilfe von Metriken}{30}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Entwurf eines neuronalen Faltunsnetzwerkes: TemkiNet.}{31}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Art der Faltungsschichten.}{32}{subsubsection.4.2.1}
+\contentsline {paragraph}{\numberline {4.2.1.1}Standard Convolution}{32}{paragraph.4.2.1.1}
+\contentsline {paragraph}{\numberline {4.2.1.2}Depthwise Convolution}{33}{paragraph.4.2.1.2}
+\contentsline {paragraph}{\numberline {4.2.1.3}Pointwise Convolution}{34}{paragraph.4.2.1.3}
+\contentsline {paragraph}{\numberline {4.2.1.4}Depthwise Separable Convolution}{34}{paragraph.4.2.1.4}
+\contentsline {subsubsection}{\numberline {4.2.2}Faltende neuronale Netzwerke}{35}{subsubsection.4.2.2}
+\contentsline {paragraph}{\numberline {4.2.2.1}AlexNet}{35}{paragraph.4.2.2.1}
+\contentsline {paragraph}{\numberline {4.2.2.2}Xception}{37}{paragraph.4.2.2.2}
+\contentsline {paragraph}{\numberline {4.2.2.3}MobileNet}{37}{paragraph.4.2.2.3}
+\contentsline {paragraph}{\numberline {4.2.2.4}TemkiNet}{38}{paragraph.4.2.2.4}
+\contentsline {subsubsection}{\numberline {4.2.3}Vergleich zwischen CNNs}{39}{subsubsection.4.2.3}
+\contentsline {subsection}{\numberline {4.3}Verbesserung der Leistung eines Convolution Neuronalen Netzwerks}{39}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Datenvermehrung (\textit {Data Augmentation}).}{39}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}Aktivierungsfunktion.}{42}{subsubsection.4.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3}Optimierer.}{42}{subsubsection.4.3.3}
+\contentsline {subsubsection}{\numberline {4.3.4}Batch-Normalisierung.}{44}{subsubsection.4.3.4}
+\contentsline {subsubsection}{\numberline {4.3.5}Bildgr\IeC {\"o}\IeC {\ss }e.}{45}{subsubsection.4.3.5}
+\contentsline {subsubsection}{\numberline {4.3.6}Anzahl der Neuronen pro Schicht:}{46}{subsubsection.4.3.6}
+\contentsline {subsubsection}{\numberline {4.3.7}Qualit\IeC {\"a}t des Datensatzes}{47}{subsubsection.4.3.7}
+\contentsline {subsection}{\numberline {4.4}Einfluss der Lernrate}{48}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Problem beim Training von Convolutional neuronale Netzwerke}{50}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}Overfitting}{50}{subsubsection.4.5.1}
+\contentsline {subparagraph}{\nonumberline Dropout}{50}{section*.63}
+\contentsline {subsection}{\numberline {4.6}Extreme Version von \textit {TemkiNet.}}{52}{subsection.4.6}
+\contentsline {subsection}{\numberline {4.7}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{52}{subsection.4.7}
+\contentsline {subsubsection}{\numberline {4.7.1}Quantisierung}{52}{subsubsection.4.7.1}
+\contentsline {subsubsection}{\numberline {4.7.2}Pruning}{52}{subsubsection.4.7.2}
+\contentsline {section}{\numberline {5}Diskussion}{52}{section.5}
+\contentsline {section}{\numberline {6}Schluss}{52}{section.6}
