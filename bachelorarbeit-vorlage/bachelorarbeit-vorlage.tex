@@ -106,11 +106,52 @@
   \noindent
   Ort, den Datum\\[5ex]
  
-
+\newpage
+\section*{Kurzzusammenfassung}
+\begin{abstract}
+	Im Rahmen dieser Bachelorarbeit wurde:
+	\begin{enumerate}
+	\item Ein CNN(\textit{TemkiNet}) entwickelt, das :
+	\begin{itemize}
+		\item Zu wenige Parameter verwendet.
+		\item Gute Inferenz hat.
+	\end{itemize}
+	\item CNN Vergleich
+		\begin{itemize}
+			\item AlexNet.
+			\item Xception.
+			\item MobileNet.
+			\item TemkiNet.
+		\end{itemize}
+	\item Methoden und Hyperparameter zur Verbesserung der Netzwerkleistung.
+		\begin{itemize}
+			\item Data Augmentation.
+			\item Bildgröße.
+			\item Datensatz.
+			\item Batch-Normalisierung.
+			\item Lernrate.
+			\item Dropout.
+			\item Anzahl der Neuronen pro Schichten.
+		\end{itemize}
+	\item CNN komprimieren.
+		\begin{itemize}
+			\item Pruning.
+			\item Quantisierung.
+		\end{itemize}
+	\item Reduzierung der Trainingszeit.
+		\begin{itemize}
+			\item neu LeaningRateScheduler.
+			\item Tranfer Leaning mit verschiedene Bildgröße.
+			\item neue Trainingsart.
+		\end{itemize}
+\end{enumerate}
+\centering	\textbf{la vie est belle}
+	
+\end{abstract}
 \newpage
    % Inhaltsverzeichnis
  \tableofcontents
-%\newpage
+\newpage
 %\listofalgorithmes
 
 
@@ -154,17 +195,7 @@ Dazu schlagen wir eine neue CNN-Architektur vor, die eine effiziente Nutzung der
 
 
 \subsection{Aufbau der Arbeit.}
-\begin{enumerate}
-	\item CNN mit zu wenig Speicherplatz.
-	\begin{itemize}
-		\item geeignete Architektur.
-	\end{itemize}
-	\item CNN komprimieren.
-	\begin{itemize}
-		\item Pruning.
-		\item Quantisierung.
-	\end{itemize}
-\end{enumerate}
+
 \begin{itemize}
 	\item
 %	\textcolor{red}{
@@ -998,7 +1029,7 @@ Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie
 \end{itemize} 
 Im folgenden werden nur die Beschneidung, die Quantisierung von \ac{NN} und die Anwendung von Huffman auf \ac{NN} mehr eingegangen werden.
 
-\subsection{Pruning Network}
+\subsection{Beschneidung des Netzwerks(\textit{Pruning Network})}
 Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netzwerke versucht, unwichtige oder redundante Verbindungen oder komplette Neuronen aus dem Netzwerk zu entfernen, um ein Netz mit möglichst geringer Komplexität zu erhalten. Mit unwichtigen Verbindungen werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Nullwert haben keinen Einfluss auf das Output des Neurons, sie sind einfach überflüssig. Während oder nach dem Training gibt es mehrere Parameter, die nicht wirklich oder nicht zu viel zum Neuronenergebnis beitragen, obwohl sie keinen Nullwert haben, deshalb ist es zum Reduzieren der Netzwerkdichte notwendig, anderen Maßstäbe als den Nullwert anzulegen, um Verbindungen zu entfernen.
 
 Das Pruning-Verfahren bietet einige Vorteile wie Reduzierung der Speicher- und Hardwarekosten, die Trainingsbeschleunigung , die schnellere Antwortzeit und das Verringern der Wahrscheinlichkeit der Overfitting(\ref{Overfitting}).
@@ -1322,11 +1353,13 @@ Die Tabelle \ref{tab:vergleich_CNN} stellt die Leistungen von verschiedenen \acs
 \label{tab:vergleich_CNN}
 \end{table}
 
-\subsection{Verbesserung der Leistung eines Convolution Neuronalen Netzwerks}
+In nächsten Schritten wird versucht, die Netzwerkleistung durch Methoden und geeignete Anpassung von Übergabeparameter zu verbessern.
+\subsection{Methoden und Hyperparameter zur Verbesserung der Netzwerkleistung.}
 Es ist sehr wichtig, eine geeignete Architektur zu finden, aber leider reicht es nicht aus, um zu gewährleisten, dass sehr gute Ergebnisse erzielt werden.
 Im Folgenden werden wir einige Methoden, Techniken oder Hyperparameter untersuchen, die zur Verbesserung der Netzwerk-Performance eingesetzt werden können.
 
 \subsubsection{Datenvermehrung (\textit{Data Augmentation}).}\label{Data Augmentation}
+
 Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netzwerke und sagen, dass ein Datensatz groß oder ausreichend für das Training eines \ac{CNN} ist, hängt nur von der Parameteranzahl des \ac{CNN} ab. Da die \acsp{CNN}, die gute Leistungen erzielen, leider aus mehreren Millionen Parametern bestehen, ist für jedes Problem des maschinellen Lernens nahezu unmöglich, ausreichende Daten zu finden.Anstatt immer neue Daten zu sammeln, um die Netzwerkleistung zu verbessern, können wir die Leistung des Modells verbessern, indem wir neue Daten aus bestehenden Daten generieren.\\
 Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden und die Parallelverschiebungen.
 
@@ -1375,6 +1408,57 @@ Mit dem zweiten Ansatz haben wir das Experiment(\ref{sub:vergleich_CNN}) wiederh
 	\caption{Vergleich zwischen CNN mit Datenvermehrung.}
 	\label{tab:vergleich_CNN_1}
 \end{table}
+
+\subsubsection{Dropout} \label{Dropout}
+Eines der größten Probleme beim Training von \acsp{CNN} ist, dass die CNNs irgendwann während des Trainings zu gut auf die Trainingsdaten abgestimmt sind und sehr schlechte Vorhersagen über die Evaluationsdaten machen.In anderen Worten sind die CNNs nicht mehr in der Lage, die relevanten Merkmale aus den Trainingsdaten zu generalisieren, sondern die ganzen Trainingsdaten auswendig zu lernen. Dieses Problem wird Überanpassung (\textit{Overfitting}) genannt.Dieses Auswendiglernen ist darauf zurückzuführen, dass die Neuronen zu sehr aufeinander abgestimmt sind, und eine Möglichkeit, diese komplexe Koadaptation zu durchbrechen, besteht darin, die \textit{Dropout}-Technik zu verwenden, die dazu führt, dass die Neuronen von Zeit zu Zeit nicht mehr richtig funktionieren sollten.\cite{1}.
+
+Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen(versteckt und sichtbar)  in einem  \ac{NN} \cite{3}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
+In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von anderen Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis der Schicht teilnehmen. Während der Testphase  werden alle Verbindungen zurückgesetzt, die während des Trainings gelöscht wurden und die ausgehenden Verbindungen gelöschter Neuronen mit $ p $   multipliziert.
+	
+\begin{figure}[h!]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=2, width=.8\linewidth, height=\linewidth]{dropout1.png}
+		\caption{Standard neuronale Netzwerk}
+		\label{fig:dropout1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=.8\linewidth, height=\linewidth, scale=2]{dropout2.png}
+		\caption{Neuronale Netzwerk nach Dropout}
+		\label{fig:dropout2}
+	\end{subfigure}
+	\caption{Neuronales Netzwerk mit Dropout ausgestattet \cite{3}.}
+	\label{fig:Dropout}
+\end{figure}
+
+Während des Trainings können mehrere Neuronen zur Minimierung der Fehlerfunktion so gut zusammenarbeiten, dass die Erkennung bestimmter Merkmale ohne diese Zusammenarbeit nicht mehr möglich ist, aber solche komplexe Koadaptationen  können schnell zu einer Überanpassung führen. Da die am Training teilnehmenden Neuronen nach dem Zufallsprinzip nach jeder Epoche ausgewählt werden, haben wir für jede Epoche ein neues Modell, was die Neuronen zur Zusammenarbeit zwingt, ohne jedoch voneinander abhängig zu sein, anders gesagt, wird jedes Neuron unabhängig von anderen Neuronen die Muster korrekt lernen können.
+Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:DropoutDataAugmentation} angezeigt ist, zu einer automatische Erzeugung neuer Trainingsdaten. Die verwendeten Daten in ausgedünnten Modellen sind also nur eine Abstraktion von echten Daten bzw. Rauschdaten und da wir für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, $ 2^n $ mögliche Modelle haben, haben wir $ 2^n $ mögliche Abstraktion von unseren Daten und dies sollte einer der Gründe sein, warum der Dropout effektiver ist als andere kostengünstige Regulierer\cite{3} und warum die Trainingszeit von \acsp{NN} mit Dropout mindestens verdoppelt wird. 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{model}
+		\caption{Erhöhung des Trainingsdaten durch Dropout}
+		\label{fig:DropoutDataAugmentation}
+	\end{figure}
+	
+Da die heutigen \acsp{CNN} Millionen von Neuronen haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Dropout & Genauigkeit \\ \hline
+			00\% & 59.00\% \\ \hline
+			30\% & 60.27\% \\ \hline
+			50\% & 60.70\% \\ \hline
+		\end{tabular}
+	\caption{Anwendung von Dropout Technik.}
+	\label{tab:dropout}
+	\end{table}
+
+Aus der Tabelle \ref{tab:dropout} kann eine kleine Verbesserung der CNN-Leistung durch die Dropout-Technik feststellen.Aus Experimenten wird folgendes klar: je höher die Retentionsrate, desto robuster ist das CNN gegenüber der Überanpassung.
+
+	%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
 
 \subsubsection{ Aktivierungsfunktion.}
 Wie in Absatz \ref{Aktivierungsfunktion} gesehen, ist es vorteilhaft, wenn eine Aktivierungsfunktion bestimmte Eigenschaften besitzt.Nach der Tabelle \ref{tab:Aktivierungsfunktion} erzielen die Variante von \textit{ReLU} die besten Ergebnisse und die Experimente zeigen, dass die \textit{LeakyReLU}-Funktion nicht nur das beste Ergebnis gibt, sondern auch am stabilsten und schnellsten ist.
@@ -1670,58 +1754,11 @@ Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Min
 %		\item Ebenso ist die Größe des Neuronalen Netzwerks seine Fähigkeit zu lernen, aber wenn Sie nicht vorsichtig sind, wird es versuchen, die Beispiele in den Trainingsdaten zu speichern, ohne das Konzept zu verstehen. Infolgedessen wird das Neuronale Netzwerk außergewöhnlich gut mit den Trainingsdaten arbeiten, aber sie lernen nicht das eigentliche Konzept. Es wird bei neuen und unsichtbaren Testdaten nicht gut funktionieren. Dies wird als Überfitting bezeichnet.
 %	\end{itemize}
 %}
-Wenn ein von der Maschine gelerntes Modell zu gut auf die Trainingsdaten abgestimmt ist und sehr schlechte Vorhersagen über Daten macht, die es noch nie zuvor gesehen hat, so wird gesagt, dass das Modell an einer Überanpassung(Overfitting) leidet, d.h. das Modell ist nicht in der Lage, die relevanten Merkmale aus den Trainingsdaten zu generalisieren, sondern alle Trainingsdaten auswendig zu lernen.Im folgenden werden einige Mittels vorgestellt, um mit der Überanpassung umzugehen.\\
 
-%\paragraph{Strategie gegen Overfitting}
-
-
-
-\subparagraph{Dropout}  \label{Dropout}
-Künstliche Neurone sind von biologischen Neuronen inspiriert, aber die Beiden unterscheidet sich sehr voneinander und einer der wichtigen Unterschiede ist, dass biologische Neuronen unvollkommene Maschinen sind, die sehr oft nicht richtig funktioniert und das ist a priori nie den Fall bei  künstlichen Neuronen. Wir könnten also glauben, dass \ac{KNN} die biologische übertreffen könnten.Es sei denn, dass diese Funktionsstörung von biologischen Neuronen nicht eine Schwäche ist, sondern eher eine Stärke ist.Eine der verblüffenden Entdeckungen in \ac{KI} Bereich ist, dass es wünschenswert ist, künstliche Neuronen von Zeit zu Zeit zu Fehlfunktionen zu bringen\cite{1}. \textcolor{blue}{Jetzt können wir uns fragen, wie Dysfunktion von Neuronen die Performances \acsp{CNN} verbessern kann}.Die zufällige Hinzufügen von Dysfunktionen in einer Schicht der \ac{CNN} wird \textit{Dropout} benannt und wurde von \cite[Geoffrey E. et al]{2} eingeführt.
-\begin{itemize}
-
-
-\item{Funktionsweise von Dropout}.\\
-Genauer gesagt,Dropout bezeichnet die zeitliche zufällige Ausschaltung von Neuronen(versteckt und sichtbar)  in einem  \ac{NN} \cite{3}. Wie die Abbildung \ref{fig:Dropout} zeigt, wenn ein Neuron zufällig aus dem \ac{NN} entfernt wird, werden auch all seine ein- und ausgehenden Verbindungen entfernt.
-In einer Dropout-Schicht wird ein Neuron $ \textit{N} $ unabhängig von anderen Neuronen mit einer Wahrscheinlichkeit $ {p} $ zurückgehalten, d.h $ \textit{N} $ wird mit einer Wahrscheinlichkeit von $ {p} $ nicht am Ergebnis der Schicht teilnehmen. Während der Testphase  werden alle Verbindungen zurückgesetzt, die während des Trainings gelöscht wurden und die ausgehenden Verbindungen gelöschter Neurone mit $ p $   multipliziert.
-
-\begin{figure}[h]
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[scale=2, width=.8\linewidth, height=\linewidth]{dropout1.png}
-		\caption{Standard neuronale Netze}
-		\label{fig:dropout1}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=.8\linewidth, height=\linewidth, scale=2]{dropout2.png}
-		\caption{Netze nach Dropout}
-		\label{fig:dropout2}
-	\end{subfigure}
-	\caption{Neuronales Netz mit Dropout ausgestattet \cite{3}.}
-	\label{fig:Dropout}
-\end{figure}
-
-\item{Verhinderung der Koadaptationen zwischen Neuronen}.\\
-Während des Trainings können mehrere Neurone zur Minimierung der Fehlerfunktion so gut zusammenarbeiten, dass die Erkennung bestimmter Merkmale ohne diese Zusammenarbeit nicht mehr möglich ist, aber solche komplexe Koadaptationen  können zu einer Überanpassung führen, denn diese komplexe Koadaptationen existieren nicht immer in Testdaten. Da die am Training teilnehmenden Neuronen nach dem Zufallsprinzip nach jeder Epoche ausgewählt werden, haben wir für jedes Training ein neues Modell, was die Neuronen zur Zusammenarbeit zwingt, ohne jedoch voneinander abhängig zu sein, anders gesagt, wird jedes Neuron unabhängig von anderen Neuronen die Muster korrekt lernen können.  
-
-\item{Automatische Erhöhung von Training Daten und Regelung }.\\
-Noch dazu führt die Ausschaltung von Neuronen, wie es in Abbildung \ref{fig:DropoutDataAugmentation} angezeigt ist, zu einer automatische Erzeugung neuer Trainingsdaten. Die verwendeten Daten in ausgedünnten Modellen sind also nur eine Abstraktion von echten Daten bzw. Rauschdaten und da wir für ein Netz mit $ n $ versteckten Einheiten, von denen jede fallen gelassen werden kann, $ 2^n $ mögliche Modelle haben, haben wir $ 2^n $ mögliche Abstraktion von unseren Daten und das sollte einer der Gründe sein, warum Dropout effektiver als andere rechnerisch kostengünstige Regler ist \cite{3} und warum die Trainingszeit von \acsp{NN} mit Dropout mindestens verdoppelt wird. 
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth]{model}
-	\caption{Erhöhung des Trainingsdaten durch Dropout}
-	\label{fig:DropoutDataAugmentation}
-\end{figure}
-
-Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögliche ausgedünnte Netzwerke zu trainieren, deshalb ist das Modell, das am Ende des Trainings erhalten wird, nur eine durchschnittliche Approximation aller mögliche Modelle, was schon gut, denn es gibt schlechte und gute Modelle.
-%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
-\end{itemize}
 
 
 \subsection{Extreme Version von \textit{TemkiNet.}}
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -1749,7 +1786,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\label{tab:Temki_Architectur1}
 \end{table}
 
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -1762,7 +1799,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\label{tab:Temki_Architectur 1}
 \end{table}
 
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -1776,7 +1813,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\label{tab:Temki_Architectur 2}
 \end{table}
 
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -1791,7 +1828,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\label{tab:Temki_Architectur 3}
 \end{table}
 
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -1822,7 +1859,7 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 	\caption{TemkiNet 4 Architektur mit $ 101 $ Feature-Maps pro \ac{ConvL}  }
 	\label{tab:Temki_Architectur 4}
 \end{table}
-\begin{table}
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{*{5}{|c}| }
 		\hline
@@ -1841,8 +1878,38 @@ Da heutige \acsp{CNN} Million von Neurons haben, wäre es unmöglich alle mögli
 \end{table}
 
 \subsection{Erhöhung der Inferenzzeit und Verringerung  des Speicherbedarfs }
-\subsubsection{Quantisierung}
-\subsubsection{Pruning}
+\subsection{Pruning}
+\begin{table}[h!]
+	\centering
+	$ (100, 100, 3) $
+		\begin{tabular}{*{3}{|c}|}
+			\hline
+			Prune  & Genauigkeit & Modellgröße \\ \hline
+			00\%	& 67.08 \%&  16.9 MB  \\ \hline
+			10\%	& 67.01 \%&  5.8 MB   \\ \hline
+			20\%	& 64.45 \%&  5.8 MB 	\\ \hline
+			
+		\end{tabular}
+	\caption{Pruning von CNN}
+	\label{tab:pruning}
+\end{table}
+\subsection{Quantisierung}
+\begin{table}[h!]
+	\centering
+	$ (224, 224, 3) $
+	\begin{tabular}{*{3}{|c}|m	{2cm}|}
+		\hline
+		\#Bits  & Genauigkeit & Modellgröße & Inferenzzeit (Image/s) \\ \hline
+		32	& 67.69 \%&  21.2 MB  & 1\\ \hline
+		16	& 66.99 \%&  5.4  MB  & 2\\ \hline
+		8	& 67.20 \%&  5.4  MB  &	9\\ \hline
+		
+	\end{tabular}
+	\caption{Quantisierung von CNN}
+	\label{tab:Quantisierung}
+\end{table}
+\subsection{Transfer-Lernen (\textit{Transfer Learning})}
+
 \section{Diskussion}
 \section{Schluss}
 \bibliographystyle{acm}
