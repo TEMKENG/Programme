@@ -1029,14 +1029,14 @@ Die neueren maschinellen Lernmethoden verwenden immer tiefer neuronale Netze wie
 \end{itemize} 
 Im folgenden werden nur die Beschneidung, die Quantisierung von \ac{NN} und die Anwendung von Huffman auf \ac{NN} mehr eingegangen werden.
 
-\subsection{Beschneidung des Netzwerks(\textit{Pruning Network})}
-Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netzwerke versucht, unwichtige oder redundante Verbindungen oder komplette Neuronen aus dem Netzwerk zu entfernen, um ein Netz mit möglichst geringer Komplexität zu erhalten. Mit unwichtigen Verbindungen werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Nullwert haben keinen Einfluss auf das Output des Neurons, sie sind einfach überflüssig. Während oder nach dem Training gibt es mehrere Parameter, die nicht wirklich oder nicht zu viel zum Neuronenergebnis beitragen, obwohl sie keinen Nullwert haben, deshalb ist es zum Reduzieren der Netzwerkdichte notwendig, anderen Maßstäbe als den Nullwert anzulegen, um Verbindungen zu entfernen.
+\subsection{Beschneidung des Netzwerks(\textit{Pruning Network})}\label{kom:pruning}
+Wie oben schon erwähnt, wird beim \textit{Pruning} neuronaler Netzwerke versucht, unwichtige oder redundante Verbindungen oder komplette Neuronen aus dem Netzwerk zu entfernen, um ein Netz mit möglichst geringer Komplexität bzw. mehr Sparsamkeit zu erhalten. Mit unwichtigen Verbindungen werden die Parameter (Gewichte und Bias) gemeint, die fast null sind, denn Parameter mit Nullwert haben keinen Einfluss auf das Output des Neurons, sie sind einfach überflüssig. Während oder nach dem Training gibt es mehrere Parameter, die nicht wirklich oder nicht zu viel zum Neuronenergebnis beitragen, obwohl sie keinen Nullwert haben, deshalb ist es zum Reduzieren der Netzwerkdichte notwendig, anderen Maßstäbe als den Nullwert anzulegen, um Verbindungen zu entfernen.
 
 Das Pruning-Verfahren bietet einige Vorteile wie Reduzierung der Speicher- und Hardwarekosten, die Trainingsbeschleunigung , die schnellere Antwortzeit und das Verringern der Wahrscheinlichkeit der Overfitting(\ref{Overfitting}).
 Es ist sehr wichtig zu beachten, dass die Anwendung vom Pruning-Verfahren auf ein \ac{NN} nur Sinn macht, wenn das \ac{NN} teilweise oder komplett trainiert ist, sonst macht das Pruning nur eine Reduktion der Anzahl der Netzwerkparameter.
 
 Es gibt zwei Hauptszenarien für das Pruning von \ac{NN}.
-Die erste besteht darin, die irrelevanten Verbindungen in einem komplett trainierten \ac{NN} zu entfernen. Mit komplett trainierten \ac{NN} wird gemeint, dass die erwünschte Genauigkeit schon erreicht ist. Im zweiten Szenario wird Pruning während des Trainings durchgeführt, das wird seht oft als \textit{iteratives Pruning} bezeichnet.Dabei wird vor Trainingsbeginn  bestimmte Dinge festgelegt,wie z.B. ab wann wird das Netzwerk beschnitten und wie oft es durchgeführt werden soll. 
+Die erste besteht darin, die irrelevanten Verbindungen in einem komplett trainierten \ac{NN} zu entfernen. Mit komplett trainierten \ac{NN} wird gemeint, dass die erwünschte Genauigkeit schon erreicht ist. Im zweiten Szenario wird Pruning während des Trainings durchgeführt, es wird sehr oft als \textit{iteratives Pruning} bezeichnet.Dabei wird vor Trainingsbeginn  bestimmte Dinge festgelegt,wie z.B. ab wann wird das Netzwerk beschnitten und wie oft es durchgeführt werden soll. 
 Das erste Szenario ist einfacher anzuwenden, denn man muss nur darauf warten, bis es keine Verbesserung der Genauigkeit des \ac{NN} mehr gibt und dann Pruning auf das \ac{NN} anwenden, aber damit verliert man großen Vorteile des Pruning, die die Beschleunigung des Trainings und Reduzierung der Overfitting-Wahrscheinlichkeit sind.
 Aus diesen Gründen wird in der Praxis das zweite Szenario bevorzugt, aber die richtigen Hyperparameter zu finden, ist kompliziert. Eine zu früh Beschneidung kann z.B. die Genauigkeit des \ac{NN} zu sehr verschlechtern, denn es kann sein, dass eine Verbindung, die nur nach einer späteren Gewichtsanpassung zum Ergebnis eines Neurons  hätte beigetragen können, entfernt würde, aber es bietet eine Beschleunigung des Trainings. Was eine zu spät Beschneidung angeht, haben wir fast die gleichen Nachteile wie im ersten Szenario und eine sehr häufiges Pruning kann das Training  auch verlangsamen.Das ganze Prozess musst sehr oft leider mehrmals angewendet, um die richtigen Hyperparameter zu finden, sodass es sich wirklich nicht mehr lohnt. Ein graphischer Ablauf der Beschneidung ist in der Abbildung \ref{fig:PN} zu sehen.Wenn wir zu viel auf einmal schneiden, könnte das Netzwerk so sehr beschädigt werden, dass es nicht mehr wiederhergestellt werden kann.
 
@@ -1044,7 +1044,7 @@ Die Hauptarbeit bei Pruning-Verfahren ist sicherlich, die guten Kriterien für d
 
 Bisher gibt es viele Kriterien für die Bewertung der Wichtigkeit eines Parameters, die sich miteinander unterscheiden und je nach Anwendung Vor- und Nachteile aufweisen. Im Folgenden werden einige Kriterien vorgestellt.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,semithick]
 	\tikzstyle{every state}=[rectangle, rounded corners, draw=purple, fill=gray!50,text=black, ultra thick]
@@ -1074,7 +1074,7 @@ Bisher gibt es viele Kriterien für die Bewertung der Wichtigkeit eines Paramete
 
 \begin{itemize}
 		\item \textbf{Schwellenwert}\label{Schwellenwert}\\
-			Für die Bewertung der Wichtigkeit eines Parameters verwenden \cite[Han et al]{pruning} einen Schwellenwert $ \theta $ , also alle Parameter mit einem Wert in $ [-\theta, \theta] $ wenden eliminiert.So ein Kriterium macht das Pruning schneller und effizienter, weil es sehr einfach ist, die zu eliminierenden Parameter zu finden.Da nach dem Pruning immer ein Genauigkeitsverlust auftritt, muss das \ac{NN} erneuert trainiert werden, um seine Genauigkeit wiederherzustellen. Aber dieser Ansatz hat viele Nachteile. Erstens muss der optimale Schwellenwert gefunden werden und dafür muss das ganze Prozess(Schwellenwert auswählen, \ac{NN} beschneiden, Verlust vergleichen) mehrmals wiederholt werden, um nur den optimalen Schwellenwert zu finden, deshalb können wir nie sicher sein, dass wir den optimalen Schwellenwert gefunden haben.Zweitens wird eine  große Reduktion der Rechenkosten nur in \acsp{FCL} und nicht in \acsp{ConvL} beobachtet\cite{Filter Pruning}. Die modernen Architekturen von \acsp{CNN} können also bezüglich der Rechenkosten aus dem Verfahren keinen Vorteil ziehen,denn sie bestehen am meistens nur aus Faltungschichten.Drittens muss spärliche Bibliotheken oder spezielle Hardware verwendet werden, damit die Bewertung des beschnitten \ac{NN} effektiv wird.
+			Für die Bewertung der Wichtigkeit eines Parameters verwenden \cite[Han et al]{pruning} einen Schwellenwert $ \theta $ , also alle Parameter mit einem Wert in $ [-\theta, \theta] $ wenden eliminiert.So ein Kriterium macht das Pruning schneller und effizienter, weil es sehr einfach ist, die zu eliminierenden Parameter zu finden.Da nach dem \textit{Pruning} fast immer ein Genauigkeitsverlust auftritt, muss das \ac{NN} erneuert trainiert werden, um seine Genauigkeit wiederherzustellen. Aber dieser Ansatz hat viele Nachteile. Erstens muss der optimale Schwellenwert gefunden werden und dafür muss das ganze Prozess(Schwellenwert auswählen, \ac{NN} beschneiden, Verlust vergleichen) mehrmals wiederholt werden, um nur den optimalen Schwellenwert zu finden, außerdem können wir nie sicher sein, dass wir den optimalen Schwellenwert gefunden haben.Zweitens wird eine  große Reduktion der Rechenkosten nur in \acsp{FCL} und nicht in \acsp{ConvL} beobachtet\cite{Filter Pruning}. Die modernen Architekturen von \acsp{CNN} können also bezüglich der Rechenkosten aus dem Verfahren keinen Vorteil ziehen,denn sie bestehen am meistens nur aus Faltungschichten.Drittens muss spärliche Bibliotheken oder spezielle Hardware verwendet werden, damit die Bewertung des beschnitten \ac{NN} effektiv wird.
 	
 	\item \textbf{Filter und Feature-Map Pruning}\\
 		Anstatt die Gewichte in einem Filter elementweise zu entfernen,schlagen \cite[Li et al]{Filter Pruning} vor, das ganze Filter und die entsprechende Feature-Map zu entfernen.Dieses Vorgehen bringt mit sich im Vergleich mit dem oben vorgestellten Ansatz mehrere Vorteile.Es werden z.B. keine Bibliotheken, die eine Beschleunigung durch spärliche Operationen über \acsp{CNN} ermöglichen, mehr benötigt.Noch dazu werden die Rechenkosten deutlich reduziert. Bei diesem Ansatz werden die weniger nützlichen Filter aus einem vollständig trainierten \ac{CNN}  entfernen. Zur Auswahl der zu entfernenden Filter wird zuerst die $ l_1$-Norm(\ref{eq:l_1}) jedes Filter im \ac{NN} berechnet und dann werden die $ m $ Filter mit der kleinsten $ l_1 $-Norm in jeder Schicht entfernen, wobei $ m $ ein Hyperparameter ist, der die Anzahl der zu löschenden Filter angibt.
@@ -1087,7 +1087,7 @@ Bisher gibt es viele Kriterien für die Bewertung der Wichtigkeit eines Paramete
 		\end{equation}
 		Der Grund, warum nur die Filter mit einer kleineren $ l_1 $-Norm entfernt werden, liegt daran, dass sie neigen dazu, Feature-Maps mit geringen Aktivierungen im Vergleich zu den anderen Filtern in der selben Schicht zu erzeugen und das kann gut in der Abbildung \ref{fig:Filter_Intensität} festgestellt werden. Wobei das Feature-Map links aus der Abbildung \ref{fig:Filter_Intensität} ist das selbe mit dem aus Abbildung \ref{fig:Faltungsoperation2} und das Feature-Map rechts erhalten wir, indem wir das Filter aus Abb. \ref{fig:Faltungsoperation1} mit drei multiplizieren.
 	
-		\begin{figure}[h]
+		\begin{figure}[h!]
 			\centering
 				
 			\includegraphics[scale=.75]{Filter_intensite}
@@ -1095,7 +1095,7 @@ Bisher gibt es viele Kriterien für die Bewertung der Wichtigkeit eines Paramete
 			\label{fig:Filter_Intensität}
 		\end{figure}
 		Noch interessanter an diesem Verfahren ist, dass das Pruning und das neue Training des Netzwerks auf einmal auf mehrere Schichten durchgeführt werden, was die Beschneidungszeit noch weiter beschleunigt  und noch effizienter ist, wenn es um sehr tiefe Netzwerke wie $ InceptionResNet $ oder $ GoogleNet $ angeht. Zur Beschneidung von Filter auf mehrere Schichten kann man die zu entfernenden Filter auf jeder Schicht entweder unabhängig von anderen Schicht oder nicht auswählen. Sollte man die zu löschenden Filter auf jeder Schicht unabhängig von anderen Schichten bestimmen, so muss man mit höheren Rechenkosten rechnen, denn es werden Filter, die in vorherigen Schichten schon ausgenommen wurden, in der Berechnung der Summe der absoluten Gewichte noch miteinbezogen.Nach Li et al \cite{Filter Pruning} ist die zweite Strategie nicht global optimal und kann trotzdem unter bestimmten Umständen zu besseren Ergebnissen führen. Die Abbildung \ref{fig:Filter_pruning} zeigt, wie die Entfernung eines Filters die Sichtausgabe beeinflusst.
-		\begin{figure}[h]
+		\begin{figure}[h!]
 			\centering
 			
 			\includegraphics[scale=.75, width=\textwidth]{filter_pruning}
@@ -1103,12 +1103,14 @@ Bisher gibt es viele Kriterien für die Bewertung der Wichtigkeit eines Paramete
 			\label{fig:Filter_pruning}
 		\end{figure}
 	\item \textbf{Automatische Beschneidung}\\
-		Die bisher beschriebenen Kriterien oder die meisten von ihnen fordern, dass das beschnittene Netzwerk noch trainiert wird, um die Endgewichte für die verbleibenden spärlichen Verbindungen zu lernen. Das ganze macht das Pruning-Verfahren noch schwieriger, denn es wird nur dann unterbrochen, wenn der Genauigkeitsverlust wirklich groß ist, was zu viel Zeit in Anspruch nimmt. Um dieses Problem zu lösen, schlagen \emph{Manessi et al}\cite{Automated Pruning}  eine differenzierbare Technik vor, die es ermöglicht, das Pruning durchzuführen, wenn die Gewichte des Netzwerks während der Trainingsphase angepasst werden und die optimalen Schwellwerte automatisch zu suchen. Dieses Verfahren ist inspiriert von dem von Han et al\cite{pruning} und löst viele Probleme, die das Verfahren von \textit{Han et al} nicht lösen könnten oder wegen der Art und Weise, wie sie das Pruning durchführen, entstanden.Erstens werden die Schwellenwerte während des Trainings wie die Gewichte auch gelernt, es kann also eine große Menge von unterschiedlichen Schwellenwerten ausprobiert werden und anstatt der selbe Schwellenwert auf alle Layers anzuwenden, wird jeder Schicht eine Schwelle zugewiesen. Da Nicht alle Layers  gleich empfindlich gegenüber dem Pruning sind und die Verwendung eine selbe Schwelle auf jede Schicht davon ausgeht, dass sie sind, muss dieses Verfahren optimaler.
-		Zweitens, anstatt die Trainingszeit zu erhöhen, weil auch neue Parameter gelernt werden müssen, wird sie reduziert,das liegt daran, dass die Netzwerkparameter irgendwann mehr oder weniger spärlich werden, was Feedforward- und Backpropagationzeit erheblich reduziert.Es ist wichtig zu betonen,dass das Netzwerk nur einmal trainiert werden muss, um eine selbe bzw. bessere Genauigkeit wie bzw. als die anderen Methoden zu erzielen.	
+		Die bisher beschriebenen Kriterien oder die meisten von ihnen fordern, dass das beschnittene Netzwerk noch trainiert wird, um die Endgewichte für die verbleibenden spärlichen Verbindungen zu lernen. Das ganze macht das Pruning-Verfahren noch schwieriger, denn es wird nur dann unterbrochen, wenn der Genauigkeitsverlust wirklich groß ist, was zu viel Zeit in Anspruch nimmt. Um dieses Problem zu lösen, schlagen \emph{Manessi et al}\cite{Automated Pruning}  eine differenzierbare Technik vor, die es während der Trainingsphase die Durchführung von \textit{Pruning} und die automatische Suche nach den optimalen Schwellwerten ermöglicht. Dieses Verfahren ist inspiriert von dem von Han et al\cite{pruning} und löst viele Probleme, die das Verfahren von \textit{Han et al} nicht lösen könnten oder wegen der Art und Weise, wie es das \textit{Pruning} durchführt, entstanden.
+		
+		Erstens werden die Schwellenwerte während des Trainings wie die Gewichte auch gelernt, es kann also eine große Menge von unterschiedlichen Schwellenwerten ausprobiert werden und anstatt der selbe Schwellenwert auf alle Schichten anzuwenden, wird jeder Schicht einen geeigneten Schwellenwert zugewiesen.Dieses Verfahren muss optimaler sein, denn es zieht die Tatsache in Betracht, dass nicht alle Schichten  gleich empfindlich gegenüber dem \textit{Pruning} sind und sucht einen optimalen Schwellenwert für jede Schicht. 
+		
+		Zweitens, anstatt die Trainingszeit zu erhöhen, weil auch neue Parameter gelernt werden müssen, wird sie reduziert.Das liegt daran, dass die Netzwerkparameter irgendwann mehr oder weniger spärlich werden, was die benötigte Zeit für die Daten-Propagierung und die Parameteranpassung erheblich reduziert.Es ist wichtig zu betonen,dass das Netzwerk nur einmal trainiert werden muss, um eine gleiche bzw. bessere Genauigkeit wie bzw. als die anderen Methoden zu erzielen.	
 \end{itemize}
 
-Aufgrund seiner Automatisierung und Effizienz wird das Pruning in Zukunft sicherlich immer häufiger eingesetzt werden.
-
+Aufgrund seiner Automatisierung und Effizienz wird das \textit{Pruning} in Zukunft sicherlich immer häufiger eingesetzt werden. Die durchgeführten Experimente mit \textit{Pruning} werden im Absatz\ref{exp:pruning} vorgestellt.
 
 
 \subsection{ Quantisierung von neuronalen Netzwerken}
@@ -1747,15 +1749,6 @@ Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Min
 
 
 
-\subsection{Problem beim Training von  Convolutional   neuronale Netzwerke}
-\subsubsection{Overfitting }\label{Overfitting}
-%\textcolor{red}{\begin{itemize}
-%		\item Erinnern Sie sich an das Kind aus Ihrer Mittelschulklasse, das bei den Tests sehr gut abgeschnitten hat, aber es schlecht tat, wenn die Fragen zum Test ursprüngliches Denken erforderten und nicht in der Klasse behandelt wurden? Warum tat er dies schlecht, wenn er mit einem Problem konfrontiert wurde, das er noch nie zuvor gesehen hatte? Weil er sich die Antworten auf die in der Klasse behandelten Fragen gemerkt hatte, ohne die zugrunde liegenden Konzepte zu verstehen.
-%		\item Ebenso ist die Größe des Neuronalen Netzwerks seine Fähigkeit zu lernen, aber wenn Sie nicht vorsichtig sind, wird es versuchen, die Beispiele in den Trainingsdaten zu speichern, ohne das Konzept zu verstehen. Infolgedessen wird das Neuronale Netzwerk außergewöhnlich gut mit den Trainingsdaten arbeiten, aber sie lernen nicht das eigentliche Konzept. Es wird bei neuen und unsichtbaren Testdaten nicht gut funktionieren. Dies wird als Überfitting bezeichnet.
-%	\end{itemize}
-%}
-
-
 
 \subsection{Extreme Version von \textit{TemkiNet.}}
 \begin{table}[h!]
@@ -1878,7 +1871,14 @@ Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Min
 \end{table}
 
 \subsection{Erhöhung der Inferenzzeit und Verringerung  des Speicherbedarfs }
-\subsection{Pruning}
+\subsection{Pruning}\label{exp:pruning}
+Im Absatz \ref{kom:pruning} wurden mehrere Kriterien wie Schwellenwerte und die $ l_1 $-Norm eines Filters zur Bewertung der Wichtigkeit eines Gewichts oder eines Neurons  vorgestellt und die Durchführung von \textit{Pruning} mit \textit{TensorFlow(Keras)} funktioniert wie folgt:
+
+Zunächst wird die anfängliche und endgültige Sparsamkeit in Prozent definiert, also zum einen der Prozentsatz der am wenigsten wichtigen Parameter, die bei der ersten Ausführung von \textit{Pruning} gelöscht werden und zum anderen die Sparsamkeit(\%), die wir ganz am Ende des Pruning-Verfahren erreichen möchten. Dann wird ein Anfangs- und Endschritt der Beschneidung gesetzt. Der Anfangsschritt kann den Wert $ 0 $ annehmen, wenn das \ac{CNN} bereits trainiert ist, oder einen Wert größer als Null, wenn das \ac{CNN} noch nicht trainiert ist. Um den Genauigkeitsverlust zu verringern, wird das Verfahren \textit{Pruning} schrittweise durchgeführt, indem periodisch nur ein Teil der zu löschenden Parameter entfernt wird und der CNN weiter trainiert wird, um die ursprüngliche Genauigkeit des CNN wiederherzustellen. 
+
+Aus der Tabelle \ref{tab:pruning} sind die Ergebnisse der Experimente mit \textit{Pruning}-Verfahren zu entnehmen. Erstens wurde die Größe des Modells deutlich um mehr als die Hälfte reduziert.Zweitens, es gibt einen leichten Verlust an Genauigkeit, je spärlicher das \ac{CNN} wird. Darüber hinaus verkleinert sich die Modellgröße nach $ 10\% $ Sparsamkeit nicht mehr, aber die Modellgröße sollte kleiner werden, wenn das Modell spärlicher wird. Wir glauben, dass dies auf die Programmierung des \textit{Pruning}-Verfahrens bei \textit{TensorFlow} zurückzuführen ist.
+
+
 \begin{table}[h!]
 	\centering
 	$ (100, 100, 3) $
@@ -1893,6 +1893,7 @@ Gilt {$ \eta < \eta_{opt} $}, so sind wir sichern, ein lokales oder globales Min
 	\caption{Pruning von CNN}
 	\label{tab:pruning}
 \end{table}
+
 \subsection{Quantisierung}
 \begin{table}[h!]
 	\centering
@@ -2011,7 +2012,7 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville:
 
 % Unterschrift (handgeschrieben)
 
-
+\listoffigures
 
 \end{document}
-\listoffigures
+

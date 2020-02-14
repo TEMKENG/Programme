@@ -65,12 +65,10 @@
 \contentsline {subsubsection}{\numberline {4.3.7}Anzahl der Neuronen pro Schicht:}{49}{subsubsection.4.3.7}
 \contentsline {subsubsection}{\numberline {4.3.8}Qualit\IeC {\"a}t des Datensatzes}{50}{subsubsection.4.3.8}
 \contentsline {subsection}{\numberline {4.4}Einfluss der Lernrate}{51}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Problem beim Training von Convolutional neuronale Netzwerke}{53}{subsection.4.5}
-\contentsline {subsubsection}{\numberline {4.5.1}Overfitting}{53}{subsubsection.4.5.1}
-\contentsline {subsection}{\numberline {4.6}Extreme Version von \textit {TemkiNet.}}{53}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{55}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Pruning}{55}{subsection.4.8}
-\contentsline {subsection}{\numberline {4.9}Quantisierung}{55}{subsection.4.9}
-\contentsline {subsection}{\numberline {4.10}Transfer-Lernen (\textit {Transfer Learning})}{56}{subsection.4.10}
+\contentsline {subsection}{\numberline {4.5}Extreme Version von \textit {TemkiNet.}}{53}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{54}{subsection.4.6}
+\contentsline {subsection}{\numberline {4.7}Pruning}{54}{subsection.4.7}
+\contentsline {subsection}{\numberline {4.8}Quantisierung}{56}{subsection.4.8}
+\contentsline {subsection}{\numberline {4.9}Transfer-Lernen (\textit {Transfer Learning})}{56}{subsection.4.9}
 \contentsline {section}{\numberline {5}Diskussion}{56}{section.5}
 \contentsline {section}{\numberline {6}Schluss}{56}{section.6}
