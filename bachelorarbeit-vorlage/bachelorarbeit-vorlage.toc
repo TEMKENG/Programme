@@ -60,15 +60,15 @@
 \contentsline {subsubsection}{\numberline {4.3.2}Dropout}{43}{subsubsection.4.3.2}
 \contentsline {subsubsection}{\numberline {4.3.3}Aktivierungsfunktion.}{45}{subsubsection.4.3.3}
 \contentsline {subsubsection}{\numberline {4.3.4}Optimierer.}{45}{subsubsection.4.3.4}
-\contentsline {subsubsection}{\numberline {4.3.5}Batch-Normalisierung.}{47}{subsubsection.4.3.5}
+\contentsline {subsubsection}{\numberline {4.3.5}Batch-Normalisierung(BN).}{47}{subsubsection.4.3.5}
 \contentsline {subsubsection}{\numberline {4.3.6}Bildgr\IeC {\"o}\IeC {\ss }e.}{48}{subsubsection.4.3.6}
-\contentsline {subsubsection}{\numberline {4.3.7}Anzahl der Neuronen pro Schicht:}{49}{subsubsection.4.3.7}
+\contentsline {subsubsection}{\numberline {4.3.7}Anzahl der Feature-Maps pro Schicht:}{49}{subsubsection.4.3.7}
 \contentsline {subsubsection}{\numberline {4.3.8}Qualit\IeC {\"a}t des Datensatzes}{50}{subsubsection.4.3.8}
-\contentsline {subsection}{\numberline {4.4}Einfluss der Lernrate}{51}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Extreme Version von \textit {TemkiNet.}}{53}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}Erh\IeC {\"o}hung der Inferenzzeit und Verringerung des Speicherbedarfs}{54}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Pruning}{54}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Quantisierung}{56}{subsection.4.8}
-\contentsline {subsection}{\numberline {4.9}Transfer-Lernen (\textit {Transfer Learning})}{56}{subsection.4.9}
-\contentsline {section}{\numberline {5}Diskussion}{56}{section.5}
-\contentsline {section}{\numberline {6}Schluss}{56}{section.6}
+\contentsline {subsubsection}{\numberline {4.3.9}Einfluss der Lernrate}{51}{subsubsection.4.3.9}
+\contentsline {subsection}{\numberline {4.4}Verringerung des Speicherbedarfs}{53}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Extreme Version von \textit {TemkiNet.}}{53}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Pruning}{54}{subsubsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.3}Quantisierung}{56}{subsubsection.4.4.3}
+\contentsline {subsection}{\numberline {4.5}Transfer-Lernen (\textit {Transfer Learning})}{57}{subsection.4.5}
+\contentsline {section}{\numberline {5}Diskussion}{58}{section.5}
+\contentsline {section}{\numberline {6}Schluss}{58}{section.6}
