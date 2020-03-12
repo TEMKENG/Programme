@@ -109,7 +109,7 @@
 \newpage
 \section*{Kurzzusammenfassung}
 \begin{abstract}
-	In den letzten Jahren haben die Convolutional Neural Network(CNN) die besten Ergebnisse bei der Lösung verschiedener Aufgaben erzielt, insbesondere bei der Bildklassifikation im Bereich der Computer Vision, und haben auch viele andere Bereiche von Grund auf revolutioniert.Getrieben durch die Zunahme der Datenmenge und große Fortschritte in der Rechenleistung hat sich ein neuer Trend zur Entwicklung von größeren, tieferen und komplizierteren \acsp{CNN} herausgebildet. Dieser Trend bringt jedoch nicht nur eine immer bessere Genauigkeit mit sich, sondern auch viele neue und wichtige Herausforderungen, wie die Nutzung von großem Speicherplatz und die enorme Anzahl von Speicherzugriffen und Rechenoperationen. Im Rahmen dieser Arbeit wird eine neue und effiziente Architektur von \ac{CNN} namens \textit{TemkiNet} zur Bildklassifikation entwickelt, die sich von \textit{MobileNet} und \textit{Xception} Architektur inspirieren lässt. Allerdings benötigt \textit{TemkiNet} 2-4$ \times$ als \textit{MobileNet} und 14-28$ \times $ weniger Speicherplatz als \textit{Xception}, um die gleichen oder bessere Ergebnisse zu erzielen.Zusätzlich wenden wir Methoden wie die Data Augmentation, Dropout und die Batch-Normalisierung an, und passen wir die Parameter wie die Lernrate, die Anzahl der Feature-Maps pro Schicht und die Bildgröße gut an, um die Leistung unseres Netzwerks zu steigern. Wir greifen außerdem auf die \textit{Pruning} und Quantifizierungstechnik zurück,  die es uns ermöglichen, die Größe unseres Modells um das 3- bis 12-fache mit einem Genauigkeitsverlust von weniger als $ 1 \% $ zu reduzieren.Zum Schluss schlagen wir einen neuen Lernrate-Planer (\textit{LeaningRateScheduler}) und eine neue Art und Weise, wie man vom Transfer-Lernen besser profitieren kann.
+	In den letzten Jahren haben die \ac{CNN} die besten Ergebnisse bei der Lösung verschiedener Aufgaben erzielt, insbesondere bei der Bildklassifikation im Bereich der Computer Vision, und haben auch viele andere Bereiche von Grund auf revolutioniert.Getrieben durch die Zunahme der Datenmenge und große Fortschritte in der Rechenleistung hat sich ein neuer Trend zur Entwicklung von größeren, tieferen und komplizierteren \acsp{CNN} herausgebildet. Dieser Trend bringt jedoch nicht nur eine immer bessere Genauigkeit mit sich, sondern auch viele neue und wichtige Herausforderungen, wie die Nutzung von großem Speicherplatz und die enorme Anzahl von Speicherzugriffen und Rechenoperationen. Im Rahmen dieser Arbeit wird eine neue und effiziente Architektur von \ac{CNN} namens \textit{TemkiNet} zur Bildklassifikation entwickelt, die sich von \textit{MobileNet} und \textit{Xception} Architektur inspirieren lässt. Allerdings benötigt \textit{TemkiNet} 2-4x weniger Speicherplatz als \textit{MobileNet} und 14-28x weniger Speicherplatz als \textit{Xception}, um zu gleichen oder besseren Ergebnisse zu kommen.Zusätzlich wenden wir Methoden wie die Data Augmentation, Dropout und die Batch-Normalisierung an, und passen die Parameter wie die Lernrate, die Anzahl der Feature-Maps pro Schicht und die Bildgröße gut an, um die Leistung unseres Netzwerks(von 26.01\% auf 61.82\%) zu steigern. Wir greifen außerdem auf die \textit{Pruning-} und Quantisierungstechnik zurück,  die es uns ermöglichen, die Größe unseres Modells um das 3- bis 12-fache mit einem Genauigkeitsverlust von weniger als $ 1 \% $ zu reduzieren.Zum Schluss schlagen wir einen neuen Lernrate-Planer (\textit{LeaningRateScheduler}) und eine neue Art und Weise, wie man vom Transfer-Lernen besser profitieren kann.
 \end{abstract}
 \newpage
    % Inhaltsverzeichnis
@@ -134,44 +134,31 @@
 	\acro{CNN}{Convolutional Neural Network}
 	\acro{DSC}{Depthwise Separable Convolution}
 	\acro{KNN}{Künstliches neuronales Netzwerk}
-	\acro{ILSVRC }{ Large Scale Visual Recognition Challenge}
+	\acro{ILSVRC}{ Large Scale Visual Recognition Challenge}
 \end{acronym}
 \newpage
 \section{Einleitung}
-In den letzten Jahren haben \acsp{CNN} die besten Ergebnisse bei der Lösung verschiedener Aufgaben im Bereich der Computer Vision erzielt und viele andere Bereiche von Grund auf revolutioniert.Getrieben durch die Zunahme der Datenmenge und große Fortschritte in der Rechenleistung hat sich ein neuer Trend zur Entwicklung von größeren, tieferen und komplizierteren \acsp{CNN} herausgebildet. Aber dieser Trend bringt nicht nur eine immer bessere Genauigkeit, sondern auch viele neue und zentrale Probleme oder Herausforderungen mit sich.
+\subsection{Motivation}\label{motivation}
+Seit 2012, als AlexNet\cite{AlexNet} durch den Gewinn des ImageNet Wettbewerbs \ac{ILSVRC} die tiefen \acsp{CNN} populär gemacht hat, sind die \acs{CNN} im Bereich der Bildverarbeitung allgegenwärtig geworden. Die Zahl der CNNs steigt von Jahr zu Jahr und sie werden immer mehr tiefer und komplizierter, um eine höhere Genauigkeit zu erreichen.Aber diese Fortschritte zur Verbesserung der Genauigkeit machen die CNN nicht unbedingt effizienter in Bezug auf Größe und Geschwindigkeit.
 
+Die \acsp{CNN} mit guten Ergebnissen verwenden  meist mehrere Millionen Parameter, was ebenfalls zu viel Speicherplatz erfordert. Die verfügbaren internen Speicher für die Geräte wie Smart-Kameras, Mobiltelefone usw., in denen die CNNs nach Training eingesetzt sind oder werden sollen, sind jedoch sehr beschränkt,was die Nutzung von CNN in bestimmten Anwendungen bisher komplizierter bzw. unmöglich macht. 
 
-Erstens verwenden die \acsp{CNN} mit guten Ergebnissen meist mehrere Millionen Parameter, was ebenfalls zu viel Speicherplatz erfordert.Aber die verfügbaren internen Speicher für die Geräte wie Smart-Kameras, Mobiltelefone usw., in denen die CNN eingesetzt sind oder werden sollen, sind sehr beschränkt,was die Nutzung von CNN in bestimmten Anwendungen bisher unmöglich macht.Zweitens sind in einem CNN  etwa eine oder mehrere Milliarden Rechenoperationen und Speicherzugriffe erforderlich, die alle Strom verbrauchen und Wärme abgeben, die die begrenzte Batteriekapazität erschöpfen kann und/oder die thermischen Grenzen des Geräts testen, um eine einzige Vorhersage zu treffen\cite{prunetoprune}, daher ist die Durchführung von Inferenz auf stromsparenden System-on-a-Chip (SoCs) aufgrund der begrenzten verfügbaren Speicher- und Rechenressourcen eine große Herausforderung.
+Außerdem sind in einem CNN  etwa eine oder mehrere Milliarden Rechenoperationen und Speicherzugriffe erforderlich, um eine einzige Vorhersage zu treffen\cite{prunetoprune}. Diese Rechenoperationen und Speicherzugriffe verbrauchen alle Strom und geben Wärme ab, die die begrenzte Batteriekapazität von Geräten schneller erschöpfen können, daher ist die Durchführung von Inferenz auf stromsparenden System-on-a-Chip (SoCs) aufgrund der begrenzten verfügbaren Speicher- und Rechenressourcen eine große Herausforderung.
 
-Unter Berücksichtigung dieser Herausforderungen ist eine wachsende Zahl von Arbeiten entstanden, die sich zum Ziel nehmen, Methoden zur Komprimierung von \acsp{CNN} zu finden und gleichzeitig den möglichen Verlust an Modellqualität zu begrenzen.
-Der Entwurf neuer Architekturen mit effizienteren Operationen, wie z.B. die tiefenweise trennbare Faltung (\textit{Depthwise Separable Convolution}), die die Standardfaltung in punktweise und tiefenweise Faltung (\textit{Point/depth-wise convolution}) faktorisieren, ermöglicht die Reduzierung der Größe der Modelle im Vergleich zu bestehenden überparametrisierten Architekturen mit der Standardfaltung.
-Das CNN-Beschneiden von redundanten und nicht informativen Gewichten im Netzwerk ermöglicht eine signifikante Reduzierung der Netzwerkgröße in Abhängigkeit von den Anfangseinstellungen.
-Die CNN-Quantisierung, die darin besteht, den Bereich der Parameterwerte zu reduzieren, wodurch der Speicherbedarf verringert und die Inferenzzeit verbessert wird.
+Unter Berücksichtigung dieser wesentlichen Herausforderungen ist eine wachsende Zahl von Arbeiten entstanden, die sich zum Ziel nehmen, Methoden zur Komprimierung von \acsp{CNN} zu finden und gleichzeitig den möglichen Verlust an Modellqualität zu begrenzen.
 
+Der Entwurf neuer Architekturen mit effizienteren Operationen, wie z.B. die tiefenweise trennbare Faltung (\textit{Depthwise Separable Convolution}), die die Standardfaltung in punktweise und tiefenweise Faltung (\textit{Point/depth-wise convolution}) faktorisieren, ermöglicht eine deutliche Reduzierung der Modellgröße im Vergleich zu bestehenden überparametrisierten Architekturen mit der Standardfaltung.
 
-\subsection{Motivation}
-In den letzten Jahren haben \acsp{CNN} die besten Ergebnisse bei der Lösung verschiedener Aufgaben im Bereich der Computer Vision erzielt und viele andere Bereiche von Grund auf revolutioniert.Getrieben durch die Zunahme der Datenmenge und große Fortschritte in der Rechenleistung hat sich ein neuer Trend zur Entwicklung von größeren, tieferen und komplizierteren \acsp{CNN} herausgebildet. Aber dieser Trend bringt nicht nur eine immer bessere Genauigkeit, sondern auch viele neue und zentrale Probleme oder Herausforderungen mit sich.
-Erstens verwenden die \acsp{CNN} mit guten Ergebnissen meist mehrere Millionen Parameter, was ebenfalls zu viel Speicherplatz erfordert.Aber die verfügbaren internen Speicher für die Geräte wie Smart-Kameras, Mobiltelefone usw., in denen die CNN eingesetzt sind oder werden sollen, sind sehr beschränkt,was die Nutzung von CNN in bestimmten Anwendungen bisher unmöglich macht.Zweitens sind in einem CNN  etwa eine oder mehrere Milliarden Rechenoperationen und Speicherzugriffe erforderlich, die alle Strom verbrauchen und Wärme abgeben, die die begrenzte Batteriekapazität erschöpfen kann und/oder die thermischen Grenzen des Geräts testen, um eine einzige Vorhersage zu treffen\cite{prunetoprune}, daher ist die Durchführung von Inferenz auf stromsparenden System-on-a-Chip (SoCs) aufgrund der begrenzten verfügbaren Speicher- und Rechenressourcen eine große Herausforderung.
+Das CNN-Beschneiden von redundanten und nicht informativen Netzwerkparameter ermöglicht auch eine signifikante Reduzierung der Netzwerkgröße in Abhängigkeit von den Anfangseinstellungen.
+Die CNN-Quantisierung, die darin besteht, den Bereich der Parameterwerte zu reduzieren, wodurch der Speicherbedarf verringert und die Dauer der Inferenz verbessert wird.
+
 \subsection{Ziel der Arbeit.}
-Das Vorhaben dieser Arbeit ist es, mit Hilfe eines \ac{CNN} ein Netzwerk zu entwickeln, das möglichst wenige Parameter zur Klassifizierung der großen Bildmengen verwendet und das bei der Lösung dieser Aufgabe mit den Standard \acsp{CNN} wie \textit{MobileNet} und \textit{Xception}, die dabei die Ergebnisse, die auf den Stand der Technik sind, erreichen, mithalten oder ihnen Übertreffen kann. 
-Dazu schlagen wir eine neue CNN-Architektur vor, die eine effiziente Nutzung der Parameter und eine bessere Inferenz ermöglicht. Darüber hinaus werden verschiedene Methoden und Hyperparameter untersucht, die im Stande sind, zum einen die Netzwerkleistung und die Inferenzzeit zu verbessern und zum anderen die Größe unseres \ac{CNN} nochmals zu reduzieren.  
+
+Ziel dieser Arbeit ist es, ein Netzwerk zu entwickeln, das Faltungsschichte verwendet, das hinsichtlich der Speicherplatznutzung sehr effizient ist, oder genauer gesagt, das mit möglichst wenigen Parametern große Bildsätze klassifiziert und bei der Lösung dieser Aufgabe  berühmte CNNs wie \textit{MobileNet} und \textit{Xception}, die auf dem neuesten Stand der Technik sind, mithalten oder übertreffen kann. Dazu schlagen wir eine neue CNN-Architektur, \textit{TemkiNet}, vor, die eine effiziente Nutzung der Parameter und eine bessere Inferenz ermöglicht. Darüber hinaus werden verschiedene Methoden und Hyperparameter untersucht, die im Stande sind, zum einen die Netzwerkleistung und die Dauer Inferenz zu verbessern und zum anderen die Größe unseres \ac{CNN} nochmals zu reduzieren.  
 
 
 \subsection{Aufbau der Arbeit.}
-
-\begin{itemize}
-	\item
-%	\textcolor{red}{
-%		\begin{itemize}
-%			\item Faltungsneuronale Netze sind in der Computervision allgegenwärtig geworden, seit AlexNet [19] durch den Gewinn der ImageNet Challenge: ILSVRC 2012 [24] tiefe Faltungsneuronale Netze populär gemacht hat. Der allgemeine Trend geht dahin, tiefere und kompliziertere Netze zu erstellen, um eine höhere Genauigkeit zu erreichen [27, 31, 29, 8]. Diese Fortschritte zur Verbesserung der Genauigkeit machen die Netze jedoch nicht unbedingt effizienter in Bezug auf Größe und Geschwindigkeit. 
-%			\item In den letzten Jahren haben tiefe neuronale Netze bei verschiedenen anspruchsvollen Aufgaben in den Bereichen Computervision, Spracherkennung und Verarbeitung natürlicher Sprache den neuesten Stand der Technik erreicht. Angetrieben durch steigende Datenmengen und Rechenleistung sind tiefe Lernmodelle größer und tiefer geworden, um besser aus Daten zu lernen. für die On-Device-Inferenz stellt einige zentrale Herausforderungen dar. Erstens haben moderne Modelle für tiefes Lernen routinemäßig Millionen von Parametern, die MBs Speicherplatz benötigen, während der Speicher auf dem Gerät begrenzt ist. Darüber hinaus ist es nicht ungewöhnlich, dass selbst eine einzige Modellschlussfolgerung Milliarden von Speicherzugriffen und Rechenoperationen hervorruft, die alle Strom verbrauchen und Wärme abgeben, die die begrenzte Batteriekapazität erschöpfen und/oder die thermischen Grenzen des Geräts testen können.Angesichts dieser Herausforderungen ist eine wachsende Zahl von Arbeiten entstanden, die darauf abzielen, Methoden zur Komprimierung von Modellen neuronaler Netze zu finden und gleichzeitig den möglichen Verlust an Modellqualität zu begrenzen. Latenzempfindliche Arbeitslasten, die sich auf Inferenz auf Geräten mit niedrigem Stromverbrauch stützen, hängen oft mit der Speicherbandbreite zusammen, und die Modellkomprimierung bietet den doppelten Vorteil, dass die Gesamtzahl der leistungsintensiven Speicherzugriffe reduziert und die Inferenzzeit durch eine effektiv höhere Speicherbandbreite zum Abrufen komprimierter Modellparameter verbessert wird. 
-%			\item In der jüngeren Literatur ist das Interesse am Aufbau kleiner und effizienter neuronaler Netze gestiegen. MobileNets konzentrieren sich in erster Linie auf die Optimierung der Latenz, aber auch auf kleine Netzwerke.
-%		\end{itemize}
-%	}
-%	
-\end{itemize}
- 
-
+Diese Arbeit in vier Abschnitte aufgeteilt. In der ersten Sektion werden die Grundlagen von CNN erklärt, auf denen die weiteren Abschnitte basieren. Im zweiten Abschnitt werden einige Methoden zur Komprimierung des CNN bzw. zur Reduzierung der Modellgröße erläutert. Im dritten Abschnitt werden gewisse wichtige Grundlagen zum Aufbau von \acsp{CNN} erklärt und die durchgeführten Experimenten erläutert und der letzte Abschnitt ist eine Zusammenfassung unserer Arbeit und ein Ausblick auf die zukünftigen Arbeiten.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \newpage  % neuer Abschnitt auf neue Seite, kann auch entfallen
@@ -182,8 +169,7 @@ Im folgenden Kapitel werden die Grundlagen von neuronalen Netzwerken beschrieben
 zum Abschluss ein Abschnitt über die verwendeten Datensätze und Bibliotheken.
 \subsection{Künstliche neuronale Netzwerke}
 \subsubsection{Künstliches Neuron}
-Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das Verhalten vom biologischen Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten jedes \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Normalerweise wird jeder Eingabe $ x_i $ separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung eines künstlichen Neurons ist in Abbildung \ref{fig:Fneuron}
-zu sehen.
+Ein künstliches Neuron\cite{kneuron} ist eine mathematische Funktion, die das Verhalten vom biologischen Neuron nachbildet. Künstliche Neuronen sind elementare Einheiten jedes \ac{KNN}. Das künstliche Neuron empfängt einen oder mehrere Inputs und bildet sie auf einen Output ab. Jeder Eingabe $ x_i $ wird separat mit einem Gewicht $ w_i $ multipliziert und danach aufsummiert und zum Schluss wird die Summe durch eine Funktion geleitet, die als Aktivierungs- oder Übertragungsfunktion bekannt ist.Eine schematische Darstellung der Funktionsweise eines künstlichen Neurons ist in Abbildung \ref{fig:Fneuron} zu sehen.
 
 \begin{figure}[h]
 	\centering
@@ -253,89 +239,34 @@ zu sehen.
 \end{figure}
 
 
-Künstliche Neurone können aufgestapelt werden, um eine Schicht(\textit{Layer}) zu bilden.Ein \ac{KNN} besteht aus einer oder mehreren Schichten und je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des neuronalen Netzes darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
+Künstliche Neuronen werden übereinander gestapelt, um eine Schicht(\textit{Layer}) zu bilden, und diese Schichten werden wiederum nacheinander gestapelt, um ein Netzwerk zu bilden. Je nach seiner Position in einem \ac{NN} wird eine Schicht anders genannt: Eingangsschicht(\textit{Input Layer}) bzw. Ausgabeschicht(\textit{Output Layer}), wenn das Layer die Eingangsdaten bzw. Ausgabedaten des \acsp{NN	} darstellt und versteckte Schicht(\textit{Hidden Layer}), wenn es keine Eingang- oder Ausgabeschicht ist.Ein kurzer Überblick über die Darstellung von \acsp{KNN} kann sich in Abbildung \ref{KNN} verschafft werden.
 
-\subsubsection{Merkmalskarten(Feature-Maps)}
-Die Ausgabe einer Schicht wird als Aktivierungskarten oder Feature-Map(s) bezeichnet. Die Anzahl von Feature-Maps in einer Schicht ist gleich die Anzahl der Ausgabekanäle(\textit{output channels}) bzw: Tiefe(\textit{depth}) dieser Schicht.
-In einer Faltungsschicht ist ein Feature-Map immer zweidimensional, während die Dimension eines Feature-Maps in einem \ac{FCL} nur von der des Inputs abhängt, genauer gesagt,für ein n-dimensionales Inputs ist ein Feature-Map $ (n-1) $dimensional.
-Wie die Feature-Maps berechnet werden, hängt sehr vom Schichttyp ab. Es wird beispielsweise in einer Faltungsschicht die Faltungsoperation mehrmals auf die Eingabe angewendet und jedes Mal wird ein neues Feature-Map erhalten.
+\subsubsection{Aktivierungskarten(Feature-Maps)}
+Die Ausgabe einer Schicht wird als Aktivierungskarte(n) oder Feature-Map(s) bezeichnet. Die Anzahl von Feature-Maps in einer Schicht entspricht der Anzahl der Ausgabekanäle(\textit{output channels}) bzw. der Tiefe(\textit{depth}) dieser Schicht. Die Dimension einer Aktivierungskarte ist in einer Faltungsschicht zweidimensional und in einem \ac{FCL} nulldimensional(die Aktivierungskarte ist also nur eine reelle Zahl). Wie die Feature-Maps berechnet werden, hängt sehr vom Schichttyp ab. Es wird beispielsweise in einer Faltungsschicht die Faltungsoperation mehrmals auf die Eingabe und jeweils mit einem unterschiedlichen Filter angewendet, wir erhalten also jedes Mal ein neues Feature-Map.
 
 \subsubsection{Filters}\label{Filter}
-Ein Filter ist eine kleine Matrix, die die Extraktion von Features ermöglicht.
-Die modernen Architekturen von \ac{CNN} verwendet immer mehr Filter (mindestens $ 2000 $), um bessere Ergebnisse zu erzielen. Wegen der zufällige Initialisierung von Filtern und ihrer großen Anzahl im \ac{CNN} kann es vorkommen, dass mehrere Filter das gleiche Feature extrahieren, solche Filter werden als Redundant bezeichnet, oder dass Filter genau das Gegenteil von dem filtern, was wir wollen, nämlich unwichtige Informationen, deshalb werden während des Trainings die Filterparameter ständig geändert. Zwei nichtlineare Filter, d. h. Filter, die nicht proportional zueinander sind, lernen unterschiedliche Dinge.Man kann also daraus schließen, dass je größer die Anzahl an Filter ist, desto mehr Features gefiltert werden können oder besser sind die Ergebnisse, aber das ist in Allgemein falsch, da die guten Ergebnisse sehr stark davon abhängen, wie die Filter im CNN aufgestapelt sind. Zu viele Filtern in einem \ac{CNN} können dazu führen, dass das \ac{CNN} sowohl gute Features als auch schlechte schneller lernt und zu wenige Filter schränken die Kapazität des \ac{CNN} ein,  wichtige Features zu extrahieren, denn irgendwann wird es vorkommen, dass jedes Filter etwas Wichtiges gelernt hat, aber noch mehr Informationen werden benötigt, um die Trainingsdaten zu erklären.
-Es ist also wichtig die richtige Anzahl von Filtern zu finden.
-
-
-\begin{itemize}
-	%- formalisierte Entsprechung der Nervenzelle besteht aus\\
-	
-	%	\item \textbf{Aktivierungszustand} (\textit{Activation state}) Er gibt oder definiert den aktuellen Zustand eines Neurons.
-	%	\item \textbf{Propagierungsfunktion} (\textit{propagation function}) Sie bestimmt den gesamten Input(auch Netto-Input) des Neurons.\textcolor{red}{Sie legt fest, wie die Eingabe des Neuron aufzuarbeiten ist} Die häufigste verwendete Propagierungsfunktion ist die summe der gewichteten Eingaben, die das Neuron von anderen Neuronen erhält.
-	%	\item \textbf{Aktivierungsfunktion} ( \textit{activation function}) Sie legt fest, wie der nächste Aktivierungszustand des Neurons aus dem Netto-Input und dem aktuellen Aktivierungszustand berechnet wird. Es gibt  zahlreiche Aktivierungsfunktionen(zB. ELU, LeakyReLU, Sigmoid, Softmax, Maxout, tanh), die auch unterschiedliche Einflüsse auf die Ausgabe eines Neurons. Die verbreitetsten Aktivierungsfunktionen sind die Logistische(Sigmoid, Gleichung \ref{Sigmoid}, Graph \ref{fig:sigmoid}), \textbf{Re}ctified \textbf{l}inear \textbf{u}nit(ReLU, Gleichung \ref{Relu}, Graph\ref{fig:relu},) Relu und Softmax(Gleichung \ref{Sotfmax})  Funktion. 
-	%	
-	%		\begin{equation}
-	%	\label{Relu}
-	%	ReLU = max(x, 0)
-	%	\end{equation}
-	%	
-	%	\begin{equation}
-	%	\label{Sigmoid}
-	%	Sigmoid(x) =  \frac{\mathrm{e^x} }{\mathrm{e^x +1} }
-	%	\end{equation}
-	%	
-	%	\begin{equation}
-	%	\label{Sotfmax}
-	%	Softmax(x_1, x_2, \cdots, x_n) = \frac{(e^{x_1}, ê^{x_2}, \cdots, e^{x_n})}{\sum_{i =1}^{n}{e^{x_i}}}
-	%	\end{equation}
-	%	
-	%	
-	%	Nach \cite{9} sollten die Aktivierungsfunktionen vorgezogen werden, die mehr von folgenden Eigenschaften aufweisen:	
-	%	
-	%	\textbf{Nichtlinearität:} Bei einem mehrschichtigen Netz ist es nicht sinnvoll eine lineare Aktivierungsfunktion zu benutzen, denn ein solches Netz in ein einschichtiges Netz immer überführt werden kann und es ist bekannt, dass ein mehrschichtiges Netz mehr als ein einschichtiges Netz leisten kann.
-	%
-	%	\textbf{Überall differenzierbar:} Diese Eigenschaft ermöglicht, gradientenbasierende Optimierungsverfahren zu verwenden.
-	%	
-	%	\textbf{Wertebereich:} Die gradientenbasierende Lernmethode ist stabiler, wenn der Wertebereich der Aktivierungsfunktion endlich ist und wenn es dagegen unendlich ist, ist das Lernen im Allgemeinen effektiver.
-	%	
-	%	\textbf{Monotonie:} Wenn die Aktivierungsfunktion monoton ist, so ist die Fehleroberfläche eines einschichtigen Netz immer konvex,\textcolor{red}{was bedeutet, dass es nur ein optimales Minimum gibt und das Optimierungsverfahren immer besser wird}.
-	%	
-	%	\textbf{Identität in 0} ( $ {\displaystyle f(x)\approx x} $ wenn  $ {\displaystyle x\approx 0} $): Diese Eigenschaft ermöglicht einen schnellen Training, wenn die Gewichte zufällig initialisiert sind und wenn die Aktivierungsfunktion in der Nähe von Null nicht gegen die Identität konvergiert, muss bei der Initialisierung der Gewichte besonders sorgfältig vorgegangen werden.
-	%	
-	%	
-	%	\textbf{ Sigmoid-Aktivierungsfunktion} Obwohl die Sigmoid-Funktion leicht anwendbar und differenzierbar ist, wird sie nach und nach auch nicht mehr verwendet, denn sie zum Beispiel das Problem des verschwindenden Gradienten(\textit{vanishing gradient problem}) nicht löst, was die Leistung tiefer neuronaler Netze stark beeinträchtigt und sie konvergiert sehr langsam.
-	\item  
-\end{itemize}
-
-\subsubsection{Entwicklung von Künstlichen Neuronalen Netzen } \label{Entwicklung}
-
-%\textbf{\ac{CNN} Vorteile ca va plutôt en haut}\\ 
-%Die Verwendung von \acsp{ConvL} ermöglicht die Erkennung und die Entnahme relevanter Merkmale aus den Netzeingangsdaten, was eine Vorverarbeitung der Netzeingangsdaten vermeidet. \acsp{ConvL} machen \acsp{CNN} robuster, denn obwohl es Rauschen in den Eingangsdaten gibt, schafft es immer noch die relevanten Informationen zu extrahieren.Zusätzlich sind \ac{ConvL}  gegenüber Veränderungen, die den Inhalt der Daten nicht ändern, unempfindlich, also wird ein Bild immer gleich klassifiziert werden, obwohl es z.B rotiert oder ein Bisschen verschoben ist.Ein anderer Hauptvorteil von \ac{ConvL} ist die deutliche Reduzierung der Speicheranforderung im Vergleich mit \acsp{FCL} 
-%\\textbf{künstliches Neuron}.\\
-
+Ein Filter ist eine Matrix, die im Allgemeinen  klein ist, die die Extraktion von Merkmalen (Features) ermöglicht. Die modernen Architekturen von \ac{CNN} verwendet immer mehr Filter (mindestens $ 2000 $), um bessere Ergebnisse zu erzielen. Wegen der zufällige Initialisierung von Filtern und ihrer großen Anzahl im \ac{CNN} kann es vorkommen, dass mehrere Filter das gleiche Feature extrahieren, solche Filter werden als Redundant bezeichnet, oder dass Filter genau das Gegenteil von dem filtern, was wir wollen, nämlich unwichtige Informationen, deshalb werden während des Trainings die Filterparameter ständig geändert. Zwei nichtlineare Filter, d. h. Filter, die nicht proportional zueinander sind, lernen unterschiedliche Dinge.Daraus lässt sich schließen, dass je mehr Filter vorhanden sind, desto mehr Merkmale herausgefiltert werden können und desto besser die Ergebnisse. Aber das ist im Allgemeinen nicht wahr, denn gute Ergebnisse hängen sehr stark davon ab, wie die Schichten bzw. Filter im CNN gestapelt sind. Zu viele Filtern in einem \ac{CNN} können dazu führen, dass das \ac{CNN} sowohl gute Features als auch schlechte oder überflüssige für die Generalisierung schneller lernt und zu wenige Filter schränken die Kapazität des \ac{CNN} ein,  wichtige Features zu extrahieren, denn irgendwann wird es vorkommen, dass jedes Filter etwas Wichtiges gelernt hat, aber noch mehr Informationen werden benötigt, um die Trainingsdaten zu erklären. Es ist also sehr wichtig die richtige Anzahl von Filtern zu finden.
 
 \subsection{Convolutional Neural Network}
-Dieser Absatz wird in zwei Teile aufgeteilt.Der erste Teil(\textit{Feedforward}) beschreibt, wie sich die Daten durch das \ac{CNN} bewegen und der zweite Teil(\textit{Backforward}) beschreibt, wie die Parameter des \ac{CNN} eingestellt werden.
+Dieser Absatz wird in zwei Teile unterteilt.Der erste Teil(\textit{Feedforward}) beschreibt, wie sich die Daten durch das \ac{CNN} bewegen und der zweite Teil(\textit{Backforward}) beschreibt, wie die Parameter des \ac{CNN} angepasst werden können.
 \subsubsection{Feedforward }
-%\paragraph{Layer in \ac{CNN}}
+
 \paragraph{Input Layer}\label{InputLayer}
-Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional sein.Also die Eingangsdaten von \ac{CNN}  haben immer die folgende Form $ W\times H\times D $ wobei $ (W, H) $ der räumlichen Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
+Die Eingangsschicht stellt die Eingangsdaten dar. Hier müssen die Eingangsdaten dreidimensional($ W\times H\times D $) sein, wobei $ (W, H) $ die räumliche Dimension und $ D $ die Tiefe der Daten entspricht. Z.B  $ 100\times100 \times3 $ für ein RGB-Bild und $ 224\times224\times1 $ für ein Graustufenbild.
 
 
 \paragraph{Faltungsschicht}\label{ConvL}
-Die wichtigste Sicht bzw. der Hauptschicht in einem \ac{CNN} ist die Faltungsschicht(\ac{ConvL}).
-In jedem Fall bestehen die Eingabedaten eines \ac{CNN} aus wichtigen und unwichtigen Informationen zur Lösung unseres Problems.Als wichtige und unwichtige Informationen haben wir z.B die starke Präsenz der weißen Farbe in einer Muschelsuppe bzw. die Präsenz eines Menschen, wenn man verschieden Ernährungsklasse klassifizieren möchte. Während des Trainings eines \ac{CNN} wird versucht, diese relevanten Informationen aus den Daten zu entnehmen und die irrelevanten auszuschließen. Alles was ein \ac{CNN} aus den Eingabedaten nutzt, um die Daten zu bestimmter Klassen zuzuordnen, wird als Feature bezeichnet.
+Die wichtigste Sicht bzw. die Hauptschicht in einem \ac{CNN} ist die Faltungsschicht(\ac{ConvL}).
+Auf alle Fälle bestehen die Eingabedaten des \ac{CNN} zur Lösung unseres Problems aus wichtigen und unwichtigen Informationen. Als wichtige und unwichtige Informationen haben wir z.B die starke Präsenz der weißen Farbe in einer Muschelsuppe bzw. die Präsenz eines Menschen, wenn man verschieden Ernährungsklasse klassifizieren möchte. Während des Trainings eines \ac{CNN} wird versucht, diese relevanten Informationen aus den Daten zu entnehmen und die irrelevanten auszuschließen. Alles was ein \ac{CNN} aus den Eingabedaten nutzt, um die Daten zu bestimmter Klassen zuzuordnen, wird als Feature bezeichnet.
 Das einzige bzw. das Hauptziel einer Faltungsschicht besteht darin, diese Features aus den Eingabedaten herauszuziehen.
 Dass eine Faltungsschicht in der Lage ist, Features selbst zu extrahieren, ohne dass man sie hinweist, was wichtig ist und was nicht, ist wirklich beeindruckend,Aber die Art und Weise, wie sie es tut, ist noch beeindruckender.
 
-In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt,dabei wird das komponentenweises Produkt(\textit{Hadamard-Product}) zwischen einem kleinen Bereich der Eingabedaten und einem Kernel durchgeführt und dann die ganze aufsummiert. Eine Illustration der Faltungsoperation ist in der Abbildung \ref{fig:Faltungsoperation1} zu sehen. Die Resultante der Faltungsoperation wird die Aktivierung des Neurons genannt.Sollte diese Aktivierung des Neurons null sein, dann wird gesagt, dass das Neuron "\textit{nicht aktiv}"{} ist und sonst ist es \textit{aktiv}.Die null Aktivierung bedeutet, dass die vom Filter gesuchten Features nicht gefunden wurden. Je stärker oder wichtiger die Aktivierung eines Neurons ist, desto höher ist die Wahrscheinlichkeit, dass die vom Filter gesuchten Merkmale gefunden werden.(siehe Abbildung \ref{fig:Faltungsoperation2}).
-Um diese Faltungsoperation durchzuführen, müssen einige Hyperparameter vordefiniert sein, und zwar:
+In einem \ac{ConvL} wird die sogenannte Faltungsoperation(\emph{convolution operation}) durchgeführt,dabei wird das komponentenweises Produkt(\textit{Hadamard-Product}) zwischen einem kleinen Bereich der Eingabedaten und einem Kernel durchgeführt und dann die ganze aufsummiert. Eine Illustration der Faltungsoperation ist in der Abbildung \ref{fig:Faltungsoperation1} zu sehen. Die Resultante der Faltungsoperation wird die Aktivierung des Neurons genannt.Sollte diese Aktivierung des Neurons null sein, dann wird gesagt, dass das Neuron "\textit{nicht aktiv}"{} ist und sonst ist es \textit{aktiv}.Die null Aktivierung bedeutet, dass die vom Filter gesuchten Features nicht gefunden wurden. Je stärker oder höher die Aktivierung eines Neurons ist, desto höher ist die Wahrscheinlichkeit, dass die vom Filter gesuchten Merkmale gefunden werden.(siehe Abbildung \ref{fig:Faltungsoperation2}). Um diese Faltungsoperation durchzuführen, müssen einige Parameter(\textit{Hyperparameter}) vordefiniert sein, und zwar:
 
 \subparagraph{Die Anzahl und Größe von Filtern.}
-	Die Anzahl von Filtern gibt nicht nur an, wie viele Filter in dem \ac{ConvL} verwendet werden, sondern auch ,wie oft die Faltungsoperation auf die Eingabe der Schicht durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht.
-	Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach Features ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, wir verbinden also jedes Neuron nur mit einem lokalen Bereich der Bild. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich die vom Input, also für ein $ (100, 100, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	
-	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt. 
+	Die Anzahl von Filtern gibt nicht nur an, wie viele Filter im \ac{ConvL} verwendet werden, sondern auch ,wie oft die Faltungsoperation auf die Schichteingabe durchgeführt wird, d.h die Anzahl der Feature-Maps oder die Tiefe der Schicht. Anstatt das ganze Bild zu betrachten, wenn man auf der Suche nach Features ist, was mit der Tatsache gleichbedeutend ist, dass jedes Neuron der Schicht mit allen Neuronen der vorherigen verbunden ist, wird nur einen lokalen Bereich des Bildes betrachtet, es wird also jedes Neuron nur mit einem lokalen Bereich der Bild verbunden. Dieser lokaler Bereich wird als Empfangsfeld(\emph{receptive field}) des Neurons bezeichnet und entspricht der Filtergröße.Es ist zu beachten, dass die Filtergröße nur der räumlichen Dimension des Filters entspricht. Die Tiefe des Filters ist gleich der Eingabetiefe, also für ein $ (x, y, 3) $ Bild haben alle Filter die Tiefe $ 3 $.	Die Verwendung von solchen kleinen Filtern ist die Hauptidee hinter einer Faltungschicht. Filter haben im Allgemein eine kleine räumliche Dimension wie z.B $ 2\times 2 $, $3 \times3 $  oder  $5 \times 5$, sonst verliert man einen großen Vorteil von \ac{ConvL}, der darin besteht, die Speicheranforderung deutlich zu reduzieren, indem es die Gewichte verteilt ,und die Faltungsoperation schneller durchzuführen. 
 	
-	\begin{figure}[h]
+	\begin{figure}[h!]
 		\centering
 		\caption{Einfluss der Schrittgröße auf die Größe der Feature-Maps}
 		\begin{subfigure}{.5\textwidth}
@@ -351,11 +282,9 @@ Um diese Faltungsoperation durchzuführen, müssen einige Hyperparameter vordefi
 			\label{fig:stride2}
 		\end{subfigure}
 	\end{figure}
-\subparagraph{Die Schrittgröße}(\emph{Stride}).
+\subparagraph{Die Schrittgröße}(\textit{Stride}). 	Da ein Filter nur einen kleinen Bereich des Bilds wahrnehmen kann,wird eine Schrittgröße verwendet, um die Bewegung des Filters auf dem gesamten Bild zu steuern.Das Filter wird über das Bild von links nach rechts, von oben nach unten bewegt. Sei z.B. $ S:=(n,m) $  die Schrittgröße, dann wird das Filter von $ n $ Pixeln nach rechts für jede horizontale Bewegung des Filters und $ m $ Pixeln nach unten für jede vertikale Bewegung des Filters bewegt(siehe Abbildung \ref{fig:stride1} und \ref{fig:stride2}).Wie die Tabelle \ref{tab:Stride and filter size} es zeigt,hängt die räumliche Dimension des Outputs sehr von der Schrittgröße ab.
 	
-	Da ein Filter nur einen kleinen Bereich des Bilds wahrnehmen kann,wird eine Schrittgröße verwendet, um die Bewegung des Filters auf dem Bild zu steuern.Das Filter wird über das Bild von links nach rechts, von oben nach unten bewegt. Sei $ S:=(n,m) $  die Schrittgröße, dann wird das Filter von $ n $ Pixeln nach rechts für jede horizontale Bewegung des Filters und $ m $ Pixeln nach unten für jede vertikale Bewegung des Filters bewegt(siehe Abbildung \ref{fig:stride1} und \ref{fig:stride2}).Wie die folgende Tabelle zeigt,hängt die räumliche Dimension des Outputs sehr von der Schrittgröße ab.
-	
-	\begin{table}[h]
+	\begin{table}[h!]
 		\centering
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
@@ -371,12 +300,11 @@ Um diese Faltungsoperation durchzuführen, müssen einige Hyperparameter vordefi
 	\end{table}
 	
 \subparagraph{\textit{Padding}.}
-	Mit einem großen Filter lernt man in der Regel \dq mehr\dq als mit einem kleinen.Aber wie es in der Tabelle \ref{tab:Stride and filter size} zu sehen ist, hat man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.Um die Ränder einer Eingabe zu füllen, werden sehr oft Nullen (\textit{zero padding}) verwendet, oder die Pixel, die an der Grenze liegen, werden wiederholt.\\
+	Mit einem großen Filter lernt man in der Regel  mehr globale Informationen als mit einem kleinen. Aber wie es in der Tabelle \ref{tab:Stride and filter size} zu sehen ist, hat man eine Reduktion der Dimension, wenn ein Filter mit Filtergröße $ >1 $ angewendet wird und um die Dimension zu behalten, wird vor der Anwendung der Filter auf das Bild eine Füllung(\textit{padding}) an den Rändern des Bilds gemacht. Diese Füllung ermöglicht erstens den Entwurf immer tiefer Netzwerke, denn es gibt nach jedem \ac{ConvL} einen kleinen Dimensionverlust und zweitens,dass die Information an Rändern nicht zu schnell verschwunden werden.Um die Ränder einer Eingabe zu füllen, werden sehr oft Nullen (\textit{zero padding}) verwendet, oder die Pixel, die an der Grenze liegen, werden wiederholt.\\
 
-In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{ConvL} mit dem Erlernen einfacher Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale. Das liegt daran, dass jede nachfolgende Schicht einen größeren Bereich des Originalbildes betrachten oder \glqq sehen \grqq{} kann.Nehmen wir an,dass die zwei ersten Layers eines \acsp{CNN} Filter von Größe $ 3\times 3 $  und ein \textit{Stride} $ =(1,1) $ verwenden.Die erste Schicht betrachte immer $ 3\times3 $ benachbarte Pixel des Originalbildes und speichert seine Aktivierung auf einem Pixel. Jetzt wenn die zweite \ac{ConvL}  $ 3\times3 $ benachbarte Pixel betrachtet, betrachtet sie eigentlich  $ 5\times5 $ benachbarte Pixel des Originalbildes.Wir können uns deshalb vorstellen, dass irgendwo in späteren Schichten Filter das gesamte Originalbild betrachten.
- 
-% also die früher entdeckten Features werden kombiniert, um komplexe Features wie einen Kreis zu bilden .Eine Vorverarbeitung der Netzeingangsdaten zur Extraktion der relevanten Information nicht mehr nötig. 
-\begin{figure}[h]
+In einem \ac{CNN} mit mehreren \acsp{ConvL} beschäftigen sich die ersten \acsp{ConvL} mit dem Erlernen einfacher Merkmale wie Winkel, Kanten oder Linien und je tiefer das \ac{CNN} ist, desto komplexer sind die extrahierten Merkmale. Das liegt daran, dass jede nachfolgende Schicht einen \glqq größeren\grqq{} Bereich des Originalbildes betrachten oder \glqq sehen \grqq{} kann. Die früher entdeckten Features werden kombiniert, um die Komplexe zu bilden.Nehmen wir an,dass die zwei ersten Layers eines \acsp{CNN} Filter von Größe $ 3\times 3 $  und ein \textit{Stride} $ =(1,1) $ verwenden.Die erste Schicht betrachte immer $ 3\times3 $ benachbarte Pixel des Originalbildes und speichert seine Aktivierung auf einem Pixel. Jetzt wenn die zweite \ac{ConvL}  $ 3\times3 $ benachbarte Pixel betrachtet, betrachtet sie eigentlich  $ 5\times5 $ benachbarte Pixel des Originalbildes.Wir können uns deshalb vorstellen, dass irgendwo in späteren Schichten Filter das gesamte Originalbild betrachten.
+
+\begin{figure}[h!]
 	\centering
 	\begin{subfigure}{\textwidth}
 		\centering
@@ -511,9 +439,9 @@ Sie ist für binäre Probleme geeignet, also Probleme wo man mit \textit{ja} ode
 	
 \end{figure}
 
-\subparagraph{Logistische Funktion} ist definiert als $f(x)=\frac{1}{1+exp(-x)} $ ,$ f'(x)= \frac{exp(x)}{(1+exp(x))^2}$, siehe Abbildung \ref{fig:sigmoid}. Sie ist differenzierbar, monoton, nicht linear und nicht null zentriert(hier nur positive Werte).Zwischen $ [-3,+3] $ ist der Gradient sehr hoch.Kleine Änderung in der Netzinput führt also zu einer großen Änderung der Netzausgabe. Diese Eigenschaft ist bei Klassifikationsproblemen sehr erwünscht.Die Ableitung ist glatt und von Netzinput abhängig. Parameter werden während der Backpropagation je nach Netzinput angepasst.
+\subparagraph{Logistische Funktion} ist definiert als $f(x)=\frac{1}{1+exp(-x)} $ ,$ f'(x)= \frac{exp(x)}{(1+exp(x))^2}$, siehe Abbildung \ref{fig:sigmoid}. Sie ist differenzierbar, monoton, nicht linear und nicht null zentriert(hier nur positive Werte).Zwischen $ [-3,+3] $ ist der Gradient sehr hoch und kleine Änderung in der Netzinput führt zu einer großen Änderung der Netzausgabe. Diese Eigenschaft ist bei Klassifikationsproblemen sehr erwünscht.Die Ableitung ist glatt und von Netzinput abhängig. Parameter werden während der Backpropagation je nach Netzinput angepasst.
 Außerhalb von $ [-3,3]  $ ist der Gradient fast gleich null, daher ist dort eine Verbesserung der Netzleistung fast nicht mehr möglich.Dieses Problem wird Verschwinden des Gradienten \textit{(vanishing gradient problem)} genannt.Außerdem konvergiert das Optimierungsverfahre sehr langsam und ist wegen wegen der exponentiellen  ($ e^x $) Berechnung rechenintensiv.
-\begin{figure}[h]
+\begin{figure}[h!]
 	\caption{Logistische Aktivierungsfunktion:$ sigmoid(x) $.}
 	\centering
 	\begin{subfigure}{.5\textwidth}	
@@ -540,7 +468,7 @@ Außerhalb von $ [-3,3]  $ ist der Gradient fast gleich null, daher ist dort ein
 \end{figure}
 
 \subparagraph{Tangens Hyperbolicus} ist definiert als	$ tanh := 2sigmoid(x) -1$, siehe Abbildung \ref{fig:tanh}.Außer dass sie null zentriert ist, hat sie die gleichen Vor- und Nachteile wie die Sigmoid Funktion.
-\begin{figure}[h]
+\begin{figure}[h!]
 	\caption{Tangens Hyperbolicus.}
 	\begin{subfigure}{.5\textwidth}	
 		\centering	
@@ -630,10 +558,10 @@ x,& \text{if } x  >  0\\
 In allgemein wird die ReLU aufgrund des Problems der toten Neurone nur in versteckte Schichten und die Softmax-Funktion bei Klassifikationsproblemen und Sigmoid-Funktion bei Regressionsproblemen in Ausgabeschicht verwenden.
 
 \paragraph{Pooling Layer}\label{Pooling Layer}
-Die Funktionsweise von Pooling-Schichten ist sehr ähnlich zu der von \acsp{ConvL}. Das Filter wird durch die Inputdaten bewegen und dabei anstatt die Faltungsoperation durchzuführen, werden die Inputdaten Blockweise zusammengefasst. Ein Pooling-Layer besitzt nur eine Schrittgröße und eine Filtergröße. Das Filter in PooL ist in Gegensatz zu Filtern in ConvL nicht lernbar ist, es gibt nur an, wie groß der Block, der zusammengefasst wird, sein muss.
-Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgröße verwendet, was die Dimension der Inputdaten um mindestens die Hälfte reduziert. Interessanter ist, dass die wichtigen Informationen oder Muster auch nach der Pooling-Schicht verfügbar bleiben und wir somit sowohl eine Erhöhung der Rechengeschwindigkeit als auch eine Reduzierung der Netzwerkparameter haben.Noch dazu sind \acsp{PooL}  invariant gegenüber kleiner Veränderung wie Parallelverschiebung.
+Die Funktionsweise von Pooling-Schichten(\ac{PooL}) ist sehr ähnlich zu der von \acsp{ConvL}. Das Filter wird über die Inputdaten bewegen und dabei anstatt die Faltungsoperation durchzuführen, werden die Inputdaten Blockweise zusammengefasst. Ein PooL besitzt nur eine Schrittgröße und eine Filtergröße. Das Filter in PooL ist in Gegensatz zu Filtern in ConvL nicht lernbar, es gibt nur an, wie groß der Block, der zusammengefasst wird, sein muss.
+Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgröße verwendet, was die Dimension der Inputdaten um mindestens die Hälfte reduziert. Interessanter dabei ist, dass die wichtigen Informationen oder Muster auch nach der Pooling-Schicht verfügbar bleiben, und dass wir somit sowohl eine Erhöhung der Rechengeschwindigkeit als auch eine Reduzierung der Anzahl der Netzwerkparameter haben.Noch dazu sind \acsp{PooL}  invariant gegenüber kleinen Veränderungen wie Parallelverschiebung der Eingabe.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\begin{tabular}{cc}
 			
@@ -753,13 +681,13 @@ Als Standard werden ein $ 2 \times 2 $ Filter und eine $ 2 \times 2 $ Schrittgr�
 
 Je nachdem, wie die Zusammenfassung der Blöcke in einem \ac{PooL} durchgeführt wird, haben die \acsp{PooL} unterschiedliche Namen. Werden die Werte eines Blockes durch den Maximalwert des Blocks ersetzt, dann sprechen wir von Max-Pooling-Layer (siehe Abbildung \ref{fig:Pooling} links), wenn sie durch den Mittelwert  des Blocks ersetzt, wird von Average-Pooling-Layer (siehe Abbildung \ref{fig:Pooling} rechts ) und wenn die Filtergröße gleich die räumliche Dimension der Eingangdaten ist, sprechen wir von Global-Max-Pooling-Layer und Global-Average-Pooling-Layer, es wird also alle Neurone in einem Kanal zu einem Neuron. Die Ausgabedimension solcher Schicht entspricht der Anzahl der Kanäle bzw. Tiefe der Inputdaten.
 
-Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmale in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
+Das Global-Pooling-Layer wird sehr oft angewendet, um das Vorhandensein von Merkmalen in Daten aggressiv zusammenzufassen. Es wird auch manchmal in Modellen als Alternative zur Flatten-Schicht, die mehrdimensionale Daten zu eindimensionale umwandelt, beim Übergang von \acsp{ConvL} zu einem \ac{FCL}  verwendet.
 
 \paragraph{Multi-layer Perzeptron (Fully Connected Layer)}\label{FC}
-Nachdem die relevanten  Merkmale durch die Wiederholung von Conv , Pooling-Schichten und anderen Schichten extrahiert worden sind, wenden sie in  \acsp{FCL} kombiniert, um die Netzwerkeingabe zu einer bestimmten Klasse zuzuordnen. Die \acsp{FCL} des \ac{CNN} ermöglichen, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann. Die \acsp{FCL} funktionieren eigentlich genau wie \acsp{ConvL}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur \acsp{FCL} sieht wie in Abbildung\ref{KNN} aus.
+Nachdem die relevanten  Merkmale durch die Wiederholung von \acsp{ConvL} , \ac{PooL} und anderen Schichten extrahiert worden sind, wenden sie in  \acsp{FCL} kombiniert, um die Netzwerkeingabe zu einer bestimmten Klasse zuzuordnen. Die {FCLs} des {CNN} ermöglichen, Informationssignale zwischen jeder Eingangsdimension und jeder Ausgangsklasse zu mischen, so dass die Entscheidung auf dem gesamten Bild basieren kann. Die {FCLs} funktionieren eigentlich genau wie {ConvLs}, außer dass jedes Neuron in \ac{FCL} mit allen Neuronen und nicht mit einem kleinen Bereich von Neuronen im vorherigen Layer verbunden ist.Ein \ac{NN} mit nur {FCLs} sieht wie in Abbildung\ref{KNN} aus.
 
 \def\layersep{2.5cm}
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
 	\tikzstyle{every pin edge}=[<-,shorten <=1pt]
@@ -806,7 +734,7 @@ Nachdem die relevanten  Merkmale durch die Wiederholung von Conv , Pooling-Schic
 \end{figure}
 
 
-Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} wird viel Speicher benötigt und verlangsamt auch das Training, es ist auch einer der Gründe, weshalb die \acsp{FCL} meist nur in der letzten Schicht von \ac{CNN} zur Klassifizierung verwendet werden und die Anzahl der Neuronen in letzter Schicht entspricht der Anzahl von Klassen.
+Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem {FCL} wird viel Speicher benötigt und auch das Training verlangsamt, es ist auch einer der Gründe, weshalb die {FCLs} meist nur in der letzten Schicht von {CNN} zur Klassifizierung verwendet werden und die Anzahl der Neuronen in letzter Schicht entspricht der Anzahl von Klassen.
 
 
 
@@ -814,12 +742,9 @@ Aufgrund der hohen Anzahl von Verbindungen zwischen Neuronen in einem \ac{FCL} w
 
 \paragraph{Fehlerfunktion}\label{Fehlerfunktion}
 
-Das Training von \acsp{CNN} besteht darin, den vom \ac{CNN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
-Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird durch eine Fehlerfunktion auch Kostenfunktion genannt quantifiziert oder angegeben.
-Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des \acsp{CNN}.Es wird in Laufe des Trainings von \acsp{CNN} versucht, diese Kostenfunktion mit Gradient basierten Verfahren zu minimieren(siehe Absatz \ref{Gradientenabstiegsverfahren})
-
-
-Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). 
+Das Training von \acsp{CNN} besteht darin, den vom {CNN} begangenen Fehler zu korrigieren bzw. zu minimieren, daher wird es sehr oft als ein Optimierungsverfahren betrachtet.
+Wie gut die Vorhersage des neuronalen Netzes gerade ist, wird durch eine Fehlerfunktion auch Kostenfunktion genannt quantifiziert.
+Die Fehlerfunktion bringt die Ausgabewerte des \acsp{NN} mit den gewünschten Werten in Zusammenhang. Sie ist ein nicht-negativer Wert und je kleiner dieser Wert wird, desto besser ist die Übereinstimmung des {CNNs}.Es wird in Laufe des Trainings von {CNNs} versucht, diese Kostenfunktion mit Gradient basierten Verfahren zu minimieren(siehe Absatz \ref{Gradientenabstiegsverfahren}).Die meisten benutzten Kostenfunktionen sind die Kreuzentropie (\textit{cross-entropy}, Gleichung \ref{CE})(CE) und die mittlere quadratische Fehler (\textit{mean squared error},Gleichung \ref{MSE})(MSE). 
 
 \begin{align}
 \label{MSE}	
@@ -831,7 +756,7 @@ CE(Y, \widehat{Y}) =&-\frac{1}{n}\sum_{i = 1}^{n}Y_i\log(\widehat{Y}_i)
 \begin{align*}
 Y:&\text{Satz von echten Labels} &  n: & \text{Die Batchgröße} & \widehat{Y}:&\text{Vorhersagesatz} 
 \end{align*}
-Im Gegenteil zu CE Fehlerfunktionen,die sich nur auf Wahrscheinlichkeitsverteilungen anwenden lassen, können die MSE auf beliebige Werte angewendet werden. Nach \cite[Pavel et al]{7} ermöglicht die CE-Verlustfunktion ein besseres Finden lokaler Optima als die MSE-Verlustfunktion und das soll daran liegen, dass das Training des MSE Systems schneller in einem schlechten lokalen Optimum stecken bleibt, in dem der Gradient fast null ist und damit keine weitere Reduzierung der Netzfehler ermöglicht.Im Allgemein ist die CE Kostenfunktion für die Klassifikationsprobleme und die MSE Fehlerfunktion für die lineare Regression-Probleme besser.
+Im Gegenteil zu CE Fehlerfunktionen,die sich nur auf Wahrscheinlichkeitsverteilungen anwenden lassen, können die MSE auf beliebige Werte angewendet werden. Nach \cite[Pavel et al]{7} ermöglicht die CE-Verlustfunktion ein besseres Finden lokaler Optima als die MSE-Verlustfunktion und das soll daran liegen, dass das Training des MSE Systems schneller in einem schlechten lokalen Optimum stecken bleibt, in dem der Gradient fast null ist und damit keine weitere Reduzierung der Netzfehler ermöglicht.Im Allgemein funktioniert die CE Kostenfunktion für die Klassifikationsprobleme und die MSE Fehlerfunktion für die lineare Regression-Probleme besser.
 
 \paragraph{ Gradient}\label{Gradient}
 Der Gradient einer Funktion ist die erste Ableitung einer Funktion und in mehrdimensionalem Raum ist der Gradient einer Funktion der Vektor, dessen Einträge  die ersten partiellen Ableitungen der Funktion sind. Der Gradient an einem Punkt gibt die Richtung der steilsten Anstieg der Funktion an diesem Punkt.  Also da wir die Kostenfunktion minimieren möchten, sollen wir lieber immer in die Gegenrichtung des Gradienten gehen.In auf dem Gradient basierten Optimierungsverfahren wird der Gradient benutzt, um die lokalen oder globalen Extremwerte(hier das Minimum) zu erreichen.
@@ -839,12 +764,12 @@ Da wir jetzt die Richtung des Minimums herausgefunden haben, bleibt noch zu best
 
 \paragraph{Lernrate}\label{Lernrate}
 Die Lernrate oder Schrittweite beim maschinellen Lernen ist ein Hyperparameter, der bestimmt, inwieweit neue gewonnene Informationen alte Informationen überschreiben sollen\cite{LearningRate}, in anderen Worten wie schnell wir ans Ziel Kommen.
-Je nachdem, wie die Lernrate gesetzt wird, werden bestimmte Verhalten beobachtet (Siehe Absatz \ref{Experiment:Lernrate}) und sie nimmt sehr oft Werte zwischen $ 0.00001 $ und $ 0.5 $:
+Je nachdem, wie die Lernrate gesetzt wird, werden bestimmte Verhalten beobachtet (Siehe Absatz \ref{Experiment:Lernrate}) und sie nimmt sehr oft Werte zwischen $ 0.00001 $ und $ 0.5 $.x
 Die Lernrate muss allerdings im Intervall  $]0,1[$ Werte annehmen, sonst ist das Verhalten des \ac{NN} nicht vorhersehbar bzw. konvergiert das Verfahren einfach nicht.
 Für jeden Punkt $ x $ aus dem Parameterraum gibt es eine optimale Lernrate $ \eta_{opt}(x) $, sodass ein globales oder lokales Minimum sofort nach der Parameteranpassung erreicht wird. Da $ \eta_{opt}(x) $ am Trainingsanfang leider nicht bekannt ist, wird die Lernrate in die Praxis vom Programmierer basiert auf seine Kenntnisse mit \acsp{NN} oder einfach zufällig gesetzt.
 
 \paragraph{Gradientenabstiegsverfahren}\label{Gradientenabstiegsverfahren}
-Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein \ac{DNN} als eine Gleichung mit Millionen von Variablen vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Trainingsdaten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
+Aktuelle leistungsfähige \ac{DNN} bestehen fast immer aus Million Variable (lernbarer Parameter). Wir können uns ein {DNN} als eine Gleichung mit Millionen von Variablen vorstellen, die wir lösen möchten. Mit Hilfe der Daten wollen wir uns in einem Raum, dessen Dimension größer als eine Million ist, bewegen, um die optimalen Parameter(Parameter, die die Trainingsdaten korrekt abbilden) zu finden. Aufgrund der unendlichen Anzahl von Punkten im solchen Räume wäre es nicht sinnvoll,einen Punkt zufällig auszuwählen, dann zu überprüfen, ob er optimal ist und, wenn nicht, nochmals einen anderen Punkt zufällig auszuwählen. Genauer zu diesem Zeitpunkt kommen Gradientenabstiegsverfahren zum Einsatz.
 Die Gradientenabstiegsverfahren sind Verfahren, die auf dem Gradient basieren, um Optimierungsprobleme zu lösen.Hier wird Gradientenabstiegsverfahren verwendet, um sich der optimalen Parametern anzunähern oder sie zu finden.
 
 \subparagraph{Ablauf eines Gradientenverfahrens im \ac{DNN}.}
@@ -855,10 +780,10 @@ Beim ersten Schritt  wird ein zufälliger Punkt aus dem Parameterraum ausgewähl
 
 Der zweite Schritt besteht darin, die Abstiegsrichtung zu bestimmen.Dazu werden zuerst die Eingangdaten in das \ac{CNN} eingespeist(\textit{Forwardpropogation}), danach wird der Fehler zwischen den Netzvorhersagen und den korrekten Werten berechnet. Ein Fehler gibt es (fast) immer, denn die Initialisierung wird zufällig gemacht und die Wahrscheinlichkeit, dass wir von Anfang an die optimalen Werte finden, ist verschwindend klein und zuletzt wird der Gradient(\ref{Gradient}) der Kostenfunktion in abhängig von den gegebenen Eingangdaten und den erwarteten Werten berechnet. 
 
-Beim letzten Schritt wird die Schrittweite bestimmen.Die Lernrate (\ref{Lernrate}) oder die Schrittweite wird vor Trainingsbeginn festgelegt oder während des Trainings abhängig von aktuellem Netzzustand allmählich adaptiert.
+Beim letzten Schritt wird die Schrittweite bestimmen und die Netzparameter aktualisiert.Die Lernrate wird jedoch vor Trainingsbeginn festgelegt oder während des Trainings abhängig von aktuellem Netzzustand allmählich adaptiert.
 
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\fcolorbox{blue}{white}{
 		\centering
 		\begin{tikzpicture}[->,>=stealth',shorten >=3pt,auto,node distance=3cm,semithick]
@@ -966,7 +891,7 @@ MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen
 	\item\textbf{ Food-101}\cite{food-101-original}
 	\begin{enumerate}
 		\item \textbf{ Food-101-original (Food-101-O)} ist ein Datensatz von $ 101 $ Lebensmittelkategorien mit $ 101.000 $ Bilder. Für jede Klasse werden 250 manuell überprüfte Testbilder sowie 750 Trainingsbilder bereitgestellt. Die Trainingsbilder wurden bewusst nicht gereinigt und enthalten daher noch etwas Rauschen. Dies geschieht meist in Form von intensiven Farben und manchmal falschen Etiketten. Alle Bilder wurden so skaliert, dass sie eine maximale Seitenlänge von 512 Pixel aufweisen.
-	  	\item\textbf{ Food-101 von Tensorflow: (Food-101-T)} Dieser Datensatz enthält die gleiche Anzahl von Bildern wie der soeben beschrieben, Aber der Datensatz wird nicht aufgeteilt und nicht gereinigt und enthalten daher noch etwas Rauschen. Dies geschieht meist in Form von intensiven Farben und manchmal falschen Etiketten.Für unsere Arbeit wurde jede Kategorie in drei(Trainings-, Auswertungs- und Testdatensatz) aufgeteilt ist, die $ 800, 100 $ bzw. $ 100 $ Bilder umfasst.
+	  	\item\textbf{ Food-101 von Tensorflow: (Food-101-T)} Dieser Datensatz enthält die gleiche Anzahl von Bildern wie der soeben beschrieben, Aber der Datensatz wird nicht aufgeteilt. Für unsere Arbeit wurde jede Kategorie in drei(Trainings-, Auswertungs- und Testdatensatz) aufgeteilt ist, die $ 800, 100 $ bzw. $ 100 $ Bilder umfasst.
 	\end{enumerate}
 	\item \textbf{Flowers-102}
 			Der Datensatz \textit{Oxford Flowers 102} ist ein konsistenter Datensatz von $ 102 $ Blumenkategorien, die in Großbritannien häufig vorkommen. Jede Klasse besteht aus $ 40 $ bis $ 258 $ Bildern. Die Bilder haben große Variationen in Maßstab, Pose und Licht. Darüber hinaus gibt es Kategorien, die innerhalb der Kategorie große Unterschiede aufweisen, und mehrere sehr ähnliche Kategorien. Der Datensatz ist unterteilt in einen Trainingssatz, einen Validierungssatz und einen Testsatz. Das Trainingsset und das Validierungssatz bestehen jeweils aus $ 10 $ Bildern pro Klasse (insgesamt je 1020 Bilder). Das Testset besteht aus den restlichen $ 6149 $ Bildern (mindestens 20 pro Klasse).
@@ -975,8 +900,8 @@ MSGD ist eine Mischung aus SGD und BGD.Dabei wird der Datensatz in kleine Mengen
 \subsubsection{Bibliotheken}
 \begin{enumerate}
 	\item \textbf{Keras}\footnote{\href{https://keras.io/}{https://keras.io/}}
-		 ist eine hochleistungsfähige neuronale Netzwerk-API. Keras ist in Python\footnote{\href{https://www.python.org/}{https://www.python.org/}} geschrieben wurde und auf TensorFlow\footnote{\href{https://www.tensorflow.org/}{https://www.tensorflow.org/}} oder Theano\footnote{\href{http://deeplearning.net/software/theano/}{http://deeplearning.net/software/theano/}} laufen kann. Noch dazu erleichtert Keras die Implementierung von neuronalen Netzwerken und ermöglicht schnelle Experimente zu ermöglichen.Für diese Arbeit benutzen wir die  Version  $ 2.2.5 $ von Keras.
-	\item \textbf{TensorFlow}  ist eine End-to-End-Open-Source-Plattform für maschinelles Lernen. Es verfügt über ein umfassendes, flexibles Menge aus Tools, Bibliotheken und Ressourcen.Für diese Arbeit haben wir die  Version  $ 1.14.0 $ von TensorFlow verwendet.
+		 ist eine hochleistungsfähige neuronale Netzwerk-API. Keras ist in Python\footnote{\href{https://www.python.org/}{https://www.python.org/}} geschrieben wurde und auf TensorFlow\footnote{\href{https://www.tensorflow.org/}{https://www.tensorflow.org/}} oder Theano\footnote{\href{http://deeplearning.net/software/theano/}{http://deeplearning.net/software/theano/}} laufen kann. Noch dazu erleichtert Keras die Implementierung von neuronalen Netzwerken und eine schnelle Durchführung von Experimenten.Für diese Arbeit benutzen wir die  Version  $ 2.2.5 $ von Keras.
+	\item \textbf{TensorFlow}  ist eine End-to-End-Open-Source-Plattform für maschinelles Lernen. Es verfügt über ein umfassendes, flexibles Menge aus Tools, Bibliotheken und Ressourcen.Für diese Arbeit wird die  Version  $ 1.14.0 $ von \textit{TensorFlow} verwendet.
 	
 \end{enumerate}
 % Literaturverzeichnis (beginnt auf einer ungeraden Seite)
@@ -1145,19 +1070,17 @@ Der logarithmische Verlust sieht genauso wie das \textit{Cross-entropy}(\ref{CE}
 	\label{fig:accVSlogLoss}
 \end{figure}
 
-Dieser großer Unterschied liegt daran, dass der logarithmische Verlust die Unsicherheit der Vorhersage in Betracht zieht und die Genauigkeit nicht. Nehmen wir an, dass ein \ac{CNN} eine Klasse $ i $ zweimal hintereinander falsch klassifiziert;$ 0,25 $ und $ 0,012 $ Prozent zum ersten bzw. zweiten Mal; es ist klar, dass sich die Netzwerkleistung verschlechtert hat, aber die Genauigkeit bleibt gleich, während sich der logarithmische Verlust verschlechtert. \\
+Dieser großer Unterschied liegt daran, dass der logarithmische Verlust die Unsicherheit der Vorhersage in Betracht zieht und die Genauigkeit nicht. Nehmen wir an, dass ein \ac{CNN} eine Klasse $ i $ zweimal hintereinander falsch klassifiziert;$ 0,25 $ und $ 0,012 $ Prozent zum ersten bzw. zweiten Mal; es ist klar, dass sich die Netzwerkleistung verschlechtert hat, aber die Genauigkeit bleibt gleich, während sich der logarithmische Verlust verschlechtert.
 
- Die Genauigkeit ist keine zuverlässige Metrik für die tatsächliche Leistung eines Klassifikators, da sie bei einem unausgewogenen Datensatz irreführende Ergebnisse liefert (d.h. wenn die Anzahl der Beobachtungen in verschiedenen Klassen stark variiert).
-Dies funktioniert nur dann gut, wenn der Datensatz nahezu gleichmäßig auf die Klassen verteilt ist.
-\textcolor{purple}{Datenset nicht gleichmäßig verteilen}
+ Die Genauigkeit ist im Vergleich zu logarithmischem Verlust keine zuverlässige Metrik für die tatsächliche Leistung eines CNN, da sie bei einem unausgewogenen Datensatz irreführende Ergebnisse liefert d.h. wenn die Anzahl der Beobachtungen in verschiedenen Klassen stark variiert.
 
 \subsection{Entwurf eines neuronalen Faltunsnetzwerkes: TemkiNet.}
-Für den Entwurf unseres \ac{CNN} mit geringem Speicherbedarf haben wir uns für die Verwendung von \textit{Depthwise Convolution}\ref{Depthwise} und \textit{Pointwise Convolution}\ref{Pointwise} -Schichten entschieden. Die Gründe für diese Entscheidung werden in den folgenden Abschnitten erläutert, in denen die am häufigsten verwendeten Faltungsschichten beschrieben werden, siehe und für unseren Baustein (\textit{Building block}) haben wir uns viel von \textit{Xception}- und \textit{MobileNet}-Bausteinen inspirieren lassen, siehe \ref{CNN}. 
+Für den Entwurf unseres \ac{CNN} mit geringem Speicherbedarf und guter Inferenzzeit haben wir uns für die Verwendung von \textit{Depthwise Convolution}\ref{Depthwise} und \textit{Pointwise Convolution}\ref{Pointwise} -Schichten anstatt der Standard Faltungsschichten entschieden. Die Gründe für diese Entscheidung werden in den folgenden Abschnitten erläutert, in denen die am häufigsten verwendeten Faltungsschichten beschrieben werden, und für unseren Baustein (\textit{Building block}) haben wir uns viel von \textit{Xception}- und \textit{MobileNet}-Bausteinen inspirieren lassen, siehe \ref{CNN}. 
 
 \subsubsection{Art der Faltungsschichten.}
-Heutzutage werden am meisten nur Filter der Größe $ 1\times 1 $ und $ 3\times 3 $ und nicht größer verwendet, obwohl größere Filter globale Informationen effizienter entnehmen und so zu besseren Ergebnissen kommen können. Dafür gibt es viele Gründe. Erstens sind die Berechnungen mit kleinerer Filter viel schneller als mit größerer Filter. Zweitens kann ein \ac{ConvL} mit einer großen Filtergröße durch mehrere aufeinanderfolgende \acsp{ConvL} mit einer kleineren Filtergröße ersetzt werden und dabei werden sogar die Anzahl der benötigten Parameter deutlich reduziert. Sollte man z.B. ein $ 5\times 5 $ Filter auf eine Eingabe von Tiefe $ d $ angewendet, so braucht man $ 5\times 5\times d $ Gewichte, um ein Feature-Map zu erzeugen. Nimmt man hingegen zwei aufeinanderfolgende \acsp{ConvL} mit $ 3\times 3$ Filtern, so braucht man nur $ 2(3\times 3\times d) $ Gewichte, um ein Feature-Map zu erzeugen. Drittens hat man bei kleinen Filtern nur eine langsame Reduzierung der Bilddimension, was den Entwurf von sehr tiefer \ac{CNN}s wie \textit{InceptionResNet} ermöglicht. Viertens können kleine Filter sehr lokale Merkmale extrahieren, so dass einfache und komplexe Informationen gleichzeitig erfasst werden.Die Anzahl der extrahierten Features ist enorm und werden gefiltert, wenn man tiefer im Netzwerk geht.
+Heutzutage werden am meisten nur Filter der Größe $ 1\times 1 $ und $ 3\times 3 $ und nicht größer verwendet, obwohl größere Filter globale Informationen effizienter entnehmen und so zu besseren Ergebnissen kommen können. Dafür gibt es viele Gründe. Erstens sind die Berechnungen mit kleinerer Filter viel schneller als mit größerer Filter. Zweitens kann ein \ac{ConvL} mit einer großen Filtergröße durch mehrere aufeinanderfolgende {ConvLs} mit einer kleineren Filtergröße ersetzt werden und dabei werden sogar die Anzahl der benötigten Parameter deutlich reduziert. Sollte man z.B. ein $ 5\times 5 $ Filter auf eine Eingabe von Tiefe $ d $ angewendet, so braucht man $ 5\times 5\times d $ Gewichte, um ein Feature-Map zu erzeugen. Nimmt man hingegen zwei aufeinanderfolgende {ConvLs} mit $ 3\times 3$ Filtern, so braucht man nur $ 2(3\times 3\times d) $ Gewichte, um ein Feature-Map zu erzeugen. Drittens hat man bei kleinen Filtern nur eine langsame Reduzierung der Bilddimension, was den Entwurf von sehr tiefer {CNN}s wie \textit{InceptionResNet} ermöglicht. Viertens können kleine Filter sehr lokale Merkmale extrahieren, so dass einfache und komplexe Informationen gleichzeitig erfasst werden.Die Anzahl der extrahierten Features ist enorm und werden gefiltert, wenn man tiefer im Netzwerk geht.
 
-Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einem Eingang mit einem Kanal. Im Folgenden werden verschiedene Arten beschrieben, wie die Faltungsoperation an einem Eingang mit mehreren Kanälen durchgeführt werden kann. Für die Erklärung von Konzepten wird folgendes als Eingabe der Faltungsschicht betrachtet.
+Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einer Eingabe mit einem Kanal. Im Folgenden werden verschiedene Arten beschrieben, wie die Faltungsoperation an einem Eingabe mit mehreren Kanälen durchgeführt werden kann. Für die Erklärung von Konzepten wird folgendes als Eingabe der Faltungsschicht betrachtet.
 
  \[ I=\begin{cases}
 
@@ -1170,7 +1093,7 @@ Der Absatz(\ref{ConvL}) behandelte mehr über die Faltungsoperation bei einem Ei
 
 \paragraph{Standard Convolution}\label{CONV}
 
-Die Standardfaltungsschicht funktioniert genau wie in der Abbildung(\ref{fig:Standardfaltung}).Für eine Eingabe $ I $ erzeugt die Standardfaltungsschicht Feature-Maps der Größe $(W_{out},H_{out}, 1) $, wobei $W_{out} $ und $H_{out} $ wie in der Gleichung \ref{eq:outputSize} berechnet werden.Für die Berechnung eines Feature-Map wird ein $ (F_w\times F_h\times D_{in}) $-Filter auf den Input angewendet. Dabei wird zuerst für jeden Kanal $ I_i :=I[:,:, i]$ die Faltungsoperation mit dem Filter $ F_i := F[:,:,i] $ durchgeführt und dann werden die Ergebnisse jeder Faltungsoperation aufsummiert, um das Feature-Map zu bilden.
+Die Standardfaltungsschicht funktioniert genau wie in der Abbildung(\ref{fig:Standardfaltung}).Für eine Eingabe $ I $ erzeugt die Standardfaltungsschicht Aktivierungskarten der Größe $(W_{out},H_{out}, 1) $, wobei $W_{out} $ und $H_{out} $ wie in der Gleichung \ref{eq:outputSize} berechnet werden.Für die Berechnung eines Feature-Map wird ein $ (F_w\times F_h\times D_{in}) $-Filter auf den Input angewendet. Dabei wird zuerst für jeden Kanal $ I_i :=I[:,:, i]$ die Faltungsoperation wie in \ref{fig:Standardfaltung} mit dem Filter $ F_i := F[:,:,i] $ durchgeführt und dann werden die Ergebnisse jeder Faltungsoperation aufsummiert, um das Feature-Map zu bilden.
 
 \begin{equation}\label{eq:outputSize}
 	 \begin{split}
@@ -1190,8 +1113,8 @@ Die Berechnungskosten der Standardfaltung für eine Eingabe $ I $ unter der Anna
 \end{figure}
 
 \paragraph{Depthwise Convolution}\label{Depthwise}
-Genau wie die Standardfaltung funktioniert die \textit{Depthwise Convolution}, außer dass die Teilergebnisse von Standardfaltung schon der Feature-Maps von der \textit{Depthwise Convolution} entsprechen.Festzustellen ist, dass die Anzahl von Feature-Maps immer proportional zur Anzahl der Kanäle des Inputs sein muss.Damit die Anzahl von Feature-Maps der \textit{Depthwise Convolution} mehr als die Anzahl der Kanäle des Inputs ist, wird ein so genannter Tiefen-Multiplikator (\textit{Depth\_multiplier}) $\alpha\in \N_{\ge1}$  definiert. Der Tiefen-Multiplikator gibt an, wie viele Filter pro Kanal verwendet werden müssen.  Die Abbildung(\ref{fig:Depthwise_faltung}) zeigt die Anwendung der  \textit{Depthwise Convolution} mit einem  $ \alpha=2 $ auf ein Farbbild.
-Die \textit{Depthwise Convolution} hat für eine Eingabe $ I $ unter der Annahme, dass Schrittgröße eins und Padding berechnet werden, einen rechnerischen Aufwand von:
+Genau wie die Standardfaltung funktioniert die \textit{Depthwise Convolution}(DC), außer dass die Teilergebnisse von Standardfaltung schon der Feature-Maps von der DC entsprechen.Festzustellen ist, dass die Anzahl von Feature-Maps immer proportional zur Anzahl der Kanäle des Inputs sein muss.Damit die Anzahl von Feature-Maps der DC mehr als die Anzahl der Kanäle des Inputs ist, wird ein so genannter Tiefen-Multiplikator (\textit{Depth\_multiplier}) $\alpha\in \N_{\ge1}$  definiert. Der Tiefen-Multiplikator gibt an, wie viele Filter pro Kanal verwendet werden müssen.  Die Abbildung(\ref{fig:Depthwise_faltung}) zeigt die Anwendung der DC mit einem  $ \alpha=2 $ auf ein Farbbild.
+Die \textit{Depthwise Convolution} hat für eine Eingabe $ I $ unter der Annahme, dass Schrittgröße 1 ist und  Padding berechnet wird, einen rechnerischen Aufwand von:
 \begin{equation}\label{eq:DW_kost}
 	F_w\times F_h \times D_{in}\times W_{in}\times H_{in}
 \end{equation}
@@ -1200,15 +1123,15 @@ Die \textit{Depthwise Convolution} hat für eine Eingabe $ I $ unter der Annahme
 	\caption{Depthwise Convolution auf ein Farbbild.}
 	\label{fig:Depthwise_faltung}
 \end{figure}
-Wenn man die Gleichungen \ref{eq:SF_kost} und \ref{eq:DW_kost} betrachtet, stellt man schnell fest, dass \textit{Depthwise Convolution} im Vergleich zur Standardfaltung äußerst effizient ist. Der Nachteil von \textit{Depthwise Convolution} ist, dass jede generierte Feature-Map nur einen Kanal in Betracht zieht, was bedeutet, dass Kanäle, die nicht so viele wichtige Informationen enthalten, die gleiche Bedeutung erhalten wie Kanäle, die so viele Informationen enthalten.  
+Wenn man die Gleichungen \ref{eq:SF_kost} und \ref{eq:DW_kost} betrachtet, stellt man schnell fest, dass DC im Vergleich zur Standardfaltung äußerst effizient ist. Der Nachteil von DC ist, dass jede generierte Feature-Map nur einen Kanal in Betracht zieht, was bedeutet, dass Kanäle, die nicht so viele wichtige Informationen enthalten, die gleiche Bedeutung erhalten wie Kanäle, die so viele Informationen enthalten.  
 
 \paragraph{Pointwise Convolution}\label{Pointwise}
 
-Die \textit{Pointwise Convolution} funktioniert genau wie die Standardfaltung, nur dass die Größe der Filter und die Schrittgröße in der \textit{Pointwise Convolution} jeweils immer $ (1,1) $ sind. Also jedes erhaltene Teilergebnis ist nur die Skalierung eines Eingangskanals. Die \textit{Pointwise Convolution} hat für eine Eingabe $ I $ einen rechnerischen Aufwand von:
+Die \textit{Pointwise Convolution}(PC) funktioniert genau wie die Standardfaltung, nur dass die Größe der Filter und die Schrittgröße in der PC jeweils immer $ (1,1) $ sind. Also jedes erhaltene Teilergebnis ist nur die Skalierung eines Eingangskanals. Die PC hat für eine Eingabe $ I $ einen rechnerischen Aufwand von:
 \begin{equation}\label{eq:PT_kost}
 	 D_{in}\times W_{in}\times H_{in} \times n_f
 \end{equation}
-Die Hauptidee bei der Verwendung der \textit{Pointwise Convolution} ist es, die Korrelation zwischen den Eingangskanälen zu finden, oder lineare Kombinationen zu lernen ,und erleichtert die Reduzierung und Erhöhung der Anzahl der Kanäle, wenn es zu viele oder zu wenige Feature-Maps gibt. Es kann jedoch mit \textit{pointwise Convolution} keine Features extrahiert werden.
+Die Hauptidee bei der Verwendung der PC ist es, die Korrelation zwischen den Eingangskanälen zu finden, oder lineare Kombinationen zu lernen ,und  die Reduzierung oder Erhöhung der Anzahl der Kanäle, wenn es zu viele oder zu wenige Feature-Maps gibt, zu erleichtern. Es kann jedoch mit \textit{pointwise Convolution} keine Features extrahiert werden.
 
 \paragraph{Depthwise Separable Convolution} \label{DSC}
 
@@ -1217,12 +1140,12 @@ Die \textit{Depthwise Separable Convolution}(DSC) besteht aus einer \textit{Dept
 F_w\times F_h \times D_{in}\times W_{in}\times H_{in} + D_{in}\times W_{in}\times H_{in} \times n_f
 \end{equation}
 
-Von \ref{eq:SF_kost} und \ref{eq:DSC_kost} aus sieht man, dass die DSC weniger Berechnung als Standardfaltung benötigt, und zwar $ \frac{1}{n_f} + \frac{1}{F_w\times F_h}$. Da die DSC zu wenig Parameter verwendet, werden die \ac{CNN}, die die DSC verwenden, sehr oft als quantisiert bezeichnet.Die DSC ersetzt langsam und sicher die Standardfaltung und das kann mit $ Xception $ und $ MobileNet $ beobachtet werden.
+Von \ref{eq:SF_kost} und \ref{eq:DSC_kost} ergibt, dass die DSC weniger Berechnung als Standardfaltung benötigt, und zwar $ \frac{1}{n_f} + \frac{1}{F_w\times F_h}$. Da die DSC zu wenig Parameter verwendet, werden die \ac{CNN}, die die DSC verwenden, sehr oft als quantisiert bezeichnet.Die DSC ersetzt langsam und sicher die Standardfaltung und das kann mit $ Xception $ und $ MobileNet $ beobachtet werden.
 
 \subsubsection{Faltende neuronale Netzwerke}\label{CNN}
-Obwohl die gleichen Bausteine, Schichten oder Hyperparameter verwendet werden, um verschiedene \acsp{CNN} aufzubauen und zu trainieren, macht die Architektur den größten Unterschied beim Vergleich von \acsp{CNN} bezüglich der Netzwerkleistung.Im Nachfolgenden wird zuerst einige bekannte \acsp{CNN}, dann unser eigenes \ac{CNN} vorgestellt und schließlich wird die Leistung der Netzwerke verglichen.
+Obwohl die gleichen Bausteine, Schichten oder Hyperparameter verwendet werden, um verschiedene \acsp{CNN} aufzubauen und zu trainieren, macht die Architektur den größten Unterschied beim Vergleich von {CNNs} bezüglich der Netzwerkleistung.Im Nachfolgenden wird zuerst einige bekannte \acsp{CNN}, dann unser eigenes {CNN} vorgestellt und schließlich wird die Leistung der Netzwerke verglichen.
 \paragraph{AlexNet}
-Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat etwa $ 60 $ Millionen Parametern und etwa $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}. Vor  AlexNet  gab es keine \acsp{CNN} mit so vielen Schichten, noch interessanter sind die Techniken zur Verbesserung der Leistung von  $ AlexNet $:
+Wie in \ref{motivation} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} et al \cite{AlexNet} im Jahr 2012 entwickelt. AlexNet hat etwa $ 60 $ Millionen Parametern und etwa $ 650.000 $ Neuronen, besteht aus fünf \acsp{ConvL}, von denen einige von Max-\acsp{PooL} gefolgt sind, und drei \acsp{FCL}(siehe Abbildung \ref{fig:AlexNet}) \cite{AlexNet}. Vor  AlexNet  gab es keine \acsp{CNN} mit so vielen Schichten, noch interessanter sind die Techniken zur Verbesserung der Leistung von  $ AlexNet $:
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth ]{AlexNet}
@@ -1234,13 +1157,13 @@ Wie in \ref{Entwicklung} schon erwähnt, wurde AlexNet von \textit{Krizhevsky} e
 \begin{itemize}
 	\item \textbf{ReLU}: Vor AlexNet waren $ tanh $ und $ sigmoid $ die am häufigsten verwendeten Aktivierungsfunktionen, aber wegen ihrer Sättigung bei hohen oder sehr niedrigen Werten und der Tatsache, das sie in diesen Bereichen eine Steigung nahe bei null haben, verlangsamen sie stark die Gewichtsanpassungen, was nicht der Fall bei $ ReLU $ ist, das eine Steigung gleich null nur bei negativen Werten und bei positiven höheren Werte  nicht nahe bei null hat. Noch dazu sind $ ReLU $ und seine Ableitung schneller zu berechnen als die Sigmoid Funktion und das macht einen bedeutenden Unterschied in der Trainings- und Inferenzzeit für CNN aus.Ein anderer Vorteil von $ ReLU $ ist die Sparsamkeit, die entsteht, wenn die Aktivierung von Neuron kleiner als 0 ist.
 	
-	\item \textbf{Überlappendes Pooling}: Die normalen \acsp{PooL} funktioniert wie in \ref{Pooling Layer} ($ pool\_size = stride$), aber die Überlappenden verwenden einfach eine Schrittgröße kleiner als das $ pool\_size $.Nach \cite{AlexNet} verbessern die überlappenden \ac{PooL}  die Netzgenauigkeit und macht das Netz gegenüber die Überanpassung robuster.
+	\item \textbf{Überlappendes Pooling}: Die normalen \acsp{PooL} funktioniert wie in \ref{Pooling Layer} ($ pool\_size = stride$), aber die Überlappenden verwenden einfach eine Schrittgröße kleiner als das $ pool\_size $.Nach \cite{AlexNet} verbessern die überlappenden {PooL}  die Netzgenauigkeit und macht das Netz gegenüber die Überanpassung robuster.
 	\item \textbf{Dropout}: Ein anderer Vorteil von $ AlexNet $ ist die Verwendung von Dropout(\ref{Dropout}) in \acsp{FCL}, das sich heute als die beste oder eine der besten Regulierungsmethoden erweist.
 \end{itemize}
 
 
 
-AlexNet kann aufgrund seiner Größe($\sim240$MB) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man seit $ AlexNet $ ständig auf der Suche nach neuen Architekturen, die weniger Parameter und also weniger Speicherplatz brauchen, und die die Ergebnisse auf der Stand der Technik erreichen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $SqueezeNet, Xception $ und $ MobileNet $ entstanden sind.
+AlexNet kann aufgrund seiner Größe($\sim253$MB) nicht immer auf Systemen mit begrenztem Speicherplatz eingesetzt werden, deshalb ist man seit $ AlexNet $ ständig auf der Suche nach neuen Architekturen, die weniger Parameter und also weniger Speicherplatz brauchen, und die die Ergebnisse auf der Stand der Technik erreichen. Es ist sicherlich  in diesem Zusammenhang, dass viele neue effiziente Modelle wie $SqueezeNet, Xception $ und $ MobileNet $ entstanden sind.
 
 \begin{figure}[h!]
 	\centering
@@ -1251,11 +1174,10 @@ AlexNet kann aufgrund seiner Größe($\sim240$MB) nicht immer auf Systemen mit b
 
 \paragraph{Xception}\label{Xception}
 \textit{Xception}(\cite{Xception}) basiert auf  \textit{InceptionV3}(\cite{InceptionV3}). 
-Das Xception-Model ersetzt alle Inception-Blöcke durch Xception-Blöcke (\ref{fig:Xception|MobileNet}). In einem Inception-Block werden mehrere Filter unterschiedlicher Größe separat auf eine Eingabe angewendet und die Ergebnisse jeder Faltungsoperation werden zusammengeführt.Die Verwendung von mehreren Filtern unterschiedlicher Größe ermöglicht eine schnellere Feature-Extraktion, da die kleinen Filter sich mit der Extraktion von sehr lokalen Features beschäftigen, während die großen Filter sich mit der Extraktion von globalen Features beschäftigen. Aus der Abbildung \textcolor{purple}{Vergleich Graph  } sieht man an, dass Xception im Vergleich zu anderen Modellen relativ schnell ist.Die Anzahl der Parameter von Xception ist leider immer noch enorm ($ \sim22.000.000 $) .
+Das Xception-Model ersetzt alle Inception-Blöcke durch Xception-Blöcke (siehe Abbildung \ref{fig:Xception|MobileNet}). In einem Inception-Block werden mehrere Filter unterschiedlicher Größe separat auf eine Eingabe angewendet und die Ergebnisse jeder Faltungsoperation werden zusammengeführt.Die Verwendung von mehreren Filtern unterschiedlicher Größe ermöglicht eine schnellere Feature-Extraktion, da die kleinen Filter sich mit der Extraktion von sehr lokalen Features beschäftigen, während die großen Filter sich mit der Extraktion von globalen Features beschäftigen. Aus den durchgeführten Experimenten geht hervor, dass \textit{Xception} im Vergleich zu anderen Modellen die wenigste Anzahl von Epochen braucht, um sein bestes Ergebnis zu erreichen schnell ist.Die Anzahl der Parameter von \textit{Xception} ist leider immer noch enorm ($ \sim22.000.000 $) .
 
 \paragraph{MobileNet}
-\textit{MobileNet}(\cite{MobileNet}) wie \textit{Xception} macht die \textit{Depthwise Separable Convolution} zunutze.Wie in der Abbildung(\ref{fig:Xception|MobileNet}) zu sehen ist, wurden aber \textit{Batch-Normalisierung und ReLU6}- Layers vor und nach der $ 1\times1 $ Faltungschicht hinzugefügt, was eine schnelle Feature-Extraktion ermöglicht und die \textit{ReLU6} Aktivierung erhöht die Nichtlinearität der Entscheidungsfunktion. \textit{MobileNet} nutzt etwas $\sim 3.5$ Millionen Parameter, was mindestens sechsmal weniger als die Parameteranzahl von \textit{Xception} ist, was auch eine bessere Inferenz ermöglicht.
-
+\textit{MobileNet}(\cite{MobileNet}) wie \textit{Xception} macht die \textit{Depthwise Separable Convolution} zunutze.Wie in der Abbildung(\ref{fig:Xception|MobileNet}) zu sehen ist, wurden aber \textit{Batch-Normalisierung und ReLU6}- Layers vor und nach der $ 1\times1 $ Faltungschicht hinzugefügt, was eine schnelle Feature-Extraktion ermöglicht und die \textit{ReLU6} Aktivierung erhöht die Nichtlinearität der Entscheidungsfunktion. \textit{MobileNet} nutzt etwas $\sim 3.5$ Millionen Parameter, was mindestens sechsmal weniger als die Parameteranzahl von \textit{Xception} ist.
 
 \begin{figure}[h!]
 \centering
@@ -1264,10 +1186,11 @@ Das Xception-Model ersetzt alle Inception-Blöcke durch Xception-Blöcke (\ref{f
 \label{fig:TEMKENG_NET}
 \end{figure}
 \paragraph{TemkiNet}\label{exp:TEMKI}
-Inspiriert von den soeben beschriebenen \acsp{CNN} haben wir \textit{TemkiNet} entwickelt, das aus $ 1.2 $ Millionen Parametern besteht,was im Vergleich zum anderen \acsp{NN} recht gering ist. Die Bausteine von \textit{TemkiNet} sind in der Abbildung \ref{fig:TEMKENG_NET} zu entnehmen.
-Anstatt die Anzahl der Neuronen jedes Mal zu erhöhen, wenn tiefer ins Netzwerk eingedrungen wird, wie es bei Standardnetzwerken der Fall ist,wird bei \textit{TemkiNet} die gleiche Anzahl von Neuronen für jede \ac{ConvL} verwendet. d.h alle \acsp{ConvL} erzeugen die gleiche Anzahl von Feature-Maps.Wegen den zu geringen Anzahl von Parameter von \textit{TemkiNet} können wir von ihm nur eine schlechte Leistung erwarten, aber die durchgeführten Experimente haben gezeigt, dass es beeindruckende Ergebnisse erzielen kann, die sogar die von konventionellen Netzwerken übertreffen könnten.Ein kurzer Überblick über die Architektur von \textit{TemkiNet} kann in der Tabelle \ref{tab:Temki_Architectur} verschafft werden.
+Inspiriert von den soeben beschriebenen \acsp{CNN} haben wir \textit{TemkiNet} entwickelt, das aus $ \sim1.4 $ Millionen Parametern besteht,was im Vergleich zum anderen \acsp{NN} recht gering ist. Die Bausteine von \textit{TemkiNet} sind in der Abbildung \ref{fig:TEMKENG_NET} zu entnehmen.
+Anstatt die Anzahl der Neuronen jedes Mal zu erhöhen, wenn tiefer ins Netzwerk eingedrungen wird, wie es bei Standardnetzwerken der Fall ist,wird bei \textit{TemkiNet} die gleiche Anzahl von Neuronen für jede Schicht im Extratorblock verwendet, anders gesagt, alle jede Schicht im Extratorblock erzeugen die gleiche Anzahl von Feature-Maps.Mit diesem Ansatz schaffen wir, möglichst viele Informationen bis zum Ende der Feature-Extraktion zu behalten und ein nicht so tiefer und breiter Netzwerk aufzubauen.
+Wegen den zu geringen Anzahl von Parametern von \textit{TemkiNet} können wir von ihm nur eine schlechte Leistung erwarten, aber die durchgeführten Experimente haben gezeigt, dass es beeindruckende Ergebnisse erzielen kann, die sogar die von konventionellen Netzwerken übertreffen könnten.Ein kurzer Überblick über die Architektur von \textit{TemkiNet} kann in der Tabelle \ref{tab:Temki_Architectur} verschafft werden.
 
-Da jede Schicht die gleiche Anzahl von Feature-Maps erzeugt, ist die Implementierung von \textit{TemkiNet} ziemlich einfacher, denn die die Anzahl von Feature-Maps pro Schicht kann einfach als einen Hyperparameter übergeben werden,was es noch einfacher macht, den Einfluss der Anzahl von Neuronen pro Schicht auf die Netzwerkleistung zu untersuchen.
+Da jede Schicht die gleiche Anzahl von Feature-Maps erzeugt, ist die Implementierung von \textit{TemkiNet} ziemlich einfach, denn die die Anzahl von Feature-Maps pro Schicht kann einfach als einen Hyperparameter übergeben werden,was es noch einfacher macht, den Einfluss der Anzahl von Aktivierungskarten pro Schicht auf die Netzwerkleistung zu untersuchen.
 
 \begin{table}[h!]
 	\centering
@@ -1276,34 +1199,33 @@ Da jede Schicht die gleiche Anzahl von Feature-Maps erzeugt, ist die Implementie
 		Block & Schrittgröße & Outputgröße\\ \hline
 		Input & / & (100, 100, 3) \\ \hline
 		conv\_Block &	$ 2\times2 $ &$ (100,100, 101) $\\ \hline
-		Depthwise\_Block 1 & $ 2\times2 $&$ (50,50, 101) $\\ \hline
-		Depthwise\_Block 1& $ 1\times1 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block  & $ 2\times2 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block & $ 1\times1 $&$ (50,50, 101) $\\ \hline
 		
-		Depthwise\_Block 1 & $ 2\times2 $&$ (25,25, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block 1 & $ 1\times1 $&$ (25,25, 101) $\\ \hline
+		Depthwise\_Block  & $ 2\times2 $&$ (25,25, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block  & $ 1\times1 $&$ (25,25, 101) $\\ \hline
 		
-		Depthwise\_Block 1 & $ 2\times2 $&$ (12,12, 101) $\\ \hline
-		$ 3\times $Depthwise\_Block 1 & $ 1\times1 $&$ (12,12, 101) $\\ \hline
+		Depthwise\_Block  & $ 2\times2 $&$ (12,12, 101) $\\ \hline
+		$ 3\times $Depthwise\_Block  & $ 1\times1 $&$ (12,12, 101) $\\ \hline
 		
-		Depthwise\_Block 1 & $ 2\times2 $&$ (6,6, 101) $\\ \hline
-		$ 4\times $Depthwise\_Block 1 & $ 1\times1 $&$ (6,6, 101) $\\ \hline
+		Depthwise\_Block  & $ 2\times2 $&$ (6,6, 101) $\\ \hline
+		$ 4\times $Depthwise\_Block  & $ 1\times1 $&$ (6,6, 101) $\\ \hline
 		
-		Depthwise\_Block 1 & $ 2\times2 $&$ (3,3, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (3,3, 101) $\\ \hline
+		Depthwise\_Block  & $ 2\times2 $&$ (3,3, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (3,3, 101) $\\ \hline
 		Flatten & / &$ 909 $ \\ \hline
 		Dense\_Block & / &$ 1024 $\\ \hline
 		FC & & $ 101 $\\ \hline
 		
 	\end{tabular}
-	\caption{TemkiNet Architektur mit $ 101 $ Feature-Maps pro \ac{ConvL}  }
+	\caption{TemkiNet Architektur mit $ 101 $ Feature-Maps pro Schicht im Extratorblock.  }
 	\label{tab:Temki_Architectur}
 \end{table}
 
-Basierend auf der Architektur von \textit{TemkiNet} haben wir mehrere Varianten von \textit{TemkiNet} entwickelt, die weniger Parameter benötigen und einen vernachlässigbaren Genauigkeitsverlust aufweisen.
-Im Laufe dieser Arbeit werden die verschiedenen Versionen allmählich vorgestellt.
+Basierend auf der Architektur von \textit{TemkiNet} haben wir mehrere Varianten von \textit{TemkiNet} entwickelt, die mindestens zweimal weniger Parameter benötigen und einen vernachlässigbaren Genauigkeitsverlust aufweisen(siehe \ref{Extrem}).
 
 \subsubsection{Vergleich zwischen CNNs}\label{sub:vergleich_CNN}
-Die Tabelle \ref{tab:vergleich_CNN} stellt die Leistungen von verschiedenen \acsp{CNN} dar.Festzustellen ist, dass die CNN im Laufe der Zeit immer kleiner werden.Dabei ist die große Enttäuschung, dass zum einen $ AlexNet $ , das älteste CNN, die beste Leistung erzielt hat und zum anderen die Gesamtleistung nicht gut ist. 
+Die Tabelle \ref{tab:vergleich_CNN} stellt die Leistungen von den oben beschriebenen \acsp{CNN} dar.Festzustellen ist, dass die CNN im Laufe der Zeit immer kleiner werden.Dabei sind die großen Enttäuschungen, dass zum einen $ AlexNet $ , das älteste CNN, die beste Leistung erzielt hat und zum anderen die Gesamtleistung nicht gut ist. 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{*{4}{|c}|}
@@ -1326,8 +1248,7 @@ Im Folgenden werden wir einige Methoden, Techniken oder Hyperparameter untersuch
 
 \subsubsection{Datenvermehrung (\textit{Data Augmentation}).}\label{Data Augmentation}
 
-Ein großer Datensatz ist entscheidend für die Leistung tiefer neuronaler Netzwerke und sagen, dass ein Datensatz groß oder ausreichend für das Training eines \ac{CNN} ist, hängt nur von der Parameteranzahl des \ac{CNN} ab. Da die \acsp{CNN}, die gute Leistungen erzielen, leider aus mehreren Millionen Parametern bestehen, ist für jedes Problem des maschinellen Lernens nahezu unmöglich, ausreichende Daten zu finden.Anstatt immer neue Daten zu sammeln, um die Netzwerkleistung zu verbessern, können wir die Leistung des Modells verbessern, indem wir neue Daten aus bestehenden Daten generieren.\\
-Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden und die Parallelverschiebungen.
+Ein großer Datensatz ist entscheidend für die Leistung von \acsp{DNN} und sagen, dass ein Datensatz groß oder ausreichend für das Training eines {CNNs} ist, hängt nur von der Anzahl der Netzwerkparameter ab. Da die \acsp{CNN}, die die besten Leistungen erzielen, leider aus mehreren Millionen Parametern bestehen, ist für jedes Problem des maschinellen Lernens nahezu unmöglich, ausreichende Daten zu finden.Anstatt immer neue Daten zu sammeln, um die Netzwerkleistung zu verbessern, kann die Leistung des Modells verbessert werden, indem wir neue Daten aus bestehenden Daten generieren. Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes sind die horizontalen oder vertikalen Spiegelungen, Drehungen, Skalierungen, Zuschneiden und die Parallelverschiebungen.
 
 \begin{figure}[h!]
 	\centering
@@ -1337,9 +1258,9 @@ Die populären Techniken oder Transformationen zur Vermehrung des Datensatzes si
 \end{figure}
 
 Für diese Arbeit wurden drei Ansätze zur Erhöhung des Datensatzes verwendet:
-Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben. Der zweite Ansatz verwendet keinen größeren Datensatz, sondern immer das Original. Wenn Samplen aus dem Datensatz in das Netzwerk eingeführt werden, werden sie entweder transformiert oder direkt übertragen.Die \textit{KERAS} Funktion \textit{ImageDataGeneerator} bietet die Möglichkeit, Daten zur Laufzeit umzuwandeln. Vor dem Trainingsanfang werden alle Transformationen, die für jede Sample aus dem Datensatz durchgeführt werden können, definiert und beim Einspeisen einer Sample ins Netzwerk wird eine oder gar keine Transformation zufällig auf die Sample durchgeführt. Die Netzwerkeingabe ändert sich also ständig. Das interessanteste an \textit{ImageDataGenerator} ist, dass es mehrere Transformationen gleichzeitig anwenden kann(siehe Abbildung \ref{fig:ImageDataAugmentation}). Der dritte Ansatz ist die gleichzeitige Anwendung der beiden anderen Ansätze.
+Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei werden die oben erwähnten Techniken vor dem Training angewendet, um zum Trainingszeitpunkt und zur Testzeit einen großen Datensatz zu haben. Der zweite Ansatz verwendet keinen größeren Datensatz, sondern immer das Original. Wenn Samplen aus dem Datensatz in das Netzwerk eingeführt werden, werden sie entweder transformiert oder direkt übertragen.Die \textit{KERAS} Funktion \textit{ImageDataGeneerator} bietet die Möglichkeit, Daten zur Laufzeit umzuwandeln. Vor dem Trainingsanfang werden alle Transformationen, die für jede Sample aus dem Datensatz durchgeführt werden können, definiert und beim Einspeisen einer Sample ins Netzwerk wird eine oder gar keine Transformation zufällig auf die Sample durchgeführt. Die Netzwerkeingabe ändert sich also nach jeder Epoche ständig. Das interessanteste an \textit{ImageDataGenerator} ist, dass es mehrere Transformationen gleichzeitig anwenden kann(siehe Abbildung \ref{fig:ImageDataAugmentation}). Der dritte Ansatz ist die gleichzeitige Anwendung der beiden anderen Ansätze.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{DataAugmentation.png}
 	\begin{center}
@@ -1355,11 +1276,11 @@ Der erste Ansatz besteht darin vor dem Training neue Daten zu erzeugen. Dabei we
 \end{figure}
 
 
-Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, \ac{CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die \acsp{CNN} funktionieren glücklicherweise besser oder immer gut, solange nützliche Informationen durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.
+Je mehr Daten verfügbar sind, desto effektiver können die \acsp{CNN} sein. Es ist also mehr als wichtig über eine große Datenmenge zu verfügen. Leider können die gesammelten Datensätze nicht alle mögliche Szenarios des reellen Lebens abdecken,deshalb ist es auch bedeutend, {CNN}  mit zusätzlichen synthetisch modifizierten Daten zu trainieren. Die {CNNs} funktionieren glücklicherweise besser oder immer gut, solange nützliche Informationen durch das Modell aus dem ursprünglichen Datensatz extrahiert werden können, selbst wenn die erzeugten Daten von geringerer Qualität sind.
 
 Obwohl der erste und dritte Ansatz mehr Daten haben und daher bessere Ergebnisse liefern sollten, zeigt die Abbildung \ref{fig:DataAugmentation}, dass die drei Ansätze zu demselben Ergebnis($ \sim 62\% $ Genauigkeit) führen.Das liegt daran, dass die Transformationen, die zur Erweiterung des Datensatzes vor Trainingsbeginn verwendet werden, auch während des Trainings verwendet werden, was dazu führt, dass ein Bild in derselbe Epoche mehrmals ins Netzwerk eingespeist werden kann, was das Netzwerk dazu bringt, diesem Bild mehr Bedeutung zu verleihen.Eine direkte Folge davon ist die Überanpassung des ersten und dritten Ansatzes, die in der Abbildung \ref{fig:DataAugmentation} zu beobachten ist.Dennoch der erste und dritte Ansatz reduzieren im Vergleich zum zweiten deutlich die benötigte Trainingszeit, während der zweite Ansatz das CNN robuster macht.
 
-Mit dem zweiten Ansatz haben wir das Experiment(\ref{sub:vergleich_CNN}) wiederholt und die Ergebnisse sind in der Tabelle \ref{tab:vergleich_CNN_1} zu sehen.Jetzt wird festgestellt, dass die modernen \acsp{CNN} nicht nur die Oberhand über die ältere behalten, sondern auch, dass sie mit der Datenvermehrung eine höhere Leistungsverbesserung  haben und das sollte daran liegen, dass die modernen CNN zu wenige Parameter zu optimieren haben, was es leichter macht, lokale oder globale Minima zu finden.Noch dazu ist die Leistung von modernen \acsp{CNN} mehr als verdoppelt und das beste Ergebnis wird mit \textit{TemkiNet} erreicht.
+Mit dem zweiten Ansatz haben wir das Experiment(\ref{sub:vergleich_CNN}) wiederholt und die Ergebnisse sind in der Tabelle \ref{tab:vergleich_CNN_1} zu sehen.Jetzt wird festgestellt, dass die modernen \acsp{CNN} nicht nur die Oberhand über die ältere behalten, sondern auch, dass sie mit der Datenvermehrung eine höhere Leistungsverbesserung  haben und das sollte daran liegen, dass die modernen CNN zu wenige Parameter zu optimieren haben, was es leichter macht, lokale oder globale Minima zu finden.Noch dazu ist die Leistung von modernen \acsp{CNN} durch Data Augmentation mehr als verdoppelt und das beste Ergebnis wird mit \textit{TemkiNet} erreicht.
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{*{6}{|c}|}
@@ -1581,7 +1502,7 @@ Bei der Erstellung des Datensatzes werden Daten unterschiedlicher Größe erhobe
 %	\end{figure}
 Es gibt jedoch zwei wesentliche negative Folgen. Die Verdreifachung des Speicherbedarfs bei der Verdoppelung der Bildgröße und die Verschlechterung der Inferenzzeit bei der Erhöhung der Bildgröße.
 
-\subsubsection{Anzahl der Feature-Maps pro Schicht:}
+\subsubsection{Anzahl der Aktivierungskarten pro Schicht:}
 Wie in \ref{exp:TEMKI} schon erwähnt, haben alle \acsp{ConvL} in \textit{TemkiNet} die gleiche Anzahl von Neuronen. Die Tabelle \ref{tab:units} und Abbildung \ref{fig:units} zeigen, wie die Anzahl der Feature-Maps pro Schicht die Netzwerkleistung beeinflusst. Bei näherer Betrachtung der Abbildung \ref{fig:units} lässt sich schließen, dass \textit{TemkiNet} mit wenigen Feature-Maps pro Schicht besser leisten und weniger unter Overfitting leiden kann.
 	\begin{table}[ht]
 	\centering
@@ -1700,7 +1621,7 @@ Wenn ein $ a $ positiv bzw. negativ sein sollte, ist es klar, dass die Leistung 
 
 \subsection{Verringerung  des Speicherbedarfs }
 In diesem Teil der Arbeit werden wir zuerst Variante von \textit{TemkiNet} vorstellen und dann  die im Abschnitt \ref{kompression} erläuterten Methoden (\textit{Pruning} und Quantisierung), implementieren.
-\subsubsection{Extreme Version von \textit{TemkiNet.}}
+\subsubsection{Extreme Version von \textit{TemkiNet.}}\label{Extrem}
 Die meisten von $ TemkiNet $ verwendeten Parameter stammen aus dem der Klassifikationsblock($ 935.936 $ über $ 1.418.817 $ Parameter, also etwa mehr als $65\%  $) und um diese Anzahl zu reduzieren, schlagen wir einige Änderungen vor, und zwar folgende:(siehe auch Tabellen \ref{tab:Temki_Architectur1}) und \ref{tab:Temki_Architectur 1}
 \begin{enumerate}
 	\item Um die räumliche Dimension zu reduzieren, verwenden wir ein \textit{Max-Pooling Layer} anstelle einer Faltungsschicht mit einer Schrittweite von 2.
@@ -1716,19 +1637,19 @@ Die meisten von $ TemkiNet $ verwendeten Parameter stammen aus dem der Klassifik
 		Input & / & $ (100, 100,3) $ \\ \hline
 		conv\_Block &	$ 2\times2 $ &$ (100,100, 101) $\\ \hline
 		 Max-Pool-Block  & $ 2\times2 $&$ (50,50, 101) $\\ \hline
-		Depthwise\_Block 1 & $ 1\times1 $&$ (50,50, 101) $\\ \hline
+		Depthwise\_Block  & $ 1\times1 $&$ (50,50, 101) $\\ \hline
 		
 		 Max-Pool-Block & $ 2\times2 $&$ (25,25, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (25,25, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (25,25, 101) $\\ \hline
 		
 		 Max-Pool-Block  & $ 2\times2 $&$ (12,12, 101) $\\ \hline
-		$ 3\times $Depthwise\_Block 1& $ 1\times1 $&$ (12,12, 101) $\\ \hline
+		$ 3\times $Depthwise\_Block & $ 1\times1 $&$ (12,12, 101) $\\ \hline
 		
 		 Max-Pool-Block  & $ 2\times2 $&$ (6,6, 101) $\\ \hline
-		$ 4\times $Depthwise\_Block 1 & $ 1\times1 $&$ (6,6, 101) $\\ \hline
+		$ 4\times $Depthwise\_Block  & $ 1\times1 $&$ (6,6, 101) $\\ \hline
 		
 		 Max-Pool-Block   & $ 2\times2 $&$ (3,3, 101) $\\ \hline
-		$ 2\times $Depthwise\_Block 1& $ 1\times1 $&$ (3,3, 101) $\\ \hline
+		$ 2\times $Depthwise\_Block & $ 1\times1 $&$ (3,3, 101) $\\ \hline
 		GlobalAveragePooling2D & / &$ 101 $ \\ \hline
 		Flatten & / &$ 101 $ \\ \hline
 		
@@ -1873,8 +1794,9 @@ Für das zweite Szenario wurde kleine Änderung ins erste Szenario gebracht.	Aus
 \label{exp:TL}
 \end{table}
 
-\section{Diskussion}
-\section{Schluss}
+\section{Zusammenfassung und Ausblick}
+\subsection{Zusammenfassung}
+\subsection{Ausblick}
 \bibliographystyle{acm}
 
 \begin{thebibliography}{lem00}
@@ -1919,9 +1841,9 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville:
  		y
  		Reducing Internal Covariate Shift}
 
-	\bibitem{LearningRate}Wikipedia:
+\bibitem{LearningRate}Wikipedia:
 		\href{https://en.wikipedia.org/wiki/Learning_rate}{Learning Rate}
-	\bibitem{AdaGrad}
+\bibitem{AdaGrad}
 		John Duchi,Elad Hazan, Yoram Singer:
 		\href{http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf}{Adaptive Subgradient Methods for
 			Online Learning and Stochastic Optimization}
@@ -1934,10 +1856,10 @@ Ian Goodfellow, Yoshua Bengio, Aaron Courville:
 	\bibitem{quantizationYoni}
 		Yoni Choukroun, Eli Kravchik, Fan Yang, Pavel Kisilev:
 			\href{https://arxiv.org/abs/1902.06822}{Low-bit Quantization of Neural Networks for Efficient Inference}
-	\bibitem{kneuron}
+\bibitem{kneuron}
 	wikipedia:\href{https://en.wikipedia.org/wiki/Artificial_neuron}{ Artificial neuron}
 	
-	\bibitem{AlexNet}Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton
+\bibitem{AlexNet}Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton
 		\href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{ImageNet Classification with Deep Convolutional Neural Networks}
   
   \bibitem{SqueezeNet}

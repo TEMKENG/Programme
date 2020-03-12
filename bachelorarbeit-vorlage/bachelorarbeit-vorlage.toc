@@ -2,27 +2,26 @@
 \babel@toc {ngerman}{}
 \contentsline {section}{\numberline {1}Einleitung}{7}{section.1}
 \contentsline {subsection}{\numberline {1.1}Motivation}{7}{subsection.1.1}
-\contentsline {subsection}{\numberline {1.2}Ziel der Arbeit.}{8}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.2}Ziel der Arbeit.}{7}{subsection.1.2}
 \contentsline {subsection}{\numberline {1.3}Aufbau der Arbeit.}{8}{subsection.1.3}
 \contentsline {section}{\numberline {2}Grundlagen}{9}{section.2}
 \contentsline {subsection}{\numberline {2.1}K\IeC {\"u}nstliche neuronale Netzwerke}{9}{subsection.2.1}
 \contentsline {subsubsection}{\numberline {2.1.1}K\IeC {\"u}nstliches Neuron}{9}{subsubsection.2.1.1}
-\contentsline {subsubsection}{\numberline {2.1.2}Merkmalskarten(Feature-Maps)}{9}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.2}Aktivierungskarten(Feature-Maps)}{9}{subsubsection.2.1.2}
 \contentsline {subsubsection}{\numberline {2.1.3}Filters}{10}{subsubsection.2.1.3}
-\contentsline {subsubsection}{\numberline {2.1.4}Entwicklung von K\IeC {\"u}nstlichen Neuronalen Netzen}{10}{subsubsection.2.1.4}
 \contentsline {subsection}{\numberline {2.2}Convolutional Neural Network}{10}{subsection.2.2}
 \contentsline {subsubsection}{\numberline {2.2.1}Feedforward}{10}{subsubsection.2.2.1}
 \contentsline {paragraph}{\numberline {2.2.1.1}Input Layer}{10}{paragraph.2.2.1.1}
-\contentsline {paragraph}{\numberline {2.2.1.2}Faltungsschicht}{11}{paragraph.2.2.1.2}
-\contentsline {subparagraph}{\nonumberline Die Anzahl und Gr\IeC {\"o}\IeC {\ss }e von Filtern.}{11}{section*.11}
-\contentsline {subparagraph}{\nonumberline Die Schrittgr\IeC {\"o}\IeC {\ss }e}{11}{section*.13}
-\contentsline {subparagraph}{\nonumberline \textit {Padding}.}{12}{section*.15}
+\contentsline {paragraph}{\numberline {2.2.1.2}Faltungsschicht}{10}{paragraph.2.2.1.2}
+\contentsline {subparagraph}{\nonumberline Die Anzahl und Gr\IeC {\"o}\IeC {\ss }e von Filtern.}{11}{section*.12}
+\contentsline {subparagraph}{\nonumberline Die Schrittgr\IeC {\"o}\IeC {\ss }e}{11}{section*.14}
+\contentsline {subparagraph}{\nonumberline \textit {Padding}.}{12}{section*.16}
 \contentsline {paragraph}{\numberline {2.2.1.3}Aktivierungsfunktion}{13}{paragraph.2.2.1.3}
-\contentsline {subparagraph}{\nonumberline Logistische Funktion}{15}{section*.19}
-\contentsline {subparagraph}{\nonumberline Tangens Hyperbolicus}{15}{section*.21}
-\contentsline {subparagraph}{\nonumberline Rectified Linear Unit}{15}{section*.23}
-\contentsline {subparagraph}{\nonumberline Leaky ReLU Funktion}{16}{section*.25}
-\contentsline {subparagraph}{\nonumberline Softmax}{16}{section*.27}
+\contentsline {subparagraph}{\nonumberline Logistische Funktion}{14}{section*.20}
+\contentsline {subparagraph}{\nonumberline Tangens Hyperbolicus}{15}{section*.22}
+\contentsline {subparagraph}{\nonumberline Rectified Linear Unit}{15}{section*.24}
+\contentsline {subparagraph}{\nonumberline Leaky ReLU Funktion}{16}{section*.26}
+\contentsline {subparagraph}{\nonumberline Softmax}{16}{section*.28}
 \contentsline {paragraph}{\numberline {2.2.1.4}Pooling Layer}{17}{paragraph.2.2.1.4}
 \contentsline {paragraph}{\numberline {2.2.1.5}Multi-layer Perzeptron (Fully Connected Layer)}{17}{paragraph.2.2.1.5}
 \contentsline {subsubsection}{\numberline {2.2.2}Backforward}{18}{subsubsection.2.2.2}
@@ -30,8 +29,8 @@
 \contentsline {paragraph}{\numberline {2.2.2.2}Gradient}{19}{paragraph.2.2.2.2}
 \contentsline {paragraph}{\numberline {2.2.2.3}Lernrate}{19}{paragraph.2.2.2.3}
 \contentsline {paragraph}{\numberline {2.2.2.4}Gradientenabstiegsverfahren}{20}{paragraph.2.2.2.4}
-\contentsline {subparagraph}{\nonumberline Ablauf eines Gradientenverfahrens im \ac {DNN}.}{20}{section*.31}
-\contentsline {subparagraph}{\nonumberline Variante des Gradientenverfahrens}{20}{section*.33}
+\contentsline {subparagraph}{\nonumberline Ablauf eines Gradientenverfahrens im \ac {DNN}.}{20}{section*.32}
+\contentsline {subparagraph}{\nonumberline Variante des Gradientenverfahrens}{20}{section*.34}
 \contentsline {subsection}{\numberline {2.3}Datens\IeC {\"a}tze und Bibliothek}{23}{subsection.2.3}
 \contentsline {subsubsection}{\numberline {2.3.1}Datens\IeC {\"a}tze}{23}{subsubsection.2.3.1}
 \contentsline {subsubsection}{\numberline {2.3.2}Bibliotheken}{23}{subsubsection.2.3.2}
@@ -62,7 +61,7 @@
 \contentsline {subsubsection}{\numberline {4.3.4}Optimierer.}{45}{subsubsection.4.3.4}
 \contentsline {subsubsection}{\numberline {4.3.5}Batch-Normalisierung(BN).}{47}{subsubsection.4.3.5}
 \contentsline {subsubsection}{\numberline {4.3.6}Bildgr\IeC {\"o}\IeC {\ss }e.}{48}{subsubsection.4.3.6}
-\contentsline {subsubsection}{\numberline {4.3.7}Anzahl der Feature-Maps pro Schicht:}{49}{subsubsection.4.3.7}
+\contentsline {subsubsection}{\numberline {4.3.7}Anzahl der Aktivierungskarten pro Schicht:}{49}{subsubsection.4.3.7}
 \contentsline {subsubsection}{\numberline {4.3.8}Qualit\IeC {\"a}t des Datensatzes}{50}{subsubsection.4.3.8}
 \contentsline {subsubsection}{\numberline {4.3.9}Einfluss der Lernrate}{51}{subsubsection.4.3.9}
 \contentsline {subsection}{\numberline {4.4}Verringerung des Speicherbedarfs}{53}{subsection.4.4}
@@ -70,5 +69,6 @@
 \contentsline {subsubsection}{\numberline {4.4.2}Pruning}{54}{subsubsection.4.4.2}
 \contentsline {subsubsection}{\numberline {4.4.3}Quantisierung}{56}{subsubsection.4.4.3}
 \contentsline {subsection}{\numberline {4.5}Transfer-Lernen (\textit {Transfer Learning})}{57}{subsection.4.5}
-\contentsline {section}{\numberline {5}Diskussion}{58}{section.5}
-\contentsline {section}{\numberline {6}Schluss}{58}{section.6}
+\contentsline {section}{\numberline {5}Zusammenfassung und Ausblick}{58}{section.5}
+\contentsline {subsection}{\numberline {5.1}Zusammenfassung}{58}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Ausblick}{58}{subsection.5.2}
