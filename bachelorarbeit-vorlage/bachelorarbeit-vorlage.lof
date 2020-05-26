@@ -1,32 +1,32 @@
 \babel@toc {ngerman}{}
 \babel@toc {ngerman}{}
-\contentsline {figure}{\numberline {1}{\ignorespaces Funktionsweise eines k\IeC {\"u}nstlichen Neurons \relax }}{9}{figure.caption.8}
-\contentsline {figure}{\numberline {2}{\ignorespaces Einfluss der Schrittgr\IeC {\"o}\IeC {\ss }e auf die Gr\IeC {\"o}\IeC {\ss }e der Feature-Maps\relax }}{12}{figure.caption.13}
-\contentsline {figure}{\numberline {4}{\ignorespaces Faltungsoperation mit einem $ 3\times 3$-Filter und Schrittgr\IeC {\"o}\IeC {\ss }e $ =3 $\relax }}{13}{figure.caption.17}
-\contentsline {figure}{\numberline {5}{\ignorespaces Bin\IeC {\"a}re Treppenfunktion\relax }}{14}{figure.caption.18}
-\contentsline {figure}{\numberline {7}{\ignorespaces Lineare Funktion\relax }}{14}{figure.caption.19}
-\contentsline {figure}{\numberline {9}{\ignorespaces Logistische Aktivierungsfunktion:$ sigmoid(x) $.\relax }}{15}{figure.caption.21}
-\contentsline {figure}{\numberline {11}{\ignorespaces Tangens Hyperbolicus.\relax }}{15}{figure.caption.23}
-\contentsline {figure}{\numberline {13}{\ignorespaces ReLU Aktivierungsfunktion\relax }}{16}{figure.caption.25}
-\contentsline {figure}{\numberline {15}{\ignorespaces Leaky ReLU Funktion\relax }}{16}{figure.caption.27}
-\contentsline {figure}{\numberline {17}{\ignorespaces Funktionsweise der Pooling-Sicht mit Pooling\_size$ =(2,2) $ und $ Stride =2$\relax }}{17}{figure.caption.30}
-\contentsline {figure}{\numberline {18}{\ignorespaces Darstellung eines neuronalen Netzes \relax }}{18}{figure.caption.31}
-\contentsline {figure}{\numberline {19}{\ignorespaces Ablauf der Backpropagation\relax }}{21}{figure.caption.33}
-\contentsline {figure}{\numberline {20}{\ignorespaces Netzbeschneidung w\IeC {\"a}hrend des Trainings\relax }}{26}{figure.caption.38}
-\contentsline {figure}{\numberline {21}{\ignorespaces Einfluss der Intensit\IeC {\"a}t des Filters auf Feature-Map\relax }}{27}{figure.caption.39}
-\contentsline {figure}{\numberline {22}{\ignorespaces Das Beschneiden eines Filters f\IeC {\"u}hrt zum Entfernen der entsprechenden Feature-Map und der zugeh\IeC {\"o}rigen Kernel in der n\IeC {\"a}chsten Ebene\cite {Filter Pruning}.\relax }}{27}{figure.caption.40}
-\contentsline {figure}{\numberline {23}{\ignorespaces Parameter Approximieren durch Matrixfaktorisierung \relax }}{29}{figure.caption.42}
-\contentsline {figure}{\numberline {24}{\ignorespaces Vergleich zwischen der Genauigkeitskurve und der logarithmischen Verlustkurve. \relax }}{32}{figure.caption.43}
-\contentsline {figure}{\numberline {25}{\ignorespaces Standardfaltungsschicht mit zwei Filtern auf ein Farbbild.\relax }}{34}{figure.caption.44}
-\contentsline {figure}{\numberline {26}{\ignorespaces Depthwise Convolution auf ein Farbbild.\relax }}{35}{figure.caption.45}
-\contentsline {figure}{\numberline {27}{\ignorespaces AlexNet Architektur \href {https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ source} \relax }}{36}{figure.caption.46}
-\contentsline {figure}{\numberline {28}{\ignorespaces Xception- und MobileNet-Baustein.\relax }}{37}{figure.caption.47}
-\contentsline {figure}{\numberline {29}{\ignorespaces TemkiNet-Bausteine.\relax }}{38}{figure.caption.48}
-\contentsline {figure}{\numberline {30}{\ignorespaces Anwendung von \textit {ImageDataAugmentation}-Funktion \relax }}{41}{figure.caption.51}
-\contentsline {figure}{\numberline {31}{\ignorespaces Vergleich von Datenvermehrungstechniken\relax }}{42}{figure.caption.52}
-\contentsline {figure}{\numberline {32}{\ignorespaces Neuronales Netzwerk mit Dropout ausgestattet \cite {3}.\relax }}{43}{figure.caption.54}
-\contentsline {figure}{\numberline {33}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{44}{figure.caption.55}
-\contentsline {figure}{\numberline {34}{\ignorespaces Einfluss der Anzahl von Neuronen pro Schicht.\relax }}{49}{figure.caption.63}
-\contentsline {figure}{\numberline {35}{\ignorespaces Problem mit Datens\IeC {\"a}tzen.\relax }}{50}{figure.caption.64}
-\contentsline {figure}{\numberline {36}{\ignorespaces Einfluss der Lernrate auf ein $ (224,224,3) $Bild.\relax }}{52}{figure.caption.66}
-\contentsline {figure}{\numberline {37}{\ignorespaces Lernraten-Scheduler.\relax }}{53}{figure.caption.67}
+\contentsline {figure}{\numberline {1}{\ignorespaces Funktionsweise eines k\IeC {\"u}nstlichen Neurons \relax }}{10}{figure.caption.7}
+\contentsline {figure}{\numberline {2}{\ignorespaces Einfluss der Schrittgr\IeC {\"o}\IeC {\ss }e auf die Gr\IeC {\"o}\IeC {\ss }e der Feature-Maps\relax }}{13}{figure.caption.12}
+\contentsline {figure}{\numberline {4}{\ignorespaces Faltungsoperation mit einem $ 3\times 3$-Filter und Schrittgr\IeC {\"o}\IeC {\ss }e $ =3 $\relax }}{14}{figure.caption.16}
+\contentsline {figure}{\numberline {5}{\ignorespaces Bin\IeC {\"a}re Treppenfunktion\relax }}{15}{figure.caption.17}
+\contentsline {figure}{\numberline {7}{\ignorespaces Lineare Funktion\relax }}{15}{figure.caption.18}
+\contentsline {figure}{\numberline {9}{\ignorespaces Logistische Aktivierungsfunktion:$ sigmoid(x) $.\relax }}{16}{figure.caption.20}
+\contentsline {figure}{\numberline {11}{\ignorespaces Tangens Hyperbolicus.\relax }}{16}{figure.caption.22}
+\contentsline {figure}{\numberline {13}{\ignorespaces ReLU Aktivierungsfunktion\relax }}{17}{figure.caption.24}
+\contentsline {figure}{\numberline {15}{\ignorespaces Leaky ReLU Funktion\relax }}{17}{figure.caption.26}
+\contentsline {figure}{\numberline {17}{\ignorespaces Funktionsweise der Pooling-Sicht mit Pooling\_size$ =(2,2) $ und $ Stride =2$\relax }}{18}{figure.caption.29}
+\contentsline {figure}{\numberline {18}{\ignorespaces Darstellung eines neuronalen Netzes \relax }}{19}{figure.caption.30}
+\contentsline {figure}{\numberline {19}{\ignorespaces Ablauf der Backpropagation\relax }}{22}{figure.caption.32}
+\contentsline {figure}{\numberline {20}{\ignorespaces Netzbeschneidung w\IeC {\"a}hrend des Trainings\relax }}{27}{figure.caption.37}
+\contentsline {figure}{\numberline {21}{\ignorespaces Einfluss der Intensit\IeC {\"a}t des Filters auf Feature-Map\relax }}{28}{figure.caption.38}
+\contentsline {figure}{\numberline {22}{\ignorespaces Das Beschneiden eines Filters f\IeC {\"u}hrt zum Entfernen der entsprechenden Feature-Map und der zugeh\IeC {\"o}rigen Kernel in der n\IeC {\"a}chsten Ebene \cite {Filter Pruning}.\relax }}{28}{figure.caption.39}
+\contentsline {figure}{\numberline {23}{\ignorespaces Parameter Approximieren durch Matrixfaktorisierung \relax }}{30}{figure.caption.41}
+\contentsline {figure}{\numberline {24}{\ignorespaces Vergleich zwischen der Genauigkeitskurve und der logarithmischen Verlustkurve. \relax }}{33}{figure.caption.42}
+\contentsline {figure}{\numberline {25}{\ignorespaces Standardfaltungsschicht mit zwei Filtern auf ein Farbbild.\relax }}{35}{figure.caption.43}
+\contentsline {figure}{\numberline {26}{\ignorespaces Depthwise Convolution auf ein Farbbild.\relax }}{36}{figure.caption.44}
+\contentsline {figure}{\numberline {27}{\ignorespaces AlexNet Architektur \href {https://neurohive.io/en/popular-networks/alexnet-imagenet-classification-with-deep-convolutional-neural-networks/}{ source} \relax }}{37}{figure.caption.45}
+\contentsline {figure}{\numberline {28}{\ignorespaces Xception- und MobileNet-Baustein.\relax }}{38}{figure.caption.46}
+\contentsline {figure}{\numberline {29}{\ignorespaces TemkiNet-Bausteine.\relax }}{39}{figure.caption.47}
+\contentsline {figure}{\numberline {30}{\ignorespaces Anwendung von \textit {ImageDataAugmentation}-Funktion \relax }}{42}{figure.caption.50}
+\contentsline {figure}{\numberline {31}{\ignorespaces Vergleich von Datenvermehrungstechniken\relax }}{43}{figure.caption.51}
+\contentsline {figure}{\numberline {32}{\ignorespaces Neuronales Netzwerk mit Dropout ausgestattet \cite {3}.\relax }}{44}{figure.caption.53}
+\contentsline {figure}{\numberline {33}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{45}{figure.caption.54}
+\contentsline {figure}{\numberline {34}{\ignorespaces Einfluss der Anzahl von Neuronen pro Schicht.\relax }}{50}{figure.caption.62}
+\contentsline {figure}{\numberline {35}{\ignorespaces Problem mit Datens\IeC {\"a}tzen.\relax }}{51}{figure.caption.63}
+\contentsline {figure}{\numberline {36}{\ignorespaces Einfluss der Lernrate auf ein $ (224,224,3) $Bild.\relax }}{53}{figure.caption.65}
+\contentsline {figure}{\numberline {37}{\ignorespaces Lernraten-Scheduler.\relax }}{54}{figure.caption.66}
