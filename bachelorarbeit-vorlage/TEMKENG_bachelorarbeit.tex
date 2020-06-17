@@ -28,6 +28,8 @@
 
 \usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
 
+\usepackage{multicol}
+
 %\usepackage[demo]{graphicx}
 
 
@@ -82,10 +84,19 @@
     \vspace*{1.5cm}
 
     Datum der Abgabe: \today
-    \vspace*{4.5cm}
+    \vspace*{2.5cm}
 
 
-    Betreuer:Shuo Liu \\[1cm]
+    \begin{table}[h!]
+    	\centering
+    	\begin{tabular}{rc}
+    		Betreuer: & Shuo Liu \\
+    		Erster Prüfer:	& Prof. Dr.-Ing. habil. Björn Schuller\\
+    		Zweiter Prüfer:&Prof. Dr. Elisabeth André\\
+    		
+    		
+    	\end{tabular}
+    \end{table}
     Fakultät für Embedded Intelligence for Health Care and Wellbeing \\[1cm]
 
   \end{center}
@@ -1013,8 +1024,8 @@ Aufgrund seiner Automatisierung und Effizienz wird das \textit{Pruning} in Zukun
 Im Allgemein wird von Quantisierung gesprochen, wenn es versucht wird, sich den Werten einer großen Menge mit denen einer kleineren Menge zu nähern. Im \ac{ML} ist die Quantisierung der Prozess der Transformation eines ML-Programms in eine approximierte Darstellung mit verfügbaren Operationen mit geringerer Genauigkeit.
 Es gibt eine zahlreiche Menge von Techniken, um ein ML-Programm zu quantisieren, aber wir werden in folgenden uns nur auf die bekanntesten Quantifizierungstechniken konzentrieren.
 \subsubsection{Matrixfaktorisierung}
-Die Matrixfaktorisierung versucht, eine Matrix durch die Singulärwertzerlegung($ SVD $) zu approximieren.
-Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n} $ verwendet eine Matrix $ B \in \R^{m\times n}  $ vom Rang $ k \le \min(m, n) $, siehe Gleichung (\ref{eq:SVD}), wobei $ U $ und $ V $ orthogonale Matrizen und $ S $ eine Diagonalmatrix, deren Diagonaleinträge Singulärwerte heißen und bei Betrachtung von oben nach unten monoton abnehmen, sind. Sollte man $ B $ direkt speichern, so hat man keine Kompression gemacht, sondern nur Informationen und Rechenzeiten verschwendet, denn die Matrizen $ A $ und $ B $ haben die gleiche Dimension, also liegt der Hauptvorteil von der Matrixfaktorisierung darin, wie die Matrix $ B $ gespeichert wird.
+Die Matrixfaktorisierung versucht, eine Matrix durch seine Singulärwertzerlegung($ SVD $) zu approximieren.
+Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n} $ verwendet eine Matrix $ B \in \R^{m\times n}  $ vom Rang $ k \le \min(m, n) $, siehe Gleichung (\ref{eq:SVD}), wobei $ U $ und $ V $ orthogonale Matrizen sind und $ S $ eine Diagonalmatrix ist, deren Diagonaleinträge Singulärwerte heißen und monoton abnehmen,wenn man sie von oben nach unter betrachtet. Sollte man $ B $ direkt speichern, so hat man keine Kompression gemacht, sondern nur Informationen und Rechenzeiten verschwendet, denn die Matrizen $ A $ und $ B $ haben die gleiche Dimension, also besteht der Hauptvorteil von der Matrixfaktorisierung darin, wie die Matrix $ B $ gespeichert wird.
 
 \begin{equation}\label{eq:SVD}
 	\begin{array}{l}
@@ -1024,7 +1035,7 @@ Die Singulärwertzerlegung zur Annäherung an eine Matrix $ A \in \R^{m\times n}
 	\end{array}	
 \end{equation}
 
-Eigentlich werden $ \widehat{U} , \widehat{S} $ und $ \widehat{V} $ statt $ B $ gespeichert, damit wird $ m k + k k + k n $ statt $ mn $ Speicherplatz verwendet und da $ \widehat{S} $ Diagonalmatrix ist, kann auch einfach nur die Diagonaleinträge gespeichert werden, was zu einer Kompressionsrate von $ \dfrac{mn}{k(m+n+1)} $ führt. Die Verwendung von Matrizen von kleinen Rang hebt die Tatsache hervor, dass es redundante Parameter in \ac{NN}-Parametern gibt.Dies Redundanzeigenschaft wird ausgenutzt, um die Geschwindigkeit zu erhöhen \cite[Denton et al]{matrix quantization}.Im Sinne der Frobeniusnorm ist $ B $ die bestmögliche Approximation von $ A $ mit Singulärwertzerlegung durch eine Matrix von Rang $ k $.
+Sollten $ \widehat{U} , \widehat{S} $ und $ \widehat{V} $ statt $ B $ gespeichert werden, so wird $ m k + k k + k n $ statt $ mn $ Speicherplatz verwendet und da $ \widehat{S} $ Diagonalmatrix ist, kann auch einfach nur die Diagonaleinträge gespeichert werden, was zu einer Kompressionsrate von $ \dfrac{mn}{k(m+n+1)} $ führt. Die Verwendung von Matrizen von kleinen Rang hebt die Tatsache hervor, dass es redundante Parameter in \ac{NN}-Parametern gibt.Dies Redundanzeigenschaft wird ausgenutzt, um die Inferenz Geschwindigkeit zu erhöhen \cite[Denton et al]{matrix quantization}.Im Sinne der Frobeniusnorm ist $ B $ die bestmögliche Approximation von $ A $ mit Singulärwertzerlegung durch eine Matrix von Rang $ k $.
 Angenommen bildet die zu approximierenden NN-Parameter ein Bild, dann zeigt die Abbildung \ref{fig:matrix_fatorization} ,wie man die NN-Parameter approximieren kann.
 
 \begin{figure}[h]
@@ -1038,9 +1049,9 @@ Angenommen bildet die zu approximierenden NN-Parameter ein Bild, dann zeigt die 
 \end{figure}
 Wie man in der Abbildung \ref{fig:matrix_fatorization} sieht, reichen  relativ wenige Singulärwerte (ca. $ 5 $) schon aus, um die groben Konturen zu erkennen. Details erkennt man bei ca. $ 10 $ Singulärwerten schon. Generell wird das Bild mit mehr Singulärwerten schärfer.
 
-\subsubsection{Quantisierung mit weniger Bits(Low-bit Quantization)}
-Im Bereich des \textit{Deep Learning} ist das Standard numerische Format für Forschung und Einsatz bisher 32-Bit Fließkommazahlen oder FP32, denn es bietet ein bessere Genauigkeit, aber die anderen Formaten wie 8-,4-,2- oder 1-Bits werden auch verwendet, obwohl sie mehr oder weniger ein Verlust an Genauigkeit aufweisen.
-Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen kleinen Verlust der Netzleistung zur Folge, sondern auch die Verwendung von deutlich reduzierter Bandbreite und Speicherplatz. Noch dazu beschleunigt die Quantisierung die Berechnungen, denn die ganzzahlige Berechnung zum Beispiel ist schneller als die Fließkommaberechnung.
+\subsubsection{Quantisierung mit weniger Bits (Low-bit Quantization)}
+Im Bereich des \textit{Deep Learning} ist das Standard numerische Format für Forschung und Einsatz bisher 32-Bit Fließkommazahlen(FP32), denn es bietet ein bessere Präzision. Die anderen Formaten wie 8-,4-,2- oder 1-Bits werden auch verwendet, obwohl sie wegen eines Mangels an Präzision mehr oder weniger ein Verlust an Genauigkeit aufweisen.
+Die Verwendung von weniger genauen numerischen Formaten hat nicht nur einen kleinen Verlust der Netzleistung zur Folge, sondern auch die Verwendung von deutlich reduzierter Bandbreite und Speicherplatz. Noch dazu beschleunigt die Quantisierung die Berechnungen, denn die ganzzahlige Berechnung zum Beispiel ist schneller als die Fließkommaberechnung\cite{quantizationYoni}.
 
 Bei Quantisierung mit wenige Bits geht es mehr oder weniger um die Abbildung eine großen Bereiches auf einen kleinen und dazu werden zwei Hauptwerte benötigt: der dynamische Bereich des Tensors und ein Skalierungsfaktor. Angenommen haben wir einen dynamischen Bereich $ [0,500] $ und einen Skalierungsfaktor$= 5 $, dann ergibt sich der neue Bereich $ [0, 100] $, es wird also Werte zwischen $ [5k, 5(k+1)] $ oder $ [5k -0.5, 5k +0.5] $ auf $ 5k $ abgebildet. Es ist sinnvoller,  die Skalierungsfaktors unter Berücksichtigung der Anzahl und der Verteilung der Werte in dynamischen Bereich des Tensors auszuwählen, sonst können zu viel Informationen verloren gehen.
 
@@ -1052,9 +1063,7 @@ Zur einer effizienteren Auswahl der Skalierfaktoren pro Schicht bzw. pro Filter 
 Es gibt zwei Quantifizierungsszenarien.Die erste ist das vollständige Training eines Modells mit einer gewünschten niedrigeren Bit-Genauigkeit(\textit{bit precission})(kleiner als 32 Bits).Das Training mit sehr geringer Genauigkeit ermöglicht ein potenziell schnelles Training und Inferenz, aber der Hauptproblem mit diesem Ansatz ist, dass Netzparameter nur bestimmte Werte annehmen können, so ist die Aktualisierung der Netzparameter bzw. das Backpropagation nicht mehr wohldefiniert  \cite{quantizationYoni}.
 Das zweite Szenario  quantisiert ein trainiertes FP32-Netzwerks mit einer geringeren Bit-Genauigkeit ohne vollständiges Training.Im Allgemeinen gilt: Je geringer die Bitgenauigkeit, desto größer ist der Verlust der Genauigkeit und um diesen Leistungsabfall zu überwinden, wird sehr oft das \ac{NN} erneuert trainiert oder wird auf eine hybride Quantisierung zurückgegriffen, die zur Quantisierung verschiedene Formaten z.B. INT8 für die Gewichte und FP32 für die Aktivierung gleichzeitig verwendet.
 
-Vor kurzem haben \cite[Yoni et al]{quantizationYoni} zur  Quantisierung  das lineare Quantisierungsproblem als ein \textit{Minimum Mean Squared Error} (MMSE) Problem formuliert und gelöst.Sie sind in der Lage, die trainierten Modelle zu quantisieren, ohne das \ac{NN} erneuert trainieren zu haben, um seine Genauigkeit wiederherzustellen und benutzen dabei nur das INT4-Format. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz einen geringeren Genauigkeitsverlust als alle anderen Quantisierungsverfahren auf.
-
-Wie oben erwähnt, eine Quantisierung mit zu weniger Bit führt zu einem großen Genauigkeitsverlust, aber \cite[Yoni et al]{quantizationYoni} haben gezeigt, dass Die Quantisierung mit INT4-Format zu einem besseren Ergebnis führen kann. Das sollte daran liegen, dass sie fürs Approximieren eines Tensors, der gegenüber der Quantisierung sehr empfindlich ist, statt nur einen Tensor mehrere Tensors im INT4-Format benutzen.
+Vor kurzem haben \cite[Yoni et al]{quantizationYoni} zur  Quantisierung  das lineare Quantisierungsproblem als ein \textit{Minimum Mean Squared Error} (MMSE) Problem formuliert und gelöst.Sie sind in der Lage, die trainierten Modelle zu quantisieren, ohne das \ac{NN} erneuert trainieren zu müssen, um seine Genauigkeit wiederherzustellen und benutzen dabei nur das INT4-Format. Obwohl diese Methode  minimalen Verlust der Genauigkeit(\textit{accuracy}) aufweist, liefert sie Ergebnisse auf dem neuesten Stand der Technik und nach \cite{quantizationYoni} weist dieser Ansatz einen geringeren Genauigkeitsverlust als alle anderen Quantisierungsverfahren auf, was der Behauptung (Je geringer die Bitgenauigkeit, desto größer ist der Verlust der Genauigkeit) komplett widerspricht. Eine Erklärung dafür könnte die Tatsache sein, dass sie für die Approximation eines Tensors, der sehr empfindlich auf Quantisierung reagiert, mehrere Tensoren im INT4-Format anstelle von nur einem Tensor verwenden.
 
 \subsection{Huffman Codierung}
 Die Huffman-Codierung ermöglicht eine verlustfreie Datenkompression, indem sie jeder einzelnen Dateneinheit  eine unterschiedlich lange Folge von Bits zuordnet.Daraus folgt, dass eine gute Möglichkeit zur besseren Verwaltung der dem Modell zugeordneten Ressourcen ist:Erstmal das Netzwerk zu beschneiden, dann zu quantisieren und am Ende die Huffman-Codierung durchzuführen. 
@@ -1354,8 +1363,6 @@ Da die heutigen \acsp{CNN} Millionen von Neuronen haben, wäre es unmöglich all
 
 Aus der Tabelle \ref{tab:dropout} kann eine kleine Verbesserung der CNN-Leistung durch die Dropout-Technik feststellen.Aus Experimenten wird folgendes klar: je höher die Retentionsrate, desto robuster ist das CNN gegenüber der Überanpassung.
 
-	%\textcolor{red}{\\\textbf{NICHT LESEN}\\ Wenn ich einem 6-jährigen Aussteiger erklären muss, dann so: Stellen Sie sich ein Szenario vor, in einem Klassenzimmer, ein Lehrer stellt einige Fragen, aber immer die gleichen zwei Kinder beantworten sofort. Nun bittet der Lehrer sie, für einige Zeit still zu bleiben und andere Schüler teilnehmen zu lassen. Auf diese Weise können andere Schüler besser lernen. Vielleicht antworten sie falsch, aber der Lehrer kann sie korrigieren (Gewichtsaktualisierungen). Auf diese Weise lernt die gesamte Klasse (Layer) besser über ein Thema.}
-
 \subsubsection{ Aktivierungsfunktion.}
 Wie in Absatz \ref{Aktivierungsfunktion} gesehen, ist es vorteilhaft, wenn eine Aktivierungsfunktion bestimmte Eigenschaften besitzt.Nach der Tabelle \ref{tab:Aktivierungsfunktion} erzielen die Variante von \textit{ReLU} die besten Ergebnisse und die Experimente zeigen, dass die \textit{LeakyReLU}-Funktion nicht nur das beste Ergebnis gibt, sondern auch am stabilsten und schnellsten ist.
 \begin{table}[h!]
@@ -1480,7 +1487,7 @@ Zum anderen wird die interne kovariate Verschiebung geringer, was das Training b
 	\caption{Einfluss der Batch-Normalisierung auf \textit{TemkiNet.}}
 	\label{tab:batchnormalisierung}
 \end{table}
- \textcolor{red}{Aber die Verwendung von BN scheint keine Wirkung auf \textit{TemkiNet} zu haben, wenn die Lernrate zu klein ist und die Experimente zeigen, dass die Anwendung der Batch-Normalisierung bei Verwendung eine kleine Lernrate überflüssig ist.}
+ Aber die Verwendung von BN scheint keine Wirkung auf \textit{TemkiNet} zu haben, wenn die Lernrate zu klein ist und die Experimente zeigen, dass die Anwendung der Batch-Normalisierung bei Verwendung eine kleine Lernrate überflüssig ist.
 \subsubsection{Bildgröße.}	
 Bei der Erstellung des Datensatzes werden Daten unterschiedlicher Größe erhoben und für ein \textit{batchweise} Training eines CNN muss nur Daten gleicher Größe benutzt werden,daher ist es unbedingt erforderlich, die Größe der Bilder anzupassen und dieser Prozess hat einen Verlust an Informationen zur Folge, der leider proportional zur Größe des Bildes ist. Die Wirkungen dieses Informationsverlusts werden in der Tabelle \ref{tab:Bildqualtaet} gut illustriert, je größer die Bilder, desto besser die Leistung des Netzwerks.
 	
@@ -1754,7 +1761,7 @@ Wie im Absatz \ref{kom:quantization} gesehen, ist die Quantisierung nach dem Tra
 	\label{tab:Quantisierung}
 \end{table}
 
-Um die Größe unseres Modells so weit wie möglich zu reduzieren, kombinieren wir die \textit{Pruning-} und die Quantisierung Technik und anstatt die Leistung des Modells zu verschlechtern, registrieren wir eine geringfügige Steigerung der Genauigkeit. Trotz der beträchtlichen Verkleinerung des Modells verzeichnen wir im Allgemeinen fast keinen Verlust an Genauigkeit. Aus der Tabelle \ref{tab:Quantisierung} stellen wir auch fest, dass die Konvertierung des Modells vom .h5-Format in das .tflite-Format einen schlechten Einfluss auf die Latenzzeit hat, obwohl die Operationen mit 16 Bit-Fließkommazahlen und 8 Bit-Ganzzahlen schneller als die mit 32 Bit-Fließkommazahlen durchgeführt werden können. Aber laut den Entwicklern von \textit{TensorFlow} ist alles auf die aktuellen Implementierungen zurückzuführen, und mit mobilen CPUs oder Hardware-Beschleuniger ist eine erhebliche Beschleunigung zu erkennen. Diese Beschleunigung kann mit den Tensoren von \textit{Nvidia} in der Tabelle \ref{tab:Quantisierung TensorRT} beobachtet werden.
+Um die Größe unseres Modells so weit wie möglich zu reduzieren, kombinieren wir die \textit{Pruning-} und die Quantisierung Technik und anstatt die Leistung des Modells zu verschlechtern, registrieren wir eine geringfügige Steigerung der Genauigkeit. Trotz der beträchtlichen Verkleinerung des Modells verzeichnen wir im Allgemeinen fast keinen Verlust an Genauigkeit. Aus der Tabelle \ref{tab:Quantisierung} stellen wir auch fest, dass die Konvertierung des Modells vom .h5-Format in das .tflite-Format einen schlechten Einfluss auf die Latenzzeit hat, obwohl die Operationen mit 16 Bit-Fließkommazahlen und 8 Bit-Ganzzahlen schneller als die mit 32 Bit-Fließkommazahlen durchgeführt werden können. Aber laut den Entwicklern von \textit{TensorFlow} ist alles auf die aktuellen Implementierungen zurückzuführen und mit mobilen CPUs oder Hardware-Beschleuniger sollte eine erhebliche Beschleunigung erkennbar sein. Diese Beschleunigung kann mit den Tensoren von \textit{Nvidia} in der Tabelle \ref{tab:Quantisierung TensorRT} beobachtet werden.
 
 \begin{table}[h!]
 	\centering
