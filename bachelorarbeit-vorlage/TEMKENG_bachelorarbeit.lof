@@ -24,7 +24,7 @@
 \contentsline {figure}{\numberline {29}{\ignorespaces TemkiNet-Bausteine.\relax }}{39}{figure.caption.48}
 \contentsline {figure}{\numberline {30}{\ignorespaces Anwendung von \textit {ImageDataAugmentation}-Funktion \relax }}{42}{figure.caption.51}
 \contentsline {figure}{\numberline {31}{\ignorespaces Vergleich von Datenvermehrungstechniken\relax }}{43}{figure.caption.52}
-\contentsline {figure}{\numberline {32}{\ignorespaces Neuronales Netzwerk mit Dropout ausgestattet \cite {3}.\relax }}{44}{figure.caption.54}
+\contentsline {figure}{\numberline {32}{\ignorespaces Neuronales Netzwerk mit Dropout ausgestattet \cite {3}.\relax }}{45}{figure.caption.54}
 \contentsline {figure}{\numberline {33}{\ignorespaces Erh\IeC {\"o}hung des Trainingsdaten durch Dropout\relax }}{45}{figure.caption.55}
 \contentsline {figure}{\numberline {34}{\ignorespaces Einfluss der Anzahl von Neuronen pro Schicht.\relax }}{50}{figure.caption.63}
 \contentsline {figure}{\numberline {35}{\ignorespaces Problem mit Datens\IeC {\"a}tzen.\relax }}{51}{figure.caption.64}

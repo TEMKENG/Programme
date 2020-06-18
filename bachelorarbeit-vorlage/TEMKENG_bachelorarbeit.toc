@@ -8,7 +8,7 @@
 \contentsline {section}{\numberline {3}Grundlagen}{10}{section.3}
 \contentsline {subsection}{\numberline {3.1}K\IeC {\"u}nstliche neuronale Netzwerke}{10}{subsection.3.1}
 \contentsline {subsubsection}{\numberline {3.1.1}K\IeC {\"u}nstliches Neuron}{10}{subsubsection.3.1.1}
-\contentsline {subsubsection}{\numberline {3.1.2}Aktivierungskarten(Feature-Maps)}{10}{subsubsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.2}Aktivierungskarten (Feature-Maps)}{10}{subsubsection.3.1.2}
 \contentsline {subsubsection}{\numberline {3.1.3}Filters}{11}{subsubsection.3.1.3}
 \contentsline {subsection}{\numberline {3.2}Convolutional Neural Network}{11}{subsection.3.2}
 \contentsline {subsubsection}{\numberline {3.2.1}Feedforward}{11}{subsubsection.3.2.1}
@@ -18,7 +18,7 @@
 \contentsline {subparagraph}{\nonumberline Die Schrittgr\IeC {\"o}\IeC {\ss }e}{12}{section*.14}
 \contentsline {subparagraph}{\nonumberline \textit {Padding}.}{13}{section*.16}
 \contentsline {paragraph}{\numberline {3.2.1.3}Aktivierungsfunktion}{14}{paragraph.3.2.1.3}
-\contentsline {subparagraph}{\nonumberline Logistische Funktion}{15}{section*.20}
+\contentsline {subparagraph}{\nonumberline Logistische Funktion}{16}{section*.20}
 \contentsline {subparagraph}{\nonumberline Tangens Hyperbolicus}{16}{section*.22}
 \contentsline {subparagraph}{\nonumberline Rectified Linear Unit}{16}{section*.24}
 \contentsline {subparagraph}{\nonumberline Leaky ReLU Funktion}{17}{section*.26}
@@ -67,8 +67,8 @@
 \contentsline {subsubsection}{\numberline {5.3.9}Einfluss der Lernrate}{52}{subsubsection.5.3.9}
 \contentsline {subsection}{\numberline {5.4}Verringerung des Speicherbedarfs}{54}{subsection.5.4}
 \contentsline {subsubsection}{\numberline {5.4.1}Extreme Version von \textit {TemkiNet.}}{54}{subsubsection.5.4.1}
-\contentsline {subsubsection}{\numberline {5.4.2}Pruning}{56}{subsubsection.5.4.2}
-\contentsline {subsubsection}{\numberline {5.4.3}Quantisierung}{57}{subsubsection.5.4.3}
+\contentsline {subsubsection}{\numberline {5.4.2}Pruning}{55}{subsubsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.4.3}Quantisierung}{56}{subsubsection.5.4.3}
 \contentsline {subsection}{\numberline {5.5}Transfer-Lernen (\textit {Transfer Learning})}{58}{subsection.5.5}
 \contentsline {section}{\numberline {6}Zusammenfassung und Ausblick}{59}{section.6}
 \contentsline {subsection}{\numberline {6.1}Zusammenfassung}{59}{subsection.6.1}
