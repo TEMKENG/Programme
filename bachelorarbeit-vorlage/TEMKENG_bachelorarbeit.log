@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  18 JUN 2020 09:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  1 MAR 2021 08:23
 entering extended mode
 **./TEMKENG_bachelorarbeit.tex
 (TEMKENG_bachelorarbeit.tex
@@ -529,10 +529,6 @@ Package: xstring 2019/02/06 v1.83 String manipulations (CT)
 )
 \AC@clearlist=\toks28
 )
-("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcapti
-on.sty"
-Package: subcaption 2018/05/01 v1.1-162 Sub-captions (AR)
-
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.
 sty"
 Package: caption 2018/10/06 v3.3-154 Customizing captions (AR)
@@ -554,6 +550,9 @@ Package caption Info: KOMA-Script document class.
 \c@ContinuedFloat=\count138
 Package caption Info: hyperref package is loaded.
 )
+("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcapti
+on.sty"
+Package: subcaption 2018/05/01 v1.1-162 Sub-captions (AR)
 \c@subfigure=\count139
 \c@subtable=\count140
 )
@@ -1329,20 +1328,20 @@ Package: multicol 2018/04/20 v1.8s multicolumn formatting (FMi)
 ) (TEMKENG_bachelorarbeit.aux)
 \openout1 = `TEMKENG_bachelorarbeit.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\context\base\mkii\supp
 -pdf.mkii"
@@ -1375,7 +1374,7 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 \AtBeginShipoutBox=\box99
-Package hyperref Info: Link coloring OFF on input line 62.
+Package hyperref Info: Link coloring OFF on input line 63.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nameref
 .sty"
@@ -1387,9 +1386,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count278
 )
-LaTeX Info: Redefining \ref on input line 62.
-LaTeX Info: Redefining \pageref on input line 62.
-LaTeX Info: Redefining \nameref on input line 62.
+LaTeX Info: Redefining \ref on input line 63.
+LaTeX Info: Redefining \pageref on input line 63.
+LaTeX Info: Redefining \nameref on input line 63.
  (TEMKENG_bachelorarbeit.out) (TEMKENG_bachelorarbeit.out)
 \@outlinefile=\write4
 \openout4 = `TEMKENG_bachelorarbeit.out'.
@@ -1400,7 +1399,7 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           You can avoid loading `bookmark' with KOMA-Script option
 (scrartcl)           `bookmarkpackage=false' before \begin{document} and
 (scrartcl)           you can avoid this message with `\usepackage{bookmark}'
-(scrartcl)           before \begin{document} on input line 62.
+(scrartcl)           before \begin{document} on input line 63.
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\bookmar
 k.sty"
@@ -1421,52 +1420,52 @@ Package caption Info: End \AtBeginDocument code.
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.16} into 
 your preamble.
- on input line 62.
+ on input line 63.
 
 <./images/logo_uni.png, id=6, 1204.5pt x 1586.92876pt>
 File: ./images/logo_uni.png Graphic file (type png)
 <use ./images/logo_uni.png>
-Package pdftex.def Info: ./images/logo_uni.png  used on input line 69.
+Package pdftex.def Info: ./images/logo_uni.png  used on input line 70.
 (pdftex.def)             Requested size: 60.22852pt x 79.35107pt.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 92.
-("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ulasy.fd"
-File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-)
-LaTeX Font Info:    Try loading font information for U+msa on input line 92.
-
-("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
-"
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 92.
-
-("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
-"
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+[1
 
 {C:/Users/TEMKENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./images/
 logo_uni.png>]
-LaTeX Font Info:    Try loading font information for T1+aess on input line 108.
+LaTeX Font Info:    Try loading font information for T1+aess on input line 109.
 
 
 ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ae\t1aess.fd"
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 110--112
+Underfull \hbox (badness 10000) in paragraph at lines 111--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--115
+Underfull \hbox (badness 10000) in paragraph at lines 114--116
 
  []
 
 [2]
 Package acronym Info: Label `acro:CNN' newly defined as it shall be overridden
-although it is yet undefined on input line 121.
+although it is yet undefined on input line 122.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 122.
+ ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 122.
 
-Overfull \hbox (7.58684pt too wide) in paragraph at lines 123--124
+("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
+"
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 122.
+
+("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
+"
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (7.58684pt too wide) in paragraph at lines 124--125
 \T1/aer/bx/n/12 Schlüsselwörter: \T1/aer/m/n/12 Neu-ro-na-le Net-ze, Da-ten-ver
 -meh-rung, Pru-ning, Quan-ti-sie-rung, Transfer-
  []
@@ -1481,21 +1480,21 @@ although it is yet undefined on input line 38.
  [6] [7]
 Package acronym Info: Label `acro:ILSVRC' newly defined as it shall be overridd
 en
-although it is yet undefined on input line 161.
+although it is yet undefined on input line 162.
  [8] [9]
 Package acronym Info: Label `acro:KNN' newly defined as it shall be overridden
-although it is yet undefined on input line 191.
+although it is yet undefined on input line 192.
 
-Overfull \hbox (8.66187pt too wide) in paragraph at lines 218--218
+Overfull \hbox (8.66187pt too wide) in paragraph at lines 219--219
  []\T1/aer/m/n/12 Aktivierungs 
  []
 
 Package acronym Info: Label `acro:NN' newly defined as it shall be overridden
-although it is yet undefined on input line 261.
+although it is yet undefined on input line 262.
 Package acronym Info: Label `acro:FCL' newly defined as it shall be overridden
-although it is yet undefined on input line 264.
+although it is yet undefined on input line 265.
 [10]
-Overfull \hbox (68.93222pt too wide) in paragraph at lines 274--275
+Overfull \hbox (68.93222pt too wide) in paragraph at lines 275--276
 \T1/aer/m/n/12 Die Ein-gangs-schicht stellt die Ein-gangs-da-ten dar. Hier müs-
 sen die Ein-gangs-da-ten dreidimensional($\OML/cmm/m/it/12 W \OMS/cmsy/m/n/12 
 
@@ -1503,60 +1502,60 @@ sen die Ein-gangs-da-ten dreidimensional($\OML/cmm/m/it/12 W \OMS/cmsy/m/n/12 
 
 Package acronym Info: Label `acro:ConvL' newly defined as it shall be overridde
 n
-although it is yet undefined on input line 278.
+although it is yet undefined on input line 279.
 
-Overfull \hbox (30.75853pt too wide) in paragraph at lines 278--282
+Overfull \hbox (30.75853pt too wide) in paragraph at lines 279--283
 \T1/aer/m/n/12 Die wich-tigs-te Sicht bzw. die Haupt-schicht in ei-nem [][] ist
  die Fal-tungs-schicht ([][][]Convolutional
  []
 
 [11]
-<./images/stride1.png, id=258, 237.88875pt x 78.2925pt>
+<./images/stride1.png, id=257, 237.88875pt x 78.2925pt>
 File: ./images/stride1.png Graphic file (type png)
 <use ./images/stride1.png>
-Package pdftex.def Info: ./images/stride1.png  used on input line 293.
+Package pdftex.def Info: ./images/stride1.png  used on input line 294.
 (pdftex.def)             Requested size: 237.88815pt x 78.2923pt.
 
-Overfull \hbox (13.82268pt too wide) in paragraph at lines 293--294
+Overfull \hbox (13.82268pt too wide) in paragraph at lines 294--295
  [][] 
  []
 
-<./images/stride2.png, id=259, 181.67876pt x 79.29625pt>
+<./images/stride2.png, id=258, 181.67876pt x 79.29625pt>
 File: ./images/stride2.png Graphic file (type png)
 <use ./images/stride2.png>
-Package pdftex.def Info: ./images/stride2.png  used on input line 299.
+Package pdftex.def Info: ./images/stride2.png  used on input line 300.
 (pdftex.def)             Requested size: 181.6783pt x 79.29604pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [12]
-Overfull \hbox (17.0077pt too wide) in paragraph at lines 308--317
+Overfull \hbox (17.0077pt too wide) in paragraph at lines 309--318
  [][] 
  []
 
 
 LaTeX Font Warning: Font shape `T1/aess/bx/it' undefined
-(Font)              using `T1/aess/bx/n' instead on input line 322.
+(Font)              using `T1/aess/bx/n' instead on input line 323.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--323
+Underfull \hbox (badness 10000) in paragraph at lines 323--324
 
  []
 
 [13 <./images/stride1.png> <./images/stride2.png>]
 \dumbox=\box100
-<./images/activation.png, id=291, 181.67876pt x 63.23625pt>
+<./images/activation.png, id=290, 181.67876pt x 63.23625pt>
 File: ./images/activation.png Graphic file (type png)
 <use ./images/activation.png>
-Package pdftex.def Info: ./images/activation.png  used on input line 388.
+Package pdftex.def Info: ./images/activation.png  used on input line 389.
 (pdftex.def)             Requested size: 448.13095pt x 155.99731pt.
  [14 <./images/activation.png>] [15] [16]
 
-LaTeX Warning: Command \^ invalid in math mode on input line 575.
+LaTeX Warning: Command \^ invalid in math mode on input line 576.
 
 Missing character: There is no ê in font cmr8!
 
-Overfull \hbox (1.49503pt too wide) in paragraph at lines 575--576
+Overfull \hbox (1.49503pt too wide) in paragraph at lines 576--577
 [] []\T1/aess/bx/n/12 Softmax[][] \T1/aer/m/n/12 ist de-fi-niert als $\OML/cmm/
 m/it/12 f\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr/m/n/12 )
  = []$\T1/aer/m/n/12 .Die Softmax-Funktion wür-
@@ -1564,29 +1563,29 @@ m/it/12 f\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr/m/n/12 )
 
 Package acronym Info: Label `acro:PooL' newly defined as it shall be overridden
 
-although it is yet undefined on input line 580.
+although it is yet undefined on input line 581.
 [17] [18]
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 
-Overfull \hbox (5.90398pt too wide) in paragraph at lines 746--746
+Overfull \hbox (5.90398pt too wide) in paragraph at lines 747--747
  [][]\T1/aer/m/n/12 Versteckte 
  []
 
 [19] [20]
-Overfull \hbox (5.4664pt too wide) in paragraph at lines 796--797
+Overfull \hbox (5.4664pt too wide) in paragraph at lines 797--798
 \T1/aer/m/n/12 kann in drei Haupt-schrit-te auf-ge-teilt wer-den.Die Ab-bil-dun
 g []19[] stellt das Backpropagation-
  []
 
 
-Overfull \hbox (3.31897pt too wide) in paragraph at lines 828--828
+Overfull \hbox (3.31897pt too wide) in paragraph at lines 829--829
  []\T1/aer/m/n/12 Gradientenabstiegsverfahren 
  []
 
 
-Overfull \hbox (3.51895pt too wide) in paragraph at lines 828--829
+Overfull \hbox (3.51895pt too wide) in paragraph at lines 829--830
 [][][][] 
  []
 
@@ -1594,118 +1593,118 @@ Overfull \hbox (3.51895pt too wide) in paragraph at lines 828--829
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [21] [22] [23]
-Overfull \hbox (4.43083pt too wide) in paragraph at lines 913--914
+Overfull \hbox (4.43083pt too wide) in paragraph at lines 914--915
 \T1/aer/m/n/12 wird nicht auf-ge-teilt. Für un-se-re Ar-beit wur-de je-de Ka-te
 -go-rie in drei(Trainings-
  []
 
 [24]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 932.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 933.
 
  ("C:\Users\TEMKENG\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ae\omsaer.fd"
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 932.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 933.
  [25]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [26]
-<./images/Filter_intensite.png, id=510, 350.30875pt x 157.58875pt>
+<./images/Filter_intensite.png, id=509, 350.30875pt x 157.58875pt>
 File: ./images/Filter_intensite.png Graphic file (type png)
 <use ./images/Filter_intensite.png>
-Package pdftex.def Info: ./images/Filter_intensite.png  used on input line 1000
+Package pdftex.def Info: ./images/Filter_intensite.png  used on input line 1001
 .
 (pdftex.def)             Requested size: 262.73091pt x 118.19125pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./images/filter_pruning.png, id=513, 883.3pt x 234.8775pt>
+<./images/filter_pruning.png, id=512, 883.3pt x 234.8775pt>
 File: ./images/filter_pruning.png Graphic file (type png)
 <use ./images/filter_pruning.png>
-Package pdftex.def Info: ./images/filter_pruning.png  used on input line 1008.
+Package pdftex.def Info: ./images/filter_pruning.png  used on input line 1009.
 (pdftex.def)             Requested size: 662.47339pt x 176.15768pt.
 [27] [28 <./images/Filter_intensite.png> <./images/filter_pruning.png>]
 Package acronym Info: Label `acro:ML' newly defined as it shall be overridden
-although it is yet undefined on input line 1024.
+although it is yet undefined on input line 1025.
 
 [29]
-<./images/matrix_fatorization.png, id=547, 491.8375pt x 121.45375pt>
+<./images/matrix_fatorization.png, id=546, 491.8375pt x 121.45375pt>
 File: ./images/matrix_fatorization.png Graphic file (type png)
 <use ./images/matrix_fatorization.png>
 Package pdftex.def Info: ./images/matrix_fatorization.png  used on input line 1
-043.
+044.
 (pdftex.def)             Requested size: 448.13095pt x 110.66576pt.
  [30 <./images/matrix_fatorization.png>] [31] [32]
-<./images/accVSlogLoss.png, id=584, 1110.0672pt x 554.3109pt>
+<./images/accVSlogLoss.png, id=583, 1110.0672pt x 554.3109pt>
 File: ./images/accVSlogLoss.png Graphic file (type png)
 <use ./images/accVSlogLoss.png>
-Package pdftex.def Info: ./images/accVSlogLoss.png  used on input line 1085.
+Package pdftex.def Info: ./images/accVSlogLoss.png  used on input line 1086.
 (pdftex.def)             Requested size: 448.13095pt x 223.76729pt.
  [33 <./images/accVSlogLoss.png>]
-<./images/Convolution/Folie1.png, id=600, 963.6pt x 542.025pt>
+<./images/Convolution/Folie1.png, id=599, 963.6pt x 542.025pt>
 File: ./images/Convolution/Folie1.png Graphic file (type png)
 <use ./images/Convolution/Folie1.png>
 Package pdftex.def Info: ./images/Convolution/Folie1.png  used on input line 11
-27.
+28.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
  [34]
-<./images/Convolution/Folie2.png, id=609, 963.6pt x 542.025pt>
+<./images/Convolution/Folie2.png, id=608, 963.6pt x 542.025pt>
 File: ./images/Convolution/Folie2.png Graphic file (type png)
 <use ./images/Convolution/Folie2.png>
 Package pdftex.def Info: ./images/Convolution/Folie2.png  used on input line 11
-39.
+40.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [35 <./images/Convolution/Folie1.png>] [36 <./images/Convolution/Folie2.png>]
-<./images/AlexNet.png, id=638, 963.6pt x 542.025pt>
+<./images/AlexNet.png, id=637, 963.6pt x 542.025pt>
 File: ./images/AlexNet.png Graphic file (type png)
 <use ./images/AlexNet.png>
-Package pdftex.def Info: ./images/AlexNet.png  used on input line 1168.
+Package pdftex.def Info: ./images/AlexNet.png  used on input line 1169.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
 
 [37 <./images/AlexNet.png (PNG copy)>]
-Overfull \hbox (22.27232pt too wide) in paragraph at lines 1177--1178
+Overfull \hbox (22.27232pt too wide) in paragraph at lines 1178--1179
 []\T1/aer/bx/n/12 Überlappendes Poo-ling\T1/aer/m/n/12 : Die nor-ma-len []s[] f
 unk-tio-niert wie in []3.2.1.4[] ($\OML/cmm/m/it/12 pool[]size \OT1/cmr/m/n/12 
 =
  []
 
-<./images/Convolution/Folie3.png, id=652, 963.6pt x 542.025pt>
+<./images/Convolution/Folie3.png, id=651, 963.6pt x 542.025pt>
 File: ./images/Convolution/Folie3.png Graphic file (type png)
 <use ./images/Convolution/Folie3.png>
 Package pdftex.def Info: ./images/Convolution/Folie3.png  used on input line 11
-87.
+88.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
 [38 <./images/Convolution/Folie3.png>]
-<./images/Convolution/Folie4.png, id=663, 963.6pt x 542.025pt>
+<./images/Convolution/Folie4.png, id=662, 963.6pt x 542.025pt>
 File: ./images/Convolution/Folie4.png Graphic file (type png)
 <use ./images/Convolution/Folie4.png>
 Package pdftex.def Info: ./images/Convolution/Folie4.png  used on input line 12
-01.
+02.
 (pdftex.def)             Requested size: 448.13095pt x 252.0721pt.
  [39 <./images/Convolution/Folie4.png>]
 [40]
-<./images/ImageDataAugmaentation.png, id=687, 374.39874pt x 251.94125pt>
+<./images/ImageDataAugmaentation.png, id=686, 374.39874pt x 251.94125pt>
 File: ./images/ImageDataAugmaentation.png Graphic file (type png)
 <use ./images/ImageDataAugmaentation.png>
 Package pdftex.def Info: ./images/ImageDataAugmaentation.png  used on input lin
-e 1273.
+e 1274.
 (pdftex.def)             Requested size: 448.13095pt x 301.5745pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [41]
-<./images/DataAugmentation.png, id=694, 1387.584pt x 669.9429pt>
+<./images/DataAugmentation.png, id=693, 1387.584pt x 669.9429pt>
 File: ./images/DataAugmentation.png Graphic file (type png)
 <use ./images/DataAugmentation.png>
-Package pdftex.def Info: ./images/DataAugmentation.png  used on input line 1283
+Package pdftex.def Info: ./images/DataAugmentation.png  used on input line 1284
 .
 (pdftex.def)             Requested size: 448.13095pt x 216.35904pt.
 
@@ -1713,7 +1712,7 @@ Package pdftex.def Info: ./images/DataAugmentation.png  used on input line 1283
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [42 <./images/ImageDataAugmaentation.png>]
-Overfull \hbox (61.38509pt too wide) in paragraph at lines 1304--1314
+Overfull \hbox (61.38509pt too wide) in paragraph at lines 1305--1315
  [][] 
  []
 
@@ -1721,24 +1720,24 @@ Overfull \hbox (61.38509pt too wide) in paragraph at lines 1304--1314
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [43 <./images/DataAugmentation.png>]
-<./images/dropout1.png, id=722, 208.52907pt x 185.19188pt>
+<./images/dropout1.png, id=721, 208.52907pt x 185.19188pt>
 File: ./images/dropout1.png Graphic file (type png)
 <use ./images/dropout1.png>
-Package pdftex.def Info: ./images/dropout1.png  used on input line 1327.
+Package pdftex.def Info: ./images/dropout1.png  used on input line 1328.
 (pdftex.def)             Requested size: 417.0571pt x 370.38281pt.
-<./images/dropout2.png, id=723, 322.20375pt x 281.05pt>
+<./images/dropout2.png, id=722, 322.20375pt x 281.05pt>
 File: ./images/dropout2.png Graphic file (type png)
 <use ./images/dropout2.png>
-Package pdftex.def Info: ./images/dropout2.png  used on input line 1333.
+Package pdftex.def Info: ./images/dropout2.png  used on input line 1334.
 (pdftex.def)             Requested size: 644.40591pt x 562.0986pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./images/model.png, id=729, 521.95pt x 235.88126pt>
+<./images/model.png, id=728, 521.95pt x 235.88126pt>
 File: ./images/model.png Graphic file (type png)
 <use ./images/model.png>
-Package pdftex.def Info: ./images/model.png  used on input line 1346.
+Package pdftex.def Info: ./images/model.png  used on input line 1347.
 (pdftex.def)             Requested size: 448.13095pt x 202.52278pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1753,49 +1752,49 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [49]
-<./images/units.png, id=805, 1387.584pt x 669.9429pt>
+<./images/units.png, id=804, 1387.584pt x 669.9429pt>
 File: ./images/units.png Graphic file (type png)
 <use ./images/units.png>
-Package pdftex.def Info: ./images/units.png  used on input line 1537.
+Package pdftex.def Info: ./images/units.png  used on input line 1538.
 (pdftex.def)             Requested size: 448.13095pt x 216.35904pt.
  [50 <./images/units.png>]
-<./images/Dataset_problem.png, id=814, 361.35pt x 286.1892pt>
+<./images/Dataset_problem.png, id=813, 361.35pt x 286.1892pt>
 File: ./images/Dataset_problem.png Graphic file (type png)
 <use ./images/Dataset_problem.png>
-Package pdftex.def Info: ./images/Dataset_problem.png  used on input line 1547.
+Package pdftex.def Info: ./images/Dataset_problem.png  used on input line 1548.
 
 (pdftex.def)             Requested size: 448.13095pt x 354.92331pt.
  [51 <./images/Dataset_problem.png>]
-<./images/LearningRate.png, id=827, 1387.584pt x 669.9429pt>
+<./images/LearningRate.png, id=826, 1387.584pt x 669.9429pt>
 File: ./images/LearningRate.png Graphic file (type png)
 <use ./images/LearningRate.png>
-Package pdftex.def Info: ./images/LearningRate.png  used on input line 1584.
+Package pdftex.def Info: ./images/LearningRate.png  used on input line 1585.
 (pdftex.def)             Requested size: 448.13095pt x 216.35904pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [52] [53 <./images/LearningRate.png>]
-<./images/lr_schedu_Falsch1.png, id=847, 462.528pt x 344.0052pt>
+<./images/lr_schedu_Falsch1.png, id=846, 462.528pt x 344.0052pt>
 File: ./images/lr_schedu_Falsch1.png Graphic file (type png)
 <use ./images/lr_schedu_Falsch1.png>
 Package pdftex.def Info: ./images/lr_schedu_Falsch1.png  used on input line 161
-2.
+3.
 (pdftex.def)             Requested size: 134.44064pt x 99.9899pt.
-<./images/lr_schedu_Falsch2.png, id=848, 462.528pt x 344.0052pt>
+<./images/lr_schedu_Falsch2.png, id=847, 462.528pt x 344.0052pt>
 File: ./images/lr_schedu_Falsch2.png Graphic file (type png)
 <use ./images/lr_schedu_Falsch2.png>
 Package pdftex.def Info: ./images/lr_schedu_Falsch2.png  used on input line 161
-8.
+9.
 (pdftex.def)             Requested size: 134.44064pt x 99.9899pt.
-<./images/lr_schedu_Falsch.png, id=849, 462.528pt x 344.0052pt>
+<./images/lr_schedu_Falsch.png, id=848, 462.528pt x 344.0052pt>
 File: ./images/lr_schedu_Falsch.png Graphic file (type png)
 <use ./images/lr_schedu_Falsch.png>
-Package pdftex.def Info: ./images/lr_schedu_Falsch.png  used on input line 1624
+Package pdftex.def Info: ./images/lr_schedu_Falsch.png  used on input line 1625
 .
 (pdftex.def)             Requested size: 134.44064pt x 99.9899pt.
 
-Overfull \hbox (69.71956pt too wide) in paragraph at lines 1637--1638
+Overfull \hbox (69.71956pt too wide) in paragraph at lines 1638--1639
 \T1/aer/m/n/12 Die meis-ten von $\OML/cmm/m/it/12 TemkiNet$ \T1/aer/m/n/12 ver-
 wen-de-ten Pa-ra-me-ter stam-men aus dem der Klassifikationsblock($\OT1/cmr/m/n
 /12 935\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 936$
@@ -1807,22 +1806,22 @@ wen-de-ten Pa-ra-me-ter stam-men aus dem der Klassifikationsblock($\OT1/cmr/m/n
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [55]
-Underfull \hbox (badness 10000) in paragraph at lines 1725--1725
+Underfull \hbox (badness 10000) in paragraph at lines 1726--1726
 []|\T1/aer/m/n/12 Modellgröÿe
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1725--1725
+Underfull \hbox (badness 10000) in paragraph at lines 1726--1726
 []|\T1/aer/m/n/12 Modellgröÿe
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1725--1725
+Underfull \hbox (badness 10000) in paragraph at lines 1726--1726
 []|\T1/aer/m/n/12 Modellgröÿe
  []
 
 
-Overfull \hbox (63.13463pt too wide) in paragraph at lines 1722--1736
+Overfull \hbox (63.13463pt too wide) in paragraph at lines 1723--1737
  [] 
  []
 
@@ -1830,7 +1829,7 @@ Overfull \hbox (63.13463pt too wide) in paragraph at lines 1722--1736
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [56] [57] [58] [59] [60] [61]
-Underfull \hbox (badness 2012) in paragraph at lines 1849--1850
+Underfull \hbox (badness 2012) in paragraph at lines 1850--1851
 []\T1/aer/m/n/12 Md. Za-han-gir Alom,Tarek M. Ta-ha, Chri-sto-pher Ya-kop-cic,S
 tefan West-
  []
@@ -1840,11 +1839,11 @@ tefan West-
 \openout6 = `TEMKENG_bachelorarbeit.lof'.
 
  [64]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1936.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1936.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1937.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1937.
  (TEMKENG_bachelorarbeit.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1936.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1936.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1937.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1937.
 
 Package rerunfilecheck Info: File `TEMKENG_bachelorarbeit.out' has not changed.
 
@@ -1853,12 +1852,12 @@ Package rerunfilecheck Info: File `TEMKENG_bachelorarbeit.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1936.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1937.
  ) 
 Here is how much of TeX's memory you used:
- 39145 strings out of 492970
- 905199 string characters out of 3125707
- 1230054 words of memory out of 3000000
+ 39144 strings out of 492970
+ 905243 string characters out of 3125707
+ 1230053 words of memory out of 3000000
  41929 multiletter control sequences out of 15000+200000
  64559 words of font info for 132 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1890,9 +1889,9 @@ ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/TEMKENG/A
 ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/
 Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/sym
 bols/msbm10.pfb>
-Output written on TEMKENG_bachelorarbeit.pdf (64 pages, 2038522 bytes).
+Output written on TEMKENG_bachelorarbeit.pdf (64 pages, 2038098 bytes).
 PDF statistics:
- 1359 PDF objects out of 1440 (max. 8388607)
- 305 named destinations out of 1000 (max. 500000)
+ 1358 PDF objects out of 1440 (max. 8388607)
+ 304 named destinations out of 1000 (max. 500000)
  637 words of extra memory for PDF output out of 10000 (max. 10000000)
 

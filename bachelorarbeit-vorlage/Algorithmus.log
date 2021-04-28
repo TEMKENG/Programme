@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  24 MAY 2020 09:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840 64-bit) (preloaded format=pdflatex 2019.5.7)  17 SEP 2020 05:33
 entering extended mode
 **./Algorithmus.tex
 (Algorithmus.tex
@@ -641,12 +641,12 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 {C:/Users/TEMKENG/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (87.41284pt too wide) in paragraph at lines 192--193
+Overfull \hbox (87.41284pt too wide) in paragraph at lines 195--196
 [][] 
  []
 
 
-Overfull \hbox (30.50735pt too wide) in paragraph at lines 269--270
+Overfull \hbox (30.50735pt too wide) in paragraph at lines 272--273
  [][] 
  []
 
@@ -655,10 +655,10 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [2] [3] (Algorithmus.aux) ) 
 Here is how much of TeX's memory you used:
- 15993 strings out of 492970
- 344146 string characters out of 3125707
- 531670 words of memory out of 3000000
- 19599 multiletter control sequences out of 15000+200000
+ 16003 strings out of 492970
+ 344326 string characters out of 3125707
+ 532235 words of memory out of 3000000
+ 19609 multiletter control sequences out of 15000+200000
  5853 words of font info for 21 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,15n,69p,418b,968s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -682,7 +682,7 @@ Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/TE
 MKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.p
 fb><C:/Users/TEMKENG/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti9.pfb>
-Output written on Algorithmus.pdf (3 pages, 195645 bytes).
+Output written on Algorithmus.pdf (3 pages, 196223 bytes).
 PDF statistics:
  79 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
