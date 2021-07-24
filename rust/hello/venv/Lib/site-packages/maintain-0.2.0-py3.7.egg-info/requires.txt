@@ -1,0 +1,4 @@
+click
+semantic_version
+pyyaml
+commonmark==0.6.3

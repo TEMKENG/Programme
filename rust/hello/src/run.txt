@@ -1,0 +1,7 @@
+ openssl enc -aes-128-ctr -K 12345678901234567890123456789012 -iv 12345678901234567890123456789012 -in data/test.txt -out data/test_openssl.txt
+
+
+Command:
+	Format-Hex
+	fc /?
+	cd /mnt/

@@ -1,0 +1,3 @@
+[console_scripts]
+maintain = maintain.commands:cli
+
