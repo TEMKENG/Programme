@@ -1,5 +1,7 @@
+a.exe
 .idea
+test.c
 Makefile
 .metadata
-test.c
-a.exe
+cmake-build-debug
+CMakeLists.txt

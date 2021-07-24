@@ -1,14 +1,12 @@
-<<<<<<< HEAD
 rust
 julia
 tkinter
 tensorflow
 machine_learning
-=======
 *.log
 *.aux
 *.out
 *.toc
 *.lof
 .docx
->>>>>>> a48f0f0708da739bc0e0c2d9b2b6c6943d328489
+
