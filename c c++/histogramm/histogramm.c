@@ -82,13 +82,14 @@ Histogram *getHistogram(char *filename) {
         result->cumsum[i] = result->sum;
         result->cols = (int) n; // Anzahl von Spalten
         result->rows = (int) m; // Anzahl von Zeilen
-        // variance and standard variance 
+        // variance and standard variance
         if (i + 1 == MAX) {
             result->variance = (result->variance - result->avg * result->avg / (m * n)) / (m * n);
             result->std = sqrtf(result->variance);
             result->avg /= m * n;
         }
     }
+    printf("M %f N: %f\n", m, n);
     result->data = hist;
     print(result);
     fclose(file);
@@ -120,7 +121,6 @@ void normalize(Histogram *h) {
             h->data[i] = h->data[i] == 0 ? 1 : h->data[i];
         }
     }
-
 }
 
 void print(Histogram *h) {

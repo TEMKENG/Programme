@@ -36,10 +36,12 @@ Histogram INIT_HISTOGRAM = {.sum=0, .max=0, .min=-1, .avg=0, .std=0, .variance=0
  * Histogramm plotten
  */
 void plot(Histogram *h);
+
 /*
  * Gibt fast alle Eigenschaft des Histogramms `h`
  */
 void print(Histogram *h);
+
 /*
  * Normalisiere das Histogramm
  * Die Werte des Histogramm werden in `[0, COL]´ und `[0, ROW]`

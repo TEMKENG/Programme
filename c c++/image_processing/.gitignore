@@ -1,0 +1,5 @@
+cmake-build-debug
+data
+*.gch
+a.exe
+test.py
