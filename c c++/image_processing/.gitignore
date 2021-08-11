@@ -1,5 +1,9 @@
 cmake-build-debug
 data
 *.gch
-a.exe
+*.txt
+*.log
+*.cmake
+*.exe
 test.py
+.idea
