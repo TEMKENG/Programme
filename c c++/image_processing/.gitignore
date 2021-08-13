@@ -1,5 +1,4 @@
 cmake-build-debug
-data
 *.gch
 *.txt
 *.log

@@ -7,11 +7,13 @@
 
 
 #include <ctime>
+#include <cmath>
 #include <climits>
 #include <cstdio>
 #include <cstdint>
 #include <cstring>
 #include <ostream>
+
 #define MAX 256
 #define SEP " "
 #define COL 200
@@ -20,7 +22,8 @@
 
 void init(int *buffer, size_t length);
 
-void *init(const char *type, size_t length, const char *src_type = "", void *pointer = nullptr);
+void *
+init(const char *dst_type, size_t length, double initial_value = 0, const char *src_type = "", void *pointer = nullptr);
 
 void init(uint8_t *values, size_t length);
 
@@ -30,13 +33,13 @@ void copy_(float *dst, const float *src, size_t length);
 
 void copy_(uint8_t *dst, const uint8_t *src, size_t length);
 
-void print(const int *data, int length = 20);
+void print(const int *data, int col = 20, int row = 1);
 
-void print(const float *data, int length = 20);
+void print(const float *data, int col = 20, int row = 1);
 
-void print(const double *data, int length = 20);
+void print(const uint8_t *data, int col = 20, int row = 1);
 
-void print(const uint8_t *data, int length = 20);
+void print(const double *data, int col = 20, int row = 1);
 
 class Histogram {
 public:
@@ -136,7 +139,7 @@ public:
 
     bool write(const char *filename);
 
-    void autoContrast(float a_min = 0, float a_max = 255);
+    Image autoContrast(float a_min = 0, float a_max = 255);
 
     static Type getType(const char *filename);
 
@@ -171,7 +174,7 @@ public:
 
     void bright(int a);
 
-    void contrast(float a);
+    Image contrast(float a=1);
 
     Image convolve(const float *kernel, uint8_t r, uint8_t c);
 
@@ -179,9 +182,9 @@ public:
 
     float *get(int row, int col);
 
-    float get_(int row, int col);
+    float get_(int row, int col, uint8_t color=0);
 
-    void set_(int row, int col, float value);
+    void set_(int row, int col, float value, uint8_t color=0);
 
     void set(int row, int col, const float *values);
 
@@ -192,8 +195,8 @@ public:
 
     Image clamping(float low, float high);
 
-//    Image luminance(float r = 1.0 / 3, float g = 1.0 / 3, float b = 1.0 / 3);
-    Image luminance(float r, float g, float b);
+    Image luminance(float r = 1.0 / 3, float g = 1.0 / 3, float b = 1.0 / 3);
+//    Image luminance(float r, float g, float b);
 
     Image threshold(float thresh);
 
@@ -203,10 +206,11 @@ public:
 
     Image sobel();
 
+    Image blur(int radius = 3);
+
     void norm(float low = 0, float high = 255);
 
-    void Gauss();
-    //    Separiert bar
+    Image gauss(int radius = 3, float sigma = 0.0);
 
     static void normalize(float *_data, int size, float low = 0, float high = 255);
 
@@ -218,10 +222,11 @@ public:
 
 
     Image add_padding(int _row, int _col);
+
     Image remove_padding(int _row, int _col);
+
+    Image seam_carving(int _row, int _col);
 };
-
-
 
 
 #endif //IMAGE_PROCESSING_IMAGES_H

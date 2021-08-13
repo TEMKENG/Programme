@@ -2,30 +2,31 @@
 // Created by TEMKENG on 08.08.2021.
 //
 
+
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 
 #include <iostream>
-#include "images.h"
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include "stb_image_resize.h"
+#include "images.h"
 
 
 // UTILS
-void *init(const char *dst_type, size_t length, const char *src_type, void *pointer) {
+void *init(const char *dst_type, size_t length, double initial_value, const char *src_type, void *pointer) {
 
     if (strcmp(dst_type, "int") == 0) {
         int *buffer = new int[length];
         if (strcmp(src_type, "int") == 0) {
             int *cpy = static_cast<int * >(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? int(initial_value) : cpy[i];
             }
         } else {
             uint8_t *cpy = static_cast<uint8_t *>(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : cpy[i];
             }
         }
         return buffer;
@@ -34,12 +35,12 @@ void *init(const char *dst_type, size_t length, const char *src_type, void *poin
         if (strcmp(src_type, "float") == 0) {
             float *cpy = static_cast<float * >(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : (uint8_t) lround(cpy[i]);
+                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : (uint8_t) lround(cpy[i]);
             }
         } else {
             uint8_t *cpy = static_cast<uint8_t *>(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : cpy[i];
             }
         }
         return buffer;
@@ -48,12 +49,12 @@ void *init(const char *dst_type, size_t length, const char *src_type, void *poin
         if (strcmp(src_type, "uint16_t") == 0) {
             uint16_t *cpy = static_cast<uint16_t * >(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? (uint16_t) initial_value : cpy[i];
             }
         } else {
             uint8_t *cpy = static_cast<uint8_t *>(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : (uint16_t) cpy[i];
+                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : (uint16_t) cpy[i];
             }
         }
         return buffer;
@@ -62,12 +63,12 @@ void *init(const char *dst_type, size_t length, const char *src_type, void *poin
         if (strcmp(src_type, "float") == 0) {
             float *cpy = static_cast<float * >(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? (float) initial_value : cpy[i];
             }
         } else {
             uint8_t *cpy = static_cast<uint8_t *>(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : (float) cpy[i];
+                buffer[i] = cpy == nullptr ? (float) initial_value : (float) cpy[i];
             }
         }
 
@@ -77,12 +78,12 @@ void *init(const char *dst_type, size_t length, const char *src_type, void *poin
         if (strcmp(src_type, "double") == 0) {
             double *cpy = static_cast<double * >(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : cpy[i];
+                buffer[i] = cpy == nullptr ? initial_value : cpy[i];
             }
         } else {
             uint8_t *cpy = static_cast<uint8_t *>(pointer);
             for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? 0 : (double) cpy[i];
+                buffer[i] = cpy == nullptr ? initial_value : (double) cpy[i];
             }
         }
         return buffer;
@@ -130,32 +131,40 @@ void copy_(float *dst, const float *src, size_t length) {
     }
 }
 
-void print(const int *data, int length) {
-    for (int i = 0; i < length; ++i) {
-        printf("%d ", data[i]);
+void print(const int *data, int col, int row) {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            printf("%d ", data[i * row + j]);
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
-void print(const uint8_t *data, int length) {
-    for (int i = 0; i < length; ++i) {
-        printf("%d ", data[i]);
+void print(const uint8_t *data, int col, int row) {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            printf("%d ", data[i * row + j]);
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
-void print(const float *data, int length) {
-    for (int i = 0; i < length; ++i) {
-        printf("%.3f ", data[i]);
+void print(const float *data, int col, int row) {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            printf("%lf ", data[i * row + j]);
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
-void print(const double *data, int length) {
-    for (int i = 0; i < length; ++i) {
-        printf("%.3lf ", data[i]);
+void print(const double *data, int c, int r) {
+    for (int i = 0; i < r; ++i) {
+        for (int j = 0; i < c; ++i) {
+            printf("%.3lf ", data[i * r + j]);
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
 // HISTOGRAM
@@ -351,17 +360,18 @@ Image::Image(const Image &image) : rows(image.rows), cols(image.cols), channels(
 
 bool Image::read(const char *filename) {
     uint8_t *tmp = stbi_load(filename, &cols, &rows, &channels, 0);
-    data = static_cast<float *>(init("float", cols * rows * channels, "uint8_t", tmp));
+    size = cols * rows * channels;
+    data = static_cast<float *>(init("float", size, 0, "uint8_t", tmp));
     return data != nullptr;
 }
 
 bool Image::write(const char *filename) {
     int check;
-    auto *cpy = static_cast<float *>(init("float", size, "float", data));
+    auto *cpy = static_cast<float *>(init("float", size, 0, "float", data));
     if (max() > 255 or min() < 0) {
         normalize(cpy, size);
     }
-    auto *_data = static_cast<uint8_t *>(init("uint8_t", size, "float", cpy));
+    auto *_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", cpy));
     switch (getType(filename)) {
         case PNG:
             check = stbi_write_png(filename, cols, rows, channels, _data, cols * channels);
@@ -442,7 +452,7 @@ void Image::printData(const size_t length) const {
 }
 
 Histogram Image::getHistogram() const {
-    uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, "float", data));
+    uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
     Histogram histogram(rows, cols, channels, tmp_data);
     return histogram;
 }
@@ -471,35 +481,30 @@ int Image::size_() const {
     return size;
 }
 
-void Image::autoContrast(float a_min, float a_max) {
+Image Image::autoContrast(float a_min, float a_max) {
+    Image cpy = clone();
     float dist = a_max - a_min;
     float dist_ = max() - min();
     if (dist == 0 or dist_ == 0)
-        return;
+        return cpy;
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; ++j) {
-            data[i + j] = a_min + (data[i + j] - _min) * dist / dist_;
+            cpy.data[i + j] = a_min + (data[i + j] - _min) * dist / dist_;
         }
     }
-    _min = a_min;
-    _max = a_max;
+    cpy._min = a_min;
+    cpy._max = a_max;
+    return cpy;
 }
 
 Image Image::equalize() {
-    float pixel;
     float mn = (float) size;
     Histogram hist = getHistogram();
-    Image result = Image(rows, cols, channels);
+    Image result = copy();
 
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < channels; ++j) {
-            if (j >= new_channel) {
-                result.data[i + j] = data[i + j];
-                continue;
-            }
-            pixel = ((float) hist.cumsum[(uint8_t) data[i + j]] * max()) / mn;
-//            result.data[i + j] = pixel > 255 ? 255 :  pixel;
-            result.data[i + j] = pixel;
+    for (int i = 0; i < size; i += new_channel) {
+        for (int j = 0; j < new_channel; ++j) {
+            result.data[i + j] = ((float) hist.cumsum[(uint8_t) data[i + j]] * max()) / mn;
         }
     }
 
@@ -517,37 +522,36 @@ void Image::bright(int a) {
     }
 }
 
-void Image::contrast(float a) {
-    if (a < 0) return;
-//    float brightness;
-    const float offset = a;
+Image Image::contrast(float alpha) {
+    Image result = clone();
+    if (alpha < 0) return result;
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; ++j) {
-//            brightness = (float) data[i + j] * offset;
-            data[i + j] *= offset;
-//            data[i + j] = brightness > 255 ? 255 : (uint8_t) brightness;
+            result.data[i + j] *= alpha;
         }
     }
+    return result;
 }
 
 Image Image::convolve(const float *kernel, uint8_t r_, uint8_t c_) {
     float sum;
     int index = 0;
     Image cpy = clone();
-    auto *data_result = static_cast<float *>(init("float", size, "", cpy.data));
+//    auto *data_result = static_cast<float *>(init("float", size, 0, "float", cpy.data));
     uint8_t l = r_ / 2, m = c_ / 2;
-    for (int i = l; i < rows - l; ++i) {
-        for (int j = m; j < cols - m; ++j) {
-            sum = 0;
-            for (int row = -l; row <= l; ++row) {
-                for (int col = -m; col <= m; ++col) {
-                    sum += get_(i + row, j + col) * kernel[(row + l) * c_ + col + m];
+    for (int color = 0; color < new_channel; ++color) {
+        for (int i = l; i < rows - l; ++i) {
+            for (int j = m; j < cols - m; ++j) {
+                sum = 0;
+                for (int row = -l; row <= l; ++row) {
+                    for (int col = -m; col <= m; ++col) {
+                        sum += get_(i + row, j + col, color) * kernel[(row + l) * c_ + col + m];
+                    }
                 }
+                cpy.set_(i, j, sum, color);
             }
-            cpy.set_(i, j, sum);
         }
     }
-
     return cpy;
 }
 
@@ -562,8 +566,8 @@ Image Image::clone() {
     return copy();
 }
 
-float Image::get_(int row, int col) {
-    return data[(row * cols + col) * channels];
+float Image::get_(int row, int col, uint8_t color) {
+    return data[(row * cols + col) * channels + color];
 }
 
 float *Image::get(int row, int col) {
@@ -575,13 +579,14 @@ float *Image::get(int row, int col) {
     return pixels;
 }
 
-void Image::set_(int row, int col, float value) {
-    data[row * cols + col] = value;
+void Image::set_(int row, int col, float value, uint8_t color) {
+    data[(row * cols + col) * channels + color] = value;
 }
 
 void Image::set(int row, int col, const float *values) {
     if (values == nullptr) return;
     int offset = (row * cols + col) * channels;
+//    printf("OFFSET: %d col: %d row: %d\n", offset, col, row);
     for (int i = 0; i < channels; ++i) {
         data[offset + i] = values[i];
     }
@@ -670,26 +675,28 @@ std::ostream &operator<<(std::ostream &os, const Image &image) {
 }
 
 Image Image::luminance(float r, float g, float b) {
+//    printf("R: %f G: %f B: %f\n", r, g, b);
+//    std::cout << "Luminance:\n" << *this << std::endl;
     if (new_channel < 3) { return toGray(); }
-    Image lum = clone();
+    Image lum = copy();
+//    Image lum(rows, cols, channels);
     for (int i = 0; i < size; i += channels) {
         lum.data[i] *= r;
         lum.data[i + 1] *= g;
         lum.data[i + 2] *= b;
     }
-    lum.write("data/luminance.png");
+//    lum.write("data/luminance.png");
     return lum;
 }
 
 Image Image::clamping(float low, float high) {
     float pixel_value;
-    Image clamp(rows, cols, channels);
+    Image clamp = copy();
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; j++) {
             pixel_value = data[i + j];
             clamp.data[i + j] = pixel_value > high ? high : (pixel_value < low ? low : pixel_value);
         }
-        if (new_channel < channels) clamp.data[i + new_channel] = data[i + new_channel];
     }
     return clamp;
 }
@@ -707,14 +714,12 @@ Image Image::threshold(float thresh) {
 
 Image Image::invert() {
     min_max();
-    Image invert_(rows, cols, channels);
+    Image invert_ = copy();
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; j++) {
             invert_.data[i + j] = _max - data[i + j];
         }
-        if (new_channel < channels) invert_.data[i + new_channel] = data[i + new_channel];
     }
-
     return invert_;
 }
 
@@ -727,10 +732,15 @@ Image Image::sobel() {
     float v[] = {1, 0, -1};
     float kernel_x[] = {1, 0, -1, 2, 0, -2, 1, 0, -1};
     float kernel_y[] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-    Image s_x = convolve(kernel_x, 3, 3);
-    Image s_y = convolve(kernel_y, 3, 3);
-//    Image s_x = convolve(u, 3, 1).convolve(v, 1, 3);
-//    Image s_y = convolve(v, 3, 1).convolve(u, 1, 3);
+    Image _blur = blur();
+//    Image s_x = _blur.convolve(v, 1, 3);
+//    Image s_y = _blur.convolve(v, 3, 1);
+
+//    Image s_x = _blur.convolve(u, 3, 1).convolve(v, 1, 3);
+//    Image s_y = _blur.convolve(v, 3, 1).convolve(u, 1, 3);
+
+    Image s_x = _blur.convolve(kernel_x, 3, 3);
+    Image s_y = _blur.convolve(kernel_y, 3, 3);
 
 //    s_x.write("data/sobel_x.png");
 //    s_y.write("data/sobel_y.png");
@@ -742,8 +752,37 @@ Image Image::sobel() {
     return _sobel;
 }
 
-void Image::Gauss() {
+Image Image::gauss(int radius, float sigma) {
+    float value;
+    int length = radius * radius;
+    float *kernel = static_cast<float *>(init("float", length));
+    sigma = sigma == 0.0 ? float(0.3 * ((radius - 1) * 0.5 - 1) + 0.8) : sigma;
+    sigma *= 2 * sigma;
+    int i = 0, j = 0;
+    for (int x = -radius / 2; x <= 0; ++x) {
+        j = 0;
+        for (int y = -radius / 2; y <= 0; ++y) {
+            value = exp(-float(x * x + y * y) / sigma);
+            kernel[i * radius + j] = value;
+            kernel[(i + 1) * radius - 1 - j] = value;
+            kernel[(radius - i - 1) * radius + j] = value;
+            kernel[(radius - i) * radius - j - 1] = value;
+            ++j;
+        }
+        i++;
+    }
+    value = 0;
+//    Compute the sum
+    for (i = 0; i < length; ++i) {
+        value += kernel[i];
+    }
+//    Normalize the kernel
+    for (i = 0; i < length; ++i) {
+        kernel[i] /= value;
+    }
 
+//    print(kernel, radius, radius);
+    return convolve(kernel, radius, radius);
 }
 
 Image Image::add(const Image &a, const Image &b) {
@@ -857,6 +896,11 @@ Image Image::remove_padding(int _row, int _col) {
         }
     }
     return zp;
+}
+
+Image Image::blur(int ksize) {
+    float *kernel = static_cast<float *>(init("float", ksize * ksize, 1. / float(ksize * ksize)));
+    return clone().convolve(kernel, ksize, ksize);
 }
 
 
