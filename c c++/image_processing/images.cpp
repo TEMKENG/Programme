@@ -92,40 +92,17 @@ void *init(const char *dst_type, size_t length, double initial_value, const char
     return nullptr;
 }
 
-void init(int *buffer, size_t length) {
-    buffer = new int[length];
+
+template<typename T>
+void init(T *buffer, size_t length) {
+    buffer = new T[length];
     for (int i = 0; i < length; ++i) {
         buffer[i] = 0;
     }
 }
 
-void init(uint8_t *buffer, size_t length) {
-    buffer = new uint8_t[length];
-    for (int i = 0; i < length; ++i) {
-        buffer[i] = 0;
-    }
-}
-
-void init(float *buffer, size_t length) {
-    buffer = new float[length];
-    for (int i = 0; i < length; ++i) {
-        buffer[i] = 0;
-    }
-}
-
-void copy_(int *dst, const int *src, size_t length) {
-    for (int i = 0; i < length; ++i) {
-        dst[i] = src[i];
-    }
-}
-
-void copy_(uint8_t *dst, const uint8_t *src, size_t length) {
-    for (int i = 0; i < length; ++i) {
-        dst[i] = src[i];
-    }
-}
-
-void copy_(float *dst, const float *src, size_t length) {
+template<typename T>
+void copy_(T *dst, const T *src, size_t length) {
     for (int i = 0; i < length; ++i) {
         dst[i] = src[i];
     }
@@ -206,14 +183,14 @@ Histogram::Histogram(int _rows, int _cols, int channel, const uint8_t *data_) : 
     }
 }
 
-void Histogram::normalize(int r, int c) {
+void Histogram::normalize(int height, int width) {
     int new_index;
     max_h = INT_MIN;
     min_h = INT_MAX;
-    int *tmp = static_cast<int *>(init("int", c));
+    int *tmp = static_cast<int *>(init("int", width));
     // Quantisation
     for (int i = 0; i < MAX; i++) {
-        new_index = (int) ((1.0 * c * i) / (float) MAX);
+        new_index = (int) ((1.0 * width * i) / (float) MAX);
         tmp[new_index] += data[i];
         if (tmp[new_index] < min_h) min_h = tmp[new_index];
         if (tmp[new_index] > max_h) max_h = tmp[new_index];
@@ -221,9 +198,9 @@ void Histogram::normalize(int r, int c) {
     auto contrast = (float) (max_h - min_h);
     // Assign new values
     init(data, MAX);
-    for (int i = 0; i < c; i++) {
+    for (int i = 0; i < width; i++) {
         if (tmp[i] != 0) {
-            data[i] = (int) ((float) (r * (tmp[i] - min_h)) / contrast);
+            data[i] = (int) ((float) (height * (tmp[i] - min_h)) / contrast);
             data[i] = data[i] == 0 ? 1 : data[i];
         }
     }
@@ -352,9 +329,9 @@ Image::Image(int _rows, int _cols, int _channels) : rows(_rows), cols(_cols), ch
 }
 
 Image::Image(const Image &image) : rows(image.rows), cols(image.cols), channels(image.channels) {
-    size = channels * rows * cols;
-    memcpy(data, image.data, size);
-    new_channel = channels > 3 ? 3 : channels;
+    size = image.size_();
+    data = static_cast<float *>(init("float", size, 0, "float", image.data));
+    new_channel = image.new_channel;
     min_max();
 }
 
@@ -399,19 +376,34 @@ Image::Type Image::getType(const char *filename) {
     return PNG;
 }
 
-
+/**
+ *
+ * @return  The image data.
+ */
 float *Image::getData() const {
     return data;
 }
 
+/**
+ *
+ * @return The number of rows of the image.
+ */
 int Image::rows_() const {
     return rows;
 }
 
+/**
+ *
+ * @return The number of columns of the image.
+ */
 int Image::cols_() const {
     return cols;
 }
 
+/**
+ *
+ * @return The number of channels of the image.
+ */
 int Image::getChannels() const {
     return channels;
 }
@@ -421,15 +413,22 @@ void Image::setData(int index, float value) {
 }
 
 Image Image::toGray() {
-    int index = 0;
-    float pixelSomme;
-    Image _gray(rows, cols, 1);
-    for (int i = 0; i < size; i += channels) {
-        pixelSomme = 0;
-        for (int j = 0; j < new_channel; j++) { pixelSomme += data[i + j]; }
-        _gray.setData(index++, pixelSomme / (float) new_channel);
+    if (grayscale == nullptr) {
+        if (new_channel == 1) {
+            grayscale = new Image(*this);
+            return *grayscale;
+        }
+        int index = 0;
+        float pixelSomme;
+        Image _gray(rows, cols, 1);
+        for (int i = 0; i < size; i += channels) {
+            pixelSomme = 0;
+            for (int j = 0; j < new_channel; j++) { pixelSomme += data[i + j]; }
+            _gray.setData(index++, pixelSomme / (float) new_channel);
+        }
+        grayscale = new Image(_gray);
     }
-    return _gray;
+    return *grayscale;
 }
 
 Image Image::gray() {
@@ -451,10 +450,12 @@ void Image::printData(const size_t length) const {
     printf("\n");
 }
 
-Histogram Image::getHistogram() const {
-    uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
-    Histogram histogram(rows, cols, channels, tmp_data);
-    return histogram;
+Histogram Image::getHistogram() {
+    if (histogram == nullptr) {
+        uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
+        histogram = new Histogram(rows, cols, channels, tmp_data);
+    }
+    return *histogram;
 }
 
 float Image::min() {
@@ -567,6 +568,8 @@ Image Image::clone() {
 }
 
 float Image::get_(int row, int col, uint8_t color) {
+    if ((row < 0 or row >= rows) or (col < 0 or col >= cols))
+        return INFINITY;
     return data[(row * cols + col) * channels + color];
 }
 
@@ -603,21 +606,17 @@ void Image::minus(const Image &rhs) {
 }
 
 void Image::add(const Image &rhs) {
-    uint16_t value;
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; ++j) {
-            value = data[i + j] + (uint16_t) rhs.data[i + j];
-            data[i + j] = value > 255 ? 255 : (uint8_t) value;
+            data[i + j] = data[i + j] + rhs.data[i + j];
         }
     }
 }
 
 void Image::mul(const Image &rhs) {
-    uint64_t value;
     for (int i = 0; i < size; i += channels) {
         for (int j = 0; j < new_channel; ++j) {
-            value = data[i + j] * (uint64_t) rhs.data[i + j];
-            data[i + j] = value > 255 ? 255 : (uint8_t) value;
+            data[i + j] = data[i + j] * rhs.data[i + j];
         }
     }
 }
@@ -729,19 +728,16 @@ void Image::gamma() {
 
 Image Image::sobel() {
     float u[] = {1, 2, 1};
-    float v[] = {1, 0, -1};
+    float v[] = {-1, 0, 1};
     float kernel_x[] = {1, 0, -1, 2, 0, -2, 1, 0, -1};
     float kernel_y[] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-    Image _blur = blur();
-//    Image s_x = _blur.convolve(v, 1, 3);
-//    Image s_y = _blur.convolve(v, 3, 1);
+    Image _blur = add_padding(3, 3).blur(3);
 
 //    Image s_x = _blur.convolve(u, 3, 1).convolve(v, 1, 3);
 //    Image s_y = _blur.convolve(v, 3, 1).convolve(u, 1, 3);
 
-    Image s_x = _blur.convolve(kernel_x, 3, 3);
-    Image s_y = _blur.convolve(kernel_y, 3, 3);
-
+    Image s_x = _blur.convolve(kernel_x, 3, 3).remove_padding(3, 3);
+    Image s_y = _blur.convolve(kernel_y, 3, 3).remove_padding(3, 3);
 //    s_x.write("data/sobel_x.png");
 //    s_y.write("data/sobel_y.png");
     Image _sobel(rows, cols, channels);
@@ -749,7 +745,7 @@ Image Image::sobel() {
         _sobel.data[i] = std::sqrt(s_x.data[i] * s_x.data[i] + s_y.data[i] * s_y.data[i]);
     }
 //    _sobel.write("data/sobel_xy.png");
-    return _sobel;
+    return _sobel.toGray();
 }
 
 Image Image::gauss(int radius, float sigma) {
@@ -808,64 +804,19 @@ void Image::norm(float low, float high) {
     normalize(data, size, low, high);
 }
 
-void Image::normalize(uint16_t *_data, int size, uint16_t low, uint16_t high) {
-    uint16_t max_ = _data[0], min_ = _data[0];
+template<typename T>
+void Image::normalize(T *_data, int size, float low, float high) {
+    T max_ = _data[0], min_ = _data[0];
     for (int i = 1; i < size; ++i) {
         if (_data[i] > max_) max_ = _data[i];
         if (_data[i] < min_) min_ = _data[i];
     }
-    float dist = max_ - min_;
-    float high_low = high - low;
-    if (dist == 0) return;
-    for (int i = 0; i < size; i++) {
-        _data[i] = (uint16_t) lround(high_low * ((float) _data[i] - (float) min_) / dist);
-    }
-}
-
-void Image::normalize(uint8_t *_data, int size, uint8_t low, uint8_t high) {
-
-    float max_ = _data[0], min_ = _data[0];
-    for (int i = 1; i < size; ++i) {
-        if ((float) _data[i] > max_) max_ = _data[i];
-        if ((float) _data[i] < min_) min_ = _data[i];
-    }
-    float dist = max_ - min_;
-    float high_low = high - low;
-    if (dist == 0) return;
-    for (int i = 0; i < size; i++) {
-        _data[i] = (uint8_t) lround(high_low * ((float) _data[i] - min_) / dist);
-    }
-
-}
-
-void Image::normalize(double *_data, int size, double low, double high) {
-    double max_ = _data[0], min_ = _data[0];
-    for (int i = 1; i < size; ++i) {
-        if (_data[i] > max_) max_ = _data[i];
-        if (_data[i] < min_) min_ = _data[i];
-    }
-    double dist = max_ - min_;
-    double high_low = high - low;
+    T dist = max_ - min_;
+    T high_low = high - low;
     if (dist == 0) return;
     for (int i = 0; i < size; i++) {
         _data[i] = high_low * (_data[i] - min_) / dist;
     }
-}
-
-void Image::normalize(float *_data, int size, float low, float high) {
-
-    float max_ = _data[0], min_ = _data[0];
-    for (int i = 1; i < size; ++i) {
-        if (_data[i] > max_) max_ = _data[i];
-        if (_data[i] < min_) min_ = _data[i];
-    }
-    float dist = max_ - min_;
-    float high_low = high - low;
-    if (dist == 0) return;
-    for (int i = 0; i < size; i++) {
-        _data[i] = high_low * (_data[i] - min_) / dist;
-    }
-
 }
 
 Image Image::add_padding(int _row, int _col) {
@@ -900,34 +851,149 @@ Image Image::remove_padding(int _row, int _col) {
 
 Image Image::blur(int ksize) {
     float *kernel = static_cast<float *>(init("float", ksize * ksize, 1. / float(ksize * ksize)));
+
     return clone().convolve(kernel, ksize, ksize);
 }
 
+template<typename T>
+uint8_t get_min_pos(T *array, size_t length) {
+    uint8_t pos = 0;
+    T min_value = array[0];
+    for (int i = 1; i < length; ++i) {
+        if (array[i] < min_value) {
+            min_value = array[i];
+            pos = i;
+        }
+    }
+    return pos;
+
+}
+
+template<typename T>
+uint8_t get_max_pos(T *array, size_t length) {
+    uint8_t pos = 0;
+    T max_value = array[0];
+    for (int i = 1; i < length; ++i) {
+        if (array[i] > max_value) {
+            max_value = array[i];
+            pos = i;
+        }
+    }
+    return pos;
+
+}
+
+Image Image::seam_carving() {
+    uint8_t pos;
+    float seam_color[] = {255, 0, 0};
+    float pixel_value, left, right, under;
+    float *lur = static_cast<float *>(init("float", 3, 0.0)); // left, right, under;
+//    Image cpy = toGray();
+    Image energy = gray().sobel();
+    Image positions(energy.rows, energy.cols, energy.channels);
+    printf("%f\n", get_(1, 0) > get_(-1, 0));
+    for (int i = rows - 2; i > -1; --i) {
+//    for (int i = rows - 2; i > rows / 3; --i) {
+        for (int j = 0; j < cols; ++j) {
+            lur[0] = energy.get_(i + 1, j - 1);
+            lur[1] = energy.get_(i + 1, j);
+            lur[2] = energy.get_(i + 1, j + 1);
+            pos = get_min_pos(lur, 3);
+            energy.set_(i, j, lur[pos] + energy.get_(i, j));
+            positions.set_(i, j, pos);
+        }
+    }
+    int pos_ = get_min_pos(energy.data, energy.cols);
+    printf("Position: %d\n", pos_ * 3);
+
+    for (int i = 0; i < rows; ++i) {
+        set(i, pos_, seam_color);
+        pos_ = pos_ - 1 + (int) positions.get_(i, pos_);
+    }
+    DEBUG(pos_);
+    energy.write("data/energy.png");
+    positions.write("data/positions.png");
+    write("data/seam.png");
+//    return energy;
+    return positions;
+}
+
+Tree *new_tree(float initial_value) {
+    Tree *m = static_cast<Tree *>(malloc(sizeof(Tree)));
+    if (m == nullptr) return nullptr;
+    m->left = nullptr;
+    m->right = nullptr;
+    m->l = nullptr;
+    m->r = nullptr;
+    m->u = nullptr;
+    m->value = initial_value;
+    return m;
+}
 
 
+// TREE
 
+Tree::Tree() {
+    this->left = nullptr;
+    this->right = nullptr;
+    this->l = nullptr;
+    this->r = nullptr;
+    this->u = nullptr;
+    this->value = 0;
+}
 
+Tree::Tree(float value) : Tree() {
+    this->value = value;
+}
 
+Tree::Tree(Image image) {
+    Tree *trees = new Tree[image.size_()];
+    float *data = image.getData();
+    int col = 0, row = 0;
+    for (int i = 0; i < image.rows_() ; i++) {
+        for (int j = 0; j < image.cols_(); j++) {
+            trees[row + j].value = image.get_(i, j);
+            if (j != 0) {
+                trees[row + j].left = &trees[row + j - 1];
+                if (i != image.rows_() - 1) {
+                    trees[row + j].l = &trees[row + image.cols_() + j - 1];
+                }
+            }
+            if (j + 1 != image.cols_()) {
+                trees[row + j].right = &trees[row + j + 1];
+                if (i != image.rows_() - 1) {
+                    trees[row + j].r = &trees[row + image.cols_() + j + 1];
+                }
+            }
+            if (i != image.rows_() - 1) {
+                trees[row + j].u = &trees[row + image.cols_() + j];
+            }
 
+        }
+        row += image.cols_();
+    }
 
+//    image.printData(10);
+//    for (int i = 0; i < 10; i++) {
+//        std::cout << trees[i];
+//    }
+//    col = 50;
+//    for (int i = 0; i < col; i++) {
+//        for (int j = 0; j < 2*col; ++j)
+//            std::cout << image.get_(i, j) << " ";
+//        printf("\n");
+//    }
+//
+//    printf("\n");
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+std::ostream &operator<<(std::ostream &os, const Tree &tree) {
+    os << "L: " << ((tree.left == nullptr) ? INFINITY : tree.left->value)
+       << " V: " << tree.value
+       << " R: " << ((tree.right == nullptr) ? INFINITY : tree.right->value)
+       << " BL: " << ((tree.l == nullptr) ? INFINITY : tree.l->value)
+       << " BU: " << ((tree.u == nullptr) ? INFINITY : tree.u->value)
+       << " BR: " << ((tree.r == nullptr) ? INFINITY : tree.r->value)
+       << std::endl;
+    return os;
+}

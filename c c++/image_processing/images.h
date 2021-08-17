@@ -18,27 +18,74 @@
 #define SEP " "
 #define COL 200
 #define ROW 50
+#define DEBUG(x) std::cout <<"Images| " << #x << " = (" << x << ")" << std::endl;
 
+/**
+ * Initializes the pointer `buffer` of length `length` with the value 0.
+ *
+ * @param buffer The pointer to be initialized.
+ * @param length The length of buffer.
+ */
+template<typename T>
+void init(T *buffer, size_t length);
 
-void init(int *buffer, size_t length);
-
+/**
+ * Create a pointer of type `dst_type` with the length `length` and initialize it with `initial_value` or with value from `pointer` if `pointer` is not null.
+ *
+ * @param dst_type The type of the pointer to return.
+ * @param length The length of the pointer to return.
+ * @param initial_value The value with which the pointer should be initialized.
+ * @param src_type The type of source pointer.
+ * @param pointer The pointer whose values will be used to initialise the new pointer.
+ * @return A pointer of type `dst_type`.
+ */
 void *
 init(const char *dst_type, size_t length, double initial_value = 0, const char *src_type = "", void *pointer = nullptr);
 
-void init(uint8_t *values, size_t length);
+/**
+ * Copy the values of a pointer to another pointer.
+ *
+ * @param dst The destination pointer.
+ * @param src The source pointer.
+ * @param length The length of the pointer.
+ */
+template<typename T>
+void copy_(T *dst, const T *src, size_t length);
 
-void copy_(int *dst, const int *src, size_t length);
-
-void copy_(float *dst, const float *src, size_t length);
-
-void copy_(uint8_t *dst, const uint8_t *src, size_t length);
-
+/**
+ * Displays data in command line.\n
+ * The data can be printed on one line or on several lines.
+ * @param data Data to be displayed.
+ * @param col The number of items to be printed on a line.
+ * @param row The number of line.
+ */
 void print(const int *data, int col = 20, int row = 1);
 
+/**
+ * Displays data in command line.\n
+ * The data can be printed on one line or on several lines.
+ * @param data Data to be displayed.
+ * @param col The number of items to be printed on a line.
+ * @param row The number of line.
+ */
 void print(const float *data, int col = 20, int row = 1);
 
+/**
+ * Displays data in command line.\n
+ * The data can be printed on one line or on several lines.
+ * @param data Data to be displayed.
+ * @param col The number of items to be printed on a line.
+ * @param row The number of line.
+ */
 void print(const uint8_t *data, int col = 20, int row = 1);
 
+/**
+ * Displays data in command line.\n
+ * The data can be printed on one line or on several lines.
+ * @param data Data to be displayed.
+ * @param col The number of items to be printed on a line.
+ * @param row The number of line.
+ */
 void print(const double *data, int col = 20, int row = 1);
 
 class Histogram {
@@ -51,19 +98,45 @@ public:
     int *data; // The Occurrence of pixels
     int cols, rows;
 
+    /**
+     * Create a histogram with default parameter.
+     */
     Histogram();
 
+    /**
+     * Create a histogram based on data stored in filename.
+     * @param filename The filename.
+     */
     Histogram(char *filename);
 
+    /**
+     * Create a histogram from data `data_`.
+     *
+     * @param rows The number of rows.
+     * @param cols The number of cols
+     * @param channel The number of channels.
+     * @param data_ The data for which we want to display the histogram
+     */
     Histogram(int rows, int cols, int channel, const uint8_t *data_);
 
-    void normalize(int r = ROW, int c = COL);
+    /**
+     * Normalize the histogram data
+     *
+     * @param height The height of the histogram.
+     * @param width The width of the histogram.
+     */
+    void normalize(int height = ROW, int width = COL);
 
-    /*
-    * Plot histogram
-    */
-    void plot(int r = ROW, int c = COL);
+    /**
+     * Plot the histogram
+     * @param height The height of the histogram.
+     * @param width The width of the histogram.
+     */
+    void plot(int height = ROW, int width = COL);
 
+    /**
+     * Print information about the histogram.
+     */
     void info() const;
 
     Histogram &operator=(const Histogram &rhs);
@@ -72,10 +145,13 @@ public:
 
     bool operator!=(const Histogram &rhs) const;
 
+    /**
+     * Clone the histogram
+     * @return The copy of the histogram.
+     */
     Histogram clone() const;
 
 
-    static Histogram NULLHISTOGRAM;
 };
 
 class Image {
@@ -94,47 +170,155 @@ private:
 
     void min_max();
 
-public:
+    Image *grayscale = nullptr;
+    Histogram *histogram = nullptr;
 
+public:
+    /**
+    * Create a black image with `rows` rows and `cols` columns `channels` channels
+    * @param rows The number of image rows.
+    * @param cols The number of image columns.
+    * @param channels The number of image channels.
+    */
+    Image(int rows, int cols, int channels);
+
+    /**
+     * Read and create an image based on a filename.
+     * @param filename The image path.
+     */
+    Image(const char *filename);
+
+    /**
+     * Create a new image from the data of another image.
+     *
+     * @param image The image whose data will be copied
+     */
+    Image(const Image &image);
+
+    /**
+     * Copy a image.
+     * @return  The copy of the image.
+     */
     Image copy();
 
+    /**
+     * Copy a image.
+     * @return  The copy of the image.
+     */
     Image clone();
 
+    /**
+     * Compute the minimum value of the image.
+     *
+     * @return The pixel value with the minimum value.
+     */
     float min();
 
+    /**
+     * Compute the maximum value of the image.
+     *
+     * @return The pixel value with the maximum value.
+     */
     float max();
 
     friend std::ostream &operator<<(std::ostream &os, const Image &image);
 
+    /**
+     *
+     * @return The image data.
+     */
     float *getData() const;
 
-    Histogram getHistogram() const;
+    /**
+     *
+     * @return The image histogram
+     */
+    Histogram getHistogram();
 
+    /**
+     * Compute the grayscale of the image.\n
+     * The mean value of all channels is calculated.
+     * @return The black and white image
+     * @see gray, brightness
+     */
     Image toGray();
 
+    /**
+    * Compute the grayscale of the image.\n
+    * The mean value of all channels is calculated.
+    * @return The black and white image
+    * @see toGray, brightness
+    */
+    Image gray();
+
+    /**
+    * Compute the grayscale of the image.\n
+    * The mean value of all channels is calculated.
+    * @return The black and white image
+    * @see toGray, gray
+    */
+    Image brightness();
+
+    /**
+     * Update the image data at the position `index` with the value `value`.
+     * @param index The position to update in the data.
+     * @param value The new value.
+     */
     void setData(int index, float value);
 
+    void binning(uint8_t left, uint8_t right);
+
+    /**
+     * Update the image data at the position `index` with the value `value`.
+     * @param index The position to update in the data.
+     * @param value The new value.
+     */
     void setData(float *data, size_t size);
 
+    /**
+     *
+     * @return The number of rows in the image.
+     */
     int rows_() const;
 
+    /**
+     *
+     * @return The number of columns in the image.
+     */
     int cols_() const;
 
+    /**
+     *
+     * @return The size of the image.
+     */
     int size_() const;
 
+    /**
+     *
+     * @return The number of image channels
+     */
     int getChannels() const;
 
-
+    /**
+     * Print the image data.
+     * @param length  The number of data to be displayed.
+     */
     void printData(size_t length = 15) const;
 
-    Image(int rows, int cols, int channels);
 
-    Image(const char *filename);
-
-    Image(const Image &image);
-
+    /**
+     * Equalizes the histogram of a (grayscale) image.\n
+     * The algorithm normalizes the brightness and increases the contrast of the image.
+     * @return The equalized image.
+     */
     Image equalize();
 
+    /**
+     *Read am image from a path `filename`.
+     *
+     * @param filename The path to the image to be read.
+     * @return True if the image is read and not if it is not.
+     */
     bool read(const char *filename);
 
     bool write(const char *filename);
@@ -174,7 +358,7 @@ public:
 
     void bright(int a);
 
-    Image contrast(float a=1);
+    Image contrast(float a = 1);
 
     Image convolve(const float *kernel, uint8_t r, uint8_t c);
 
@@ -182,16 +366,12 @@ public:
 
     float *get(int row, int col);
 
-    float get_(int row, int col, uint8_t color=0);
+    float get_(int row, int col, uint8_t color = 0);
 
-    void set_(int row, int col, float value, uint8_t color=0);
+    void set_(int row, int col, float value, uint8_t color = 0);
 
     void set(int row, int col, const float *values);
 
-//    void binning(uint8_t left, uint8_t right);
-    Image gray();
-
-    Image brightness();
 
     Image clamping(float low, float high);
 
@@ -212,21 +392,35 @@ public:
 
     Image gauss(int radius = 3, float sigma = 0.0);
 
-    static void normalize(float *_data, int size, float low = 0, float high = 255);
-
-    static void normalize(double *_data, int size, double low = 0, double high = 255);
-
-    static void normalize(uint8_t *_data, int size, uint8_t low = 0, uint8_t high = 255);
-
-    static void normalize(uint16_t *_data, int size, uint16_t low = 0, uint16_t high = 255);
+    template<typename T>
+    static void normalize(T *_data, int size, float low = 0, float high = 255);
 
 
     Image add_padding(int _row, int _col);
 
     Image remove_padding(int _row, int _col);
 
-    Image seam_carving(int _row, int _col);
+    Image seam_carving();
+
+
 };
 
+typedef struct _node {
+    float value;
+    struct _node *left, *right, *l, *r, *u;
+} Node;
+
+class Tree : public Node {
+public:
+    Tree();
+    Tree(float value);
+    Tree(Image image);
+
+    friend std::ostream &operator<<(std::ostream &os, const Tree &tree);
+
+};
+
+
+Tree *new_tree(float initial_value = 0.0);
 
 #endif //IMAGE_PROCESSING_IMAGES_H

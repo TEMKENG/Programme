@@ -7,7 +7,7 @@ from utils import *
 from icecream import ic
 from collections import defaultdict
 
-ic.disable()
+# ic.disable()
 def get_energy(img, ksize=3, scale=1, delta=0, ddepth=cv.CV_16S):
     args = {"scale": scale, "delta": delta, "borderType": cv.BORDER_DEFAULT}
     # Smooth image to reduce noise or high frequency
@@ -21,16 +21,25 @@ def get_energy(img, ksize=3, scale=1, delta=0, ddepth=cv.CV_16S):
     abs_grad_y = cv.convertScaleAbs(grad_y)
 
     l2_energy = (grad_x ** 2 + grad_y ** 2) ** .5
-    avg_energy = cv.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)  # (abs_grad_x + abs_grad_y)/2
+    # (abs_grad_x + abs_grad_y)/2
+    avg_energy = cv.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
     energy_sum = abs_grad_x + abs_grad_y
     return avg_energy, cv.convertScaleAbs(l2_energy), energy_sum
 
 
 def _seam(img, energy=None):
+    # ene =cv.imread("data/energy.png", 0)
+    ene = cv.imread("data/sobel.png", 0)
+    # imshow(ene)
+    # plt.show()
     direction = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
     r, c = img.shape[:2]
     if energy is None:
-        _, energy, _ = get_energy(img)
+        _, energy, _ = get_energy(cv.cvtColor(img, cv.COLOR_RGB2GRAY))
+        cv.imwrite("data/energ.png", energy)
+        imshow(energy)
+        plt.show()
+        # energy = ene.copy()
     # Brightness
     if len(energy.shape) == 3:
         energy = np.sum(energy, -1)
@@ -45,7 +54,9 @@ def _seam(img, energy=None):
             backtrack[i, j] = index + left
             energy_map[i, j] += local_energy[index]
             directions[i, j] = direction[index + (len(local_energy) == 2)]
+
     return norm(energy_map).astype(np.uint8), backtrack, energy
+    # return ene, backtrack, energy
 
 
 def draw_seam_at(img, next_elements, index, energy_map=None, window_name="Energy Map"):
@@ -104,11 +115,15 @@ def drop_columns(img, numberOfColumns=100):
 def show_seam(img, c=500):
     energy_map, backtrack, energy = _seam(img)
     cv.imshow(windowName, cv.cvtColor(img, cv.COLOR_RGB2BGR))
-    cv.imshow("Energy Map", cv.convertScaleAbs(norm(energy_map).astype(np.uint8)))
-    f = lambda column: draw_seam_at(img, backtrack, max(column - 1, 0), energy_map)
+    cv.imshow("Energy Map", cv.convertScaleAbs(
+        norm(energy_map).astype(np.uint8)))
+
+    def f(column): return draw_seam_at(
+        img, backtrack, max(column - 1, 0), energy_map)
     min_index = np.argmin(energy_map[0])
     f(min_index)
-    cv2.createTrackbar('Column', windowName, min_index + 1, c, lambda column: f(column))
+    cv2.createTrackbar('Column', windowName, min_index +
+                       1, c, lambda column: f(column))
 
 
 def to_delete(img):
@@ -171,7 +186,8 @@ def shrink_n(img, c=500):
                     img_copy[i, min_index] = (0, 0, 255)
                     min_index = backtrack[i, min_index]
                 # Remove the path with the minimal energy
-                draw_seam_at(img_copy, backtrack, np.argmin(energy_map[0]), energy_map, windowName)
+                draw_seam_at(img_copy, backtrack, np.argmin(
+                    energy_map[0]), energy_map, windowName)
                 energy = energy[mask].reshape(r, -1)
                 img_copy = img_copy[mask].reshape((r, c - 1, 3))
                 delete[n] = seam
@@ -188,8 +204,8 @@ def shrink_n(img, c=500):
     r, c = img_copy.shape[:2]
     # energy_first = np.zeros((r, c), dtype=np.int)
 
-
-    cv.createTrackbar('Columns', windowName, 1, c - 1, lambda numberOfColumns: shrink(numberOfColumns))
+    cv.createTrackbar('Columns', windowName, 1, c - 1,
+                      lambda numberOfColumns: shrink(numberOfColumns))
 
     return img_copy
 
@@ -204,15 +220,15 @@ if __name__ == '__main__':
     img = cv.imread(filename, cv.IMREAD_COLOR)
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
     r, c, _ = img.shape
-    img = cv.resize(img, (min(r, 500), min(c, 500)))  # Reduce the size to accelerate the computation
+    # img = cv.resize(img, (min(r, 400), min(c, 400)))  # Reduce the size to accelerate the computation
     r, c, _ = img.shape
     # imshow(img, "Original Image Shape=" + str(img.shape))
     # elapse_time = time.time()
     # drop_c = drop_columns(img, 100)
     # elapse_time = time.time() - elapse_time
     # imshow(drop_c, "Seam Drop Columns Shape=" + str(drop_c.shape))
-    # show_seam(img, c)
-    shrink_n(img)
+    show_seam(img, c)
+    # shrink_n(img)
     # delete = to_delete(img)
     plt.show()
     cv.waitKey(0)
