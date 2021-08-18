@@ -14,23 +14,23 @@ int main() {
     Tree *tree = new_tree();
     Tree tmp[10];
     tree->value = 5;
-    DEBUG(tree->value);
-    DEBUG(tmp[0].value);
+    DEBUG(tree->value, "MAIN");
+    DEBUG(tmp[0].value, "MAIN");
     Image positions = img.seam_carving();
     printf("okay\n");
     Tree tmp2 = Tree(positions);
 
-    Image gray = img.brightness();
-    Image cont = img.contrast(1.5);
-    cont.write("data/contra.png");
-    gray.getHistogram().plot();
-    gray.write("data/gray.png");
-    img.sobel().write("data/sobel.png");
-    gray.gauss(3).write("data/gaussian_blur.png");
-//
-    Image zp = img.add_padding(10, 10);
-    zp.write("data/padding_add.png");
-    zp.remove_padding(10, 10).write("data/padding_remove.png");
+//    Image gray = img.brightness();
+//    Image cont = img.contrast(1.5);
+//    cont.write("data/contra.png");
+//    gray.getHistogram().plot();
+//    gray.write("data/gray.png");
+//    img.sobel().write("data/sobel.png");
+//    gray.gauss(3).write("data/gaussian_blur.png");
+////
+//    Image zp = img.add_padding(10, 10);
+//    zp.write("data/padding_add.png");
+//    zp.remove_padding(10, 10).write("data/padding_remove.png");
 
 
 //    float kernel[] = {0.075, 0.125, 0.075, 0.125, 0.200, 0.125, 0.075, 0.125, 0.075};
@@ -68,23 +68,23 @@ int main() {
 //    }
 //    cpy.write("data/copy.png");
 //
-    Image blur = gray.blur();
-    blur.write("data/blur.png");
-    Image convolve1 = blur.convolve(kernel_, 3, 1);
-    convolve1.write("data/convolve_y.png");
-    Image convolve2 = blur.convolve(kernel_, 1, 3);
-    convolve2.write("data/convolve_x.png");
+//    Image blur = gray.blur();
+//    blur.write("data/blur.png");
+//    Image convolve1 = blur.convolve(kernel_, 3, 1);
+//    convolve1.write("data/convolve_y.png");
+//    Image convolve2 = blur.convolve(kernel_, 1, 3);
+//    convolve2.write("data/convolve_x.png");
 //
 //    //    Image add_test = Image::add(convolve2, convolve1);
 //    Image add_test = Image::add(convolve2, convolve1);
 //    add_test.write("data/convolve_add.png");
 //
-    Image convolve = convolve1 * convolve2;
-    convolve.write("data/corner.png");
-    img.invert().write("data/invert.png");
-    img.contrast(0.5).write("data/contrast.png");
-    img.threshold(100).write("data/threshold.png");
-    img.clamping(20, 180).write("data/clamping.png");
+//    Image convolve = convolve1 * convolve2;
+//    convolve.write("data/corner.png");
+//    img.invert().write("data/invert.png");
+//    img.contrast(0.5).write("data/contrast.png");
+//    img.threshold(100).write("data/threshold.png");
+//    img.clamping(20, 180).write("data/clamping.png");
 
     double time_taken = ((double) (clock() - t)) / CLOCKS_PER_SEC; // Calculate the elapsed time
     printf("\nExecution time %.6f second\n", time_taken);

@@ -325,14 +325,14 @@ Image::Image(int _rows, int _cols, int _channels) : rows(_rows), cols(_cols), ch
     new_channel = channels > 3 ? 3 : channels;
 //    data = static_cast<uint8_t *>(init("uint8_t", size));
     data = static_cast<float *>(init("float", size));
-    min_max();
 }
 
 Image::Image(const Image &image) : rows(image.rows), cols(image.cols), channels(image.channels) {
     size = image.size_();
     data = static_cast<float *>(init("float", size, 0, "float", image.data));
     new_channel = image.new_channel;
-    min_max();
+    this->_min = image._min;
+    this->_max = image._max;
 }
 
 bool Image::read(const char *filename) {
@@ -384,26 +384,22 @@ float *Image::getData() const {
     return data;
 }
 
-/**
- *
- * @return The number of rows of the image.
- */
 int Image::rows_() const {
     return rows;
 }
 
-/**
- *
- * @return The number of columns of the image.
- */
+int Image::height() const {
+    return rows;
+}
+
 int Image::cols_() const {
     return cols;
 }
 
-/**
- *
- * @return The number of channels of the image.
- */
+int Image::width() const {
+    return cols;
+}
+
 int Image::getChannels() const {
     return channels;
 }
@@ -731,21 +727,21 @@ Image Image::sobel() {
     float v[] = {-1, 0, 1};
     float kernel_x[] = {1, 0, -1, 2, 0, -2, 1, 0, -1};
     float kernel_y[] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-    Image _blur = add_padding(3, 3).blur(3);
+    Image *_sobel = new Image(add_padding(3, 3).blur(3));
 
-//    Image s_x = _blur.convolve(u, 3, 1).convolve(v, 1, 3);
-//    Image s_y = _blur.convolve(v, 3, 1).convolve(u, 1, 3);
+//    Image s_x = _blur->convolve(u, 3, 1).convolve(v, 1, 3);
+//    Image s_y = _blur->convolve(v, 3, 1).convolve(u, 1, 3);
 
-    Image s_x = _blur.convolve(kernel_x, 3, 3).remove_padding(3, 3);
-    Image s_y = _blur.convolve(kernel_y, 3, 3).remove_padding(3, 3);
-//    s_x.write("data/sobel_x.png");
-//    s_y.write("data/sobel_y.png");
-    Image _sobel(rows, cols, channels);
+    Image s_x = _sobel->convolve(kernel_x, 3, 3).remove_padding(3, 3);
+    Image s_y = _sobel->convolve(kernel_y, 3, 3).remove_padding(3, 3);
+
+    _sobel = new Image(rows, cols, channels);
     for (int i = 0; i < size; ++i) {
-        _sobel.data[i] = std::sqrt(s_x.data[i] * s_x.data[i] + s_y.data[i] * s_y.data[i]);
+        _sobel->data[i] = std::sqrt(s_x.data[i] * s_x.data[i] + s_y.data[i] * s_y.data[i]);
     }
-//    _sobel.write("data/sobel_xy.png");
-    return _sobel.toGray();
+    _sobel = new Image(_sobel->brightness());
+    normalize(_sobel->data, _sobel->size);
+    return *_sobel;
 }
 
 Image Image::gauss(int radius, float sigma) {
@@ -856,8 +852,8 @@ Image Image::blur(int ksize) {
 }
 
 template<typename T>
-uint8_t get_min_pos(T *array, size_t length) {
-    uint8_t pos = 0;
+int get_min_pos(T *array, size_t length) {
+    int pos = 0;
     T min_value = array[0];
     for (int i = 1; i < length; ++i) {
         if (array[i] < min_value) {
@@ -870,8 +866,8 @@ uint8_t get_min_pos(T *array, size_t length) {
 }
 
 template<typename T>
-uint8_t get_max_pos(T *array, size_t length) {
-    uint8_t pos = 0;
+int get_max_pos(T *array, size_t length) {
+    int pos = 0;
     T max_value = array[0];
     for (int i = 1; i < length; ++i) {
         if (array[i] > max_value) {
@@ -891,7 +887,6 @@ Image Image::seam_carving() {
 //    Image cpy = toGray();
     Image energy = gray().sobel();
     Image positions(energy.rows, energy.cols, energy.channels);
-    printf("%f\n", get_(1, 0) > get_(-1, 0));
     for (int i = rows - 2; i > -1; --i) {
 //    for (int i = rows - 2; i > rows / 3; --i) {
         for (int j = 0; j < cols; ++j) {
@@ -904,17 +899,18 @@ Image Image::seam_carving() {
         }
     }
     int pos_ = get_min_pos(energy.data, energy.cols);
-    printf("Position: %d\n", pos_ * 3);
-
+    DEBUG(energy, "seam_carving")
+    DEBUG(*this, "seam_carving")
     for (int i = 0; i < rows; ++i) {
         set(i, pos_, seam_color);
+        energy.set_(i, pos_, 0);
         pos_ = pos_ - 1 + (int) positions.get_(i, pos_);
     }
-    DEBUG(pos_);
     energy.write("data/energy.png");
     positions.write("data/positions.png");
     write("data/seam.png");
 //    return energy;
+    Seam seam(*this);
     return positions;
 }
 
@@ -933,9 +929,10 @@ Tree *new_tree(float initial_value) {
 
 // TREE
 
-Tree::Tree() {
+Tree::Tree() : _node() {
     this->left = nullptr;
     this->right = nullptr;
+    this->next = nullptr;
     this->l = nullptr;
     this->r = nullptr;
     this->u = nullptr;
@@ -946,11 +943,11 @@ Tree::Tree(float value) : Tree() {
     this->value = value;
 }
 
-Tree::Tree(Image image) {
+Tree::Tree(Image image) : _node() {
     Tree *trees = new Tree[image.size_()];
     float *data = image.getData();
     int col = 0, row = 0;
-    for (int i = 0; i < image.rows_() ; i++) {
+    for (int i = 0; i < image.rows_(); i++) {
         for (int j = 0; j < image.cols_(); j++) {
             trees[row + j].value = image.get_(i, j);
             if (j != 0) {
@@ -968,6 +965,8 @@ Tree::Tree(Image image) {
             if (i != image.rows_() - 1) {
                 trees[row + j].u = &trees[row + image.cols_() + j];
             }
+            trees[row + j].next = trees[row + j].value == 0 ? trees[row + j].l :
+                                  (trees[row + j].value == 1 ? trees[row + j].u : trees[row + j].r);
 
         }
         row += image.cols_();
@@ -977,13 +976,12 @@ Tree::Tree(Image image) {
 //    for (int i = 0; i < 10; i++) {
 //        std::cout << trees[i];
 //    }
-//    col = 50;
+//    col = 20;
 //    for (int i = 0; i < col; i++) {
 //        for (int j = 0; j < 2*col; ++j)
 //            std::cout << image.get_(i, j) << " ";
 //        printf("\n");
 //    }
-//
 //    printf("\n");
 }
 
@@ -991,9 +989,49 @@ std::ostream &operator<<(std::ostream &os, const Tree &tree) {
     os << "L: " << ((tree.left == nullptr) ? INFINITY : tree.left->value)
        << " V: " << tree.value
        << " R: " << ((tree.right == nullptr) ? INFINITY : tree.right->value)
+       << " N: " << ((tree.next == nullptr) ? INFINITY : tree.next->value)
        << " BL: " << ((tree.l == nullptr) ? INFINITY : tree.l->value)
        << " BU: " << ((tree.u == nullptr) ? INFINITY : tree.u->value)
        << " BR: " << ((tree.r == nullptr) ? INFINITY : tree.r->value)
        << std::endl;
     return os;
+}
+
+// SEAM
+Seam::~Seam() {
+    free(this->image);
+}
+
+Seam::Seam(Image &image) {
+    this->image = &image;
+    this->energy = new Image(image.sobel());
+    DEBUG(*(this->image), "SEAM")
+    DEBUG(*(this->energy), "SEAM")
+}
+
+int *Seam::find_seam() {
+    int pos;
+    float lur[3];
+    float seam_color[3] = {255, 0, 0};
+    int *path = new int[this->energy->height()];
+    Image positions(energy->rows_(), energy->cols_(), energy->getChannels());
+    for (int i = energy->rows_() - 2; i > -1; --i) {
+        for (int j = 0; j < energy->cols_(); ++j) {
+            lur[0] = energy->get_(i + 1, j - 1);
+            lur[1] = energy->get_(i + 1, j);
+            lur[2] = energy->get_(i + 1, j + 1);
+            pos = get_min_pos(lur, 3);
+            energy->set_(i, j, lur[pos] + energy->get_(i, j));
+            positions.set_(i, j, pos);
+        }
+    }
+    int pos_ = get_min_pos(energy->getData(), energy->cols_());
+    DEBUG(energy, "SEAM")
+    for (int i = 0; i < energy->rows_(); ++i) {
+        path[i] = pos_;
+        this->energy->set_(i, pos_, 0);
+        this->image->set(i, pos_, seam_color);
+        pos_ = pos_ - 1 + (int) positions.get_(i, pos_);
+    }
+    return path;
 }

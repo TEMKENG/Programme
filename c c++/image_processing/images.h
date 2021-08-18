@@ -18,7 +18,7 @@
 #define SEP " "
 #define COL 200
 #define ROW 50
-#define DEBUG(x) std::cout <<"Images| " << #x << " = (" << x << ")" << std::endl;
+#define DEBUG(x, prefix) std::cout <<( strcmp(prefix, "") == 0? "Images" : prefix) << "| "  << #x << " = (" << x << ")" << std::endl;
 
 /**
  * Initializes the pointer `buffer` of length `length` with the value 0.
@@ -195,6 +195,8 @@ public:
      */
     Image(const Image &image);
 
+    virtual ~Image();
+
     /**
      * Copy a image.
      * @return  The copy of the image.
@@ -283,9 +285,21 @@ public:
 
     /**
      *
+     * @return The number of rows in the image.
+     */
+    int height() const;
+
+    /**
+     *
      * @return The number of columns in the image.
      */
     int cols_() const;
+
+    /**
+         *
+         * @return The number of columns in the image.
+         */
+    int width() const;
 
     /**
      *
@@ -353,9 +367,6 @@ public:
 
     bool operator!=(const Image &rhs) const;
 
-    virtual ~Image();
-
-
     void bright(int a);
 
     Image contrast(float a = 1);
@@ -395,25 +406,46 @@ public:
     template<typename T>
     static void normalize(T *_data, int size, float low = 0, float high = 255);
 
-
     Image add_padding(int _row, int _col);
 
     Image remove_padding(int _row, int _col);
 
     Image seam_carving();
 
+    int *find_seam();
+
+
+};
+
+class Seam {
+    Image *image = nullptr; // The Image
+    Image *energy = nullptr; // The Image energy
+public:
+    Seam(Image &image);
+
+    ~Seam();
+
+    int *find_seam();
+
+    void show_seam();
+
+    void shrink_image(int n);
+
+    void resize_image();
 
 };
 
 typedef struct _node {
     float value;
-    struct _node *left, *right, *l, *r, *u;
+    struct _node *left, *right, *l, *r, *u, *next;
 } Node;
 
 class Tree : public Node {
 public:
     Tree();
+
     Tree(float value);
+
     Tree(Image image);
 
     friend std::ostream &operator<<(std::ostream &os, const Tree &tree);

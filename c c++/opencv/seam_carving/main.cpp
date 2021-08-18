@@ -1,6 +1,7 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <iostream>
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
 
 using namespace std;
 using namespace cv;
@@ -8,8 +9,8 @@ using namespace cv;
 int main() {
     string filename = "data/g-star-shoe.jpg";
 //    Mat img = imread(filename.c_str());
-//    Mat img = imread("data/g-star-shoe.jpg");
-    cv::Mat img = cv::imread(R"(D:\Programme\c c++\opencv\seam_carving\data\g-star-shoe.jpg)");
+    Mat img = imread("data/g-star-shoe.jpg");
+//    cv::Mat img = cv::imread(R"(D:\Programme\c c++\opencv\seam_carving\data\g-star-shoe.jpg)");
     // Error Handling
     if (img.empty()) {
         cout << "Image File "
