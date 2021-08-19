@@ -176,11 +176,11 @@ private:
 public:
     /**
     * Create a black image with `rows` rows and `cols` columns `channels` channels
-    * @param rows The number of image rows.
-    * @param cols The number of image columns.
-    * @param channels The number of image channels.
+    * @param n_rows The number of image rows.
+    * @param n_cols The number of image columns.
+    * @param n_channels The number of image channels.
     */
-    Image(int rows, int cols, int channels);
+    Image(int n_rows, int n_cols, int n_channels);
 
     /**
      * Read and create an image based on a filename.
@@ -279,25 +279,25 @@ public:
 
     /**
      *
-     * @return The number of rows in the image.
+     * @return The number of rows in the image or the height of the image..
      */
     int rows_() const;
 
     /**
      *
-     * @return The number of rows in the image.
+     * @return The number of rows in the image or the height of the image.
      */
     int height() const;
 
     /**
      *
-     * @return The number of columns in the image.
+     * @return The number of columns in the image or the width of the image.
      */
     int cols_() const;
 
     /**
          *
-         * @return The number of columns in the image.
+         * @return The number of columns in the image or the width of the image.
          */
     int width() const;
 
@@ -335,14 +335,34 @@ public:
      */
     bool read(const char *filename);
 
+    /**
+     *
+     * @param filename The path where the image will be stored.
+     * @return True if the image has been written to the file and false otherwise.
+     */
     bool write(const char *filename);
 
+    /**
+     * Bring all pixel values into range `[a_min, a_max]`.
+     *
+     * @param a_min The left range of the interval.
+     * @param a_max The right range of the interval.
+     * @return A image
+     */
     Image autoContrast(float a_min = 0, float a_max = 255);
 
     static Type getType(const char *filename);
-
+    /**
+     * Adds `rhs`
+     * @param rhs The image to be added.
+     */
     void add(const Image &rhs);
-
+    /**
+     * Adds two images.
+     * @param a
+     * @param b
+     * @return The sum of the two images.
+     */
     static Image add(const Image &a, const Image &b);
 
     static Image minus(const Image &a, const Image &b);
@@ -374,20 +394,27 @@ public:
     Image convolve(const float *kernel, uint8_t r, uint8_t c);
 
     static Image convolve(Image &image, const float *kernel, uint8_t r, uint8_t c);
+    /**
+     * Get the pixel values at the position `col` and `row`.
+     * @param row The number of rows.
+     * @param col The number of columns.
+     * @return The pixel values at the position `(row, col)`
+     */
+    float *getPixel(int row, int col);
 
-    float *get(int row, int col);
+    float at(int row, int col, uint8_t color = 0);
 
-    float get_(int row, int col, uint8_t color = 0);
+    void set_at(int row, int col, float value, uint8_t color = 0);
 
-    void set_(int row, int col, float value, uint8_t color = 0);
+    void setPixel(int row, int col, const float *values);
 
-    void set(int row, int col, const float *values);
+    Image remove_n_last_col(int n);
 
+    Image resize(int row, int col);
 
     Image clamping(float low, float high);
 
     Image luminance(float r = 1.0 / 3, float g = 1.0 / 3, float b = 1.0 / 3);
-//    Image luminance(float r, float g, float b);
 
     Image threshold(float thresh);
 
@@ -397,7 +424,7 @@ public:
 
     Image sobel();
 
-    Image blur(int radius = 3);
+    Image blur(int kernel_size = 3);
 
     void norm(float low = 0, float high = 255);
 
@@ -410,29 +437,29 @@ public:
 
     Image remove_padding(int _row, int _col);
 
-    Image seam_carving();
+    /**
+     * Remove `n` columns from the image with seam carving algorithm.
+     * @param n The number of columns to remove from the image.
+     * @return The shrinking image.
+     */
+    Image shrink_n(int n = 50);
 
-    int *find_seam();
-
-
-};
-
-class Seam {
-    Image *image = nullptr; // The Image
-    Image *energy = nullptr; // The Image energy
-public:
-    Seam(Image &image);
-
-    ~Seam();
-
-    int *find_seam();
-
+    /**
+     * Show the path with the minimum energy.
+     */
     void show_seam();
 
-    void shrink_image(int n);
+    Image flip_h();
 
-    void resize_image();
+    Image flip_v();
 
+    Image rot180();
+
+    Image rot90();
+
+    Image concat_h(Image &image);
+
+    Image concat_v(Image &image);
 };
 
 typedef struct _node {
@@ -451,7 +478,6 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Tree &tree);
 
 };
-
 
 Tree *new_tree(float initial_value = 0.0);
 

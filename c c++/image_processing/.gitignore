@@ -6,4 +6,4 @@ cmake-build-debug/CMakeFiles/image_processing.dir/clion-environment.txt
 *.cmake
 *.exe
 test.py
-.idea
+*.idea
