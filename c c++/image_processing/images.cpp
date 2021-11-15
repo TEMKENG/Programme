@@ -323,6 +323,7 @@ Histogram Histogram::clone() const {
 
 }
 
+
 // IMAGE
 
 Image::~Image() {
@@ -449,6 +450,14 @@ Image Image::gray() {
 Image Image::brightness() {
     return toGray();
 }
+Histogram Image::getHistogram() {
+//    DEBUG("Histogram", "getHistogram")
+    if (histogram == nullptr) {
+        uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
+        histogram = new Histogram(rows, cols, channels, tmp_data);
+    }
+    return *histogram;
+}
 
 void Image::setData(int index, float value) {
     data[index] = value;
@@ -469,15 +478,6 @@ void Image::printData(const size_t length) const {
         printf("%.f ", data[i]);
     }
     printf("\n");
-}
-
-Histogram Image::getHistogram() {
-//    DEBUG("Histogram", "getHistogram")
-    if (histogram == nullptr) {
-        uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
-        histogram = new Histogram(rows, cols, channels, tmp_data);
-    }
-    return *histogram;
 }
 
 float Image::min() {

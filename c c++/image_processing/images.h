@@ -208,6 +208,12 @@ public:
      * @return  The copy of the image.
      */
     Image clone();
+    /**
+     * Compute the maximum value of the image.
+     *
+     * @return The pixel value with the maximum value.
+     */
+    float max();
 
     /**
      * Compute the minimum value of the image.
@@ -216,12 +222,6 @@ public:
      */
     float min();
 
-    /**
-     * Compute the maximum value of the image.
-     *
-     * @return The pixel value with the maximum value.
-     */
-    float max();
 
     friend std::ostream &operator<<(std::ostream &os, const Image &image);
 
@@ -365,8 +365,10 @@ public:
      */
     static Image add(const Image &a, const Image &b);
 
+    float at(int row, int col, uint8_t color = 0);
+    
     static Image minus(const Image &a, const Image &b);
-
+    
     void minus(const Image &rhs);
 
     void mul(const Image &rhs);
@@ -394,6 +396,9 @@ public:
     Image convolve(const float *kernel, uint8_t r, uint8_t c);
 
     static Image convolve(Image &image, const float *kernel, uint8_t r, uint8_t c);
+
+    Image clamping(float low, float high);
+
     /**
      * Get the pixel values at the position `col` and `row`.
      * @param row The number of rows.
@@ -402,7 +407,6 @@ public:
      */
     float *getPixel(int row, int col);
 
-    float at(int row, int col, uint8_t color = 0);
 
     void set_at(int row, int col, float value, uint8_t color = 0);
 
@@ -412,7 +416,6 @@ public:
 
     Image resize(int row, int col);
 
-    Image clamping(float low, float high);
 
     Image luminance(float r = 1.0 / 3, float g = 1.0 / 3, float b = 1.0 / 3);
 
