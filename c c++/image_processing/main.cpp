@@ -30,7 +30,7 @@ int main() {
 
     Image gray = img.brightness();
 //    gray.getHistogram().plot();
-    // gray.write("data/gray.png");
+     gray.write("data/gray.png");
     int step = 20;
     Image sobel = img.sobel();
     Image binary = sobel.threshold(10);
@@ -45,14 +45,14 @@ int main() {
     // histo.plot();
     // histo.info();
     sobel.write("data/sobel.png");
-    // binary.write("data/threshold.png");    
-    // img.sobel().write("data/sobel.png");
-    // gray.gauss(3).write("data/gaussian_blur.png");
-    // img.luminance(1, 1, 1.2).write("data/luminance.png");
+     binary.write("data/threshold.png");
+     img.sobel().write("data/sobel.png");
+     gray.gauss(3).write("data/gaussian_blur.png");
+     img.luminance(1, 1, 1.2).write("data/luminance.png");
 
-    // Image zp = img.add_padding(10, 10);
-    // zp.write("data/padding_add.png");
-    // zp.remove_padding(10, 10).write("data/padding_remove.png");
+     Image zp = img.add_padding(10, 10);
+     zp.write("data/padding_add.png");
+     zp.remove_padding(10, 10).write("data/padding_remove.png");
 
 
 //    float kernel[] = {0.075, 0.125, 0.075, 0.125, 0.200, 0.125, 0.075, 0.125, 0.075};
@@ -105,8 +105,8 @@ int main() {
 
 //    img.write("data/zeros.png");
 
-    // img.autoContrast().write("data/autocontrast.png");
-    // img.equalize().write("data/equalize.png");
+     img.autoContrast().write("data/autocontrast.png");
+     img.equalize().write("data/equalize.png");
 
 //    Image cpy = img.copy();
 //    for (int i = 0; i < img.rows_() / 2; i++) {
