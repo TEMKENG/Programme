@@ -1,8 +1,8 @@
 # Kleine Bibliothek für Bildverarbeitung
 
 # Inhaltsverzeichnis
-1. [Bild erzeugen](#Bilderzeugung)
-2. 
+1. [Bild erzeugen oder initialisieren](#Bilderzeugung)
+2. [Hilfsfunktion](#hilfsfunktion)
 Mit dieser Bibliothek kann zum Beispiel:
 
 1. Bilder geladen und geschrieben.
@@ -14,7 +14,7 @@ Mit dieser Bibliothek kann zum Beispiel:
 [comment]: <> (![git]&#40;data/gif.gif&#41;)
 ![git](data/video.gif)
 
-# Bilderzeugung <a name="Bilderzeugung"></a>
+## Bilderzeugung <a name="Bilderzeugung"></a>
 
 ```c
 Image(int n_rows, int n_cols, int n_channels);
@@ -36,7 +36,7 @@ Image(const Image &image);
 
 - *image*: Das Bild, das den Inhalt kopiert werden soll.
 
-## Hilfsfunktion
+## Hilfsfunktion <a name="hilfsfunktion"></a>
 
 - Die Anzahl von Zeilen.
     ```c 

@@ -1,7 +1,6 @@
 //
-// Created by TEMKENG on 08.08.2021.
+// Created by Thibaut Temkeng on 08.08.2021.
 //
-
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -10,386 +9,92 @@
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include "stb_image_resize.h"
+
 #include "images.h"
-#include <iostream>
+#include "utils.h"
 
-
-template<typename T>
-T getMax(T *data, size_t size) {
-    T max_value = data[0];
-    for (auto i = 1; i < size; i++) {
-        if (data[i] > max_value) max_value = data[i];
-    }
-    return max_value;
-}
-
-template<typename T>
-T getMin(T *data, size_t size) {
-    T min_ = data[0];
-    for (auto i = 1; i < size; i++) {
-        if (data[i] < min_) min_ = data[i];
-    }
-    return min_;
-}
-
-// UTILS
-void *init(const char *dst_type, size_t length, double initial_value, const char *src_type, void *pointer) {
-
-    if (strcmp(dst_type, "int") == 0) {
-        int *buffer = new int[length];
-        if (strcmp(src_type, "int") == 0) {
-            int *cpy = static_cast<int * >(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? int(initial_value) : cpy[i];
-            }
-        } else {
-            uint8_t *cpy = static_cast<uint8_t *>(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : cpy[i];
-            }
-        }
-        return buffer;
-    } else if (strcmp(dst_type, "uint8_t") == 0) {
-        uint8_t *buffer = new uint8_t[length];
-        if (strcmp(src_type, "float") == 0) {
-            float *cpy = static_cast<float * >(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : (uint8_t) lround(cpy[i]);
-            }
-        } else {
-            uint8_t *cpy = static_cast<uint8_t *>(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : cpy[i];
-            }
-        }
-        return buffer;
-    } else if (strcmp(dst_type, "uint16_t") == 0) {
-        uint16_t *buffer = new uint16_t[length];
-        if (strcmp(src_type, "uint16_t") == 0) {
-            uint16_t *cpy = static_cast<uint16_t * >(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (uint16_t) initial_value : cpy[i];
-            }
-        } else {
-            uint8_t *cpy = static_cast<uint8_t *>(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (uint8_t) initial_value : (uint16_t) cpy[i];
-            }
-        }
-        return buffer;
-    } else if (strcmp(dst_type, "float") == 0) {
-        float *buffer = new float[length];
-        if (strcmp(src_type, "float") == 0) {
-            float *cpy = static_cast<float * >(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (float) initial_value : cpy[i];
-            }
-        } else {
-            uint8_t *cpy = static_cast<uint8_t *>(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? (float) initial_value : (float) cpy[i];
-            }
-        }
-
-        return buffer;
-    } else if (strcmp(dst_type, "double") == 0) {
-        double *buffer = new double[length];
-        if (strcmp(src_type, "double") == 0) {
-            double *cpy = static_cast<double * >(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? initial_value : cpy[i];
-            }
-        } else {
-            uint8_t *cpy = static_cast<uint8_t *>(pointer);
-            for (int i = 0; i < length; ++i) {
-                buffer[i] = cpy == nullptr ? initial_value : (double) cpy[i];
-            }
-        }
-        return buffer;
-    }
-
-    return nullptr;
-}
-
-
-template<typename T>
-void init(T *buffer, size_t length) {
-    buffer = new T[length];
-    for (int i = 0; i < length; ++i) {
-        buffer[i] = 0;
-    }
-}
-
-template<typename T>
-void copy_(T *dst, const T *src, size_t length) {
-    for (int i = 0; i < length; ++i) {
-        dst[i] = src[i];
-    }
-}
-
-void print(const int *data, int col, int row) {
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            printf("%d ", data[i * row + j]);
-        }
-        printf("\n");
-    }
-}
-
-void print(const uint8_t *data, int col, int row) {
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            printf("%d ", data[i * row + j]);
-        }
-        printf("\n");
-    }
-}
-
-void print(const float *data, int col, int row) {
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            printf("%lf ", data[i * row + j]);
-        }
-        printf("\n");
-    }
-}
-
-void print(const double *data, int c, int r) {
-    for (int i = 0; i < r; ++i) {
-        for (int j = 0; i < c; ++i) {
-            printf("%.3lf ", data[i * r + j]);
-        }
-        printf("\n");
-    }
-}
-
-// HISTOGRAM
-
-Histogram::Histogram() : sum_(0), max_(0), min_(-1), avg(0), std(0.0), cols(0), rows(0), dynamic(0), variance(0),
-                         max_h(INT_MIN), min_h(INT_MAX) {
-    data = static_cast<int *>(init("int", MAX));
-    cumsum = static_cast<int *>(init("int", MAX));
-}
-
-Histogram::Histogram(char *filename) {
-
-}
-
-Histogram::Histogram(int _rows, int _cols, int channel, const uint8_t *data_) : Histogram() {
-    rows = _rows;
-    cols = _cols;
-    for (int i = 0; i < rows * cols * channel; i++) {
-        sum_ += data_[i]; // SUM
-        if (data_[i] > max_) max_ = data_[i]; // MIN
-        if (data_[i] < min_) min_ = data_[i]; // MAX
-        data[data_[i]]++; // Histogram data
-    }
-    // Statistic
-    for (int i = 0; i < MAX; ++i) {
-        avg += i * data[i]; // AVG
-        variance += i * i * data[i];
-        if (data[i] != 0) dynamic++;
-        if (min_ == -1 and data[i] != 0) min_ = i; // Smallest pixel value
-        if (data[i] > max_h) max_h = data[i];
-        if (data[i] < min_h) min_h = data[i]; // Smallest value of the histogram
-        cumsum[i] = i == 0 ? data[i] : data[i] + cumsum[i - 1];
-        if (i + 1 == MAX) {
-            float mn = (float) rows * (float) cols;
-            variance = (variance - avg * avg / mn) / mn; // VARIANCE
-            std = sqrtf(variance); // STANDARD VARIANCE
-            avg /= mn; // AVERAGE
-        }
-    }
-}
-
-void Histogram::normalize(int height, int width) {
-    int new_index;
-    max_h = INT_MIN;
-    min_h = INT_MAX;
-    int *tmp = static_cast<int *>(init("int", width));
-    // Quantisation
-    for (int i = 0; i < MAX; i++) {
-        new_index = (int) ((1.0 * width * i) / (float) MAX);
-        tmp[new_index] += data[i];
-        if (tmp[new_index] < min_h) min_h = tmp[new_index];
-        if (tmp[new_index] > max_h) max_h = tmp[new_index];
-    }
-    auto contrast = (float) (max_h - min_h);
-    // Assign new values
-    init(data, MAX);
-    for (int i = 0; i < width; i++) {
-        if (tmp[i] != 0) {
-            data[i] = (int) ((float) (height * (tmp[i] - min_h)) / contrast);
-            data[i] = data[i] == 0 ? 1 : data[i];
-        }
-    }
-}
-
-void Histogram::plot(int r, int c) {
-    normalize(r, c);
-    int counter = r;
-    int *data_copy = new int[c];
-    copy_(data_copy, data, c);
-    printf("\n%d \n", max_h);
-    for (int i = 0; i <= r; i++) {
-        for (int j = 0; j <= c + 2; j++) {
-            if (i == r && j == 0) printf("0");
-            else if (i == r && j == c + 2) printf("  %d ", c);
-            else if (j == 0 or j == c + 1) printf("|");
-            else if (i == r) printf("-");
-            else if (data_copy[j - 1] == counter) {
-                printf("*");
-                data_copy[j - 1]--;
-            } else { printf(" "); }
-        }
-        counter--;
-        printf("\n");
-    }
-}
-
-void Histogram::info() const {
-    printf("############ Histogramm #########\n");
-    printf("\n# %9s %d", "MIN:", min_);
-    printf("\n# %9s %d", "MAX:", max_);
-    printf("\n# %9s %d", "SUM:", sum_);
-    printf("\n# %9s %.3f", "AVG:", avg);
-    printf("\n# %9s %.3f", "STD:", std);
-    printf("\n# %9s %d", "MAX_H:", max_h);
-    printf("\n# %9s %d", "MIN_H:", min_h);
-    printf("\n# %9s %d", "DYNAMIC:", dynamic);
-    printf("\n# VARIANCE: %.3f\n", variance);
-    printf("##################################\n");
-    printf("# Number columns: %d\n", cols);
-    printf("# Number of rows: %d\n", rows);
-    printf("##################################\n");
-
-}
-
-bool Histogram::operator==(const Histogram &rhs) const {
-    return sum_ == rhs.sum_ &&
-           max_ == rhs.max_ &&
-           min_ == rhs.min_ &&
-           avg == rhs.avg &&
-           std == rhs.std &&
-           variance == rhs.variance &&
-           max_h == rhs.max_h &&
-           min_h == rhs.min_h &&
-           dynamic == rhs.dynamic &&
-           cumsum == rhs.cumsum &&
-           data == rhs.data &&
-           cols == rhs.cols &&
-           rows == rhs.rows;
-}
-
-bool Histogram::operator!=(const Histogram &rhs) const {
-    return !(rhs == *this);
-}
-
-Histogram &Histogram::operator=(const Histogram &rhs) {
-    if (this != &rhs) {
-        avg = rhs.avg;
-        std = rhs.std;
-        sum_ = rhs.sum_;
-        max_ = rhs.max_;
-        min_ = rhs.min_;
-        rows = rhs.rows;
-        cols = rhs.cols;
-        data = rhs.data;
-        max_h = rhs.max_h;
-        min_h = rhs.min_h;
-        cumsum = rhs.cumsum;
-        dynamic = rhs.dynamic;
-        variance = rhs.variance;
-    }
-    return *this;
-}
-
-Histogram Histogram::clone() const {
-    Histogram _copy;
-    _copy.avg = avg;
-    _copy.std = std;
-    _copy.sum_ = sum_;
-    _copy.max_ = max_;
-    _copy.min_ = min_;
-    _copy.rows = rows;
-    _copy.cols = cols;
-    _copy.max_h = max_h;
-    _copy.min_h = min_h;
-    _copy.dynamic = dynamic;
-    _copy.variance = variance;
-    copy_(_copy.data, data, 256);
-    copy_(_copy.cumsum, cumsum, 256);
-    return _copy;
-
-}
-
-
-// IMAGE
-
-Image::~Image() {
+Image::~Image()
+{
     free(data);
 }
 
-Image::Image(const char *filename) {
-    if (read(filename)) {
+Image::Image(const char *filename)
+{
+    if (read(filename))
+    {
         printf("File %s is read\n", filename);
         size = channels * rows * cols;
         new_channel = channels > 3 ? 3 : channels;
         min_max();
-    } else
+    }
+    else
         printf("File %s was not read\n", filename);
 }
 
-Image::Image(int n_rows, int n_cols, int n_channels) : rows(n_rows), cols(n_cols), channels(n_channels) {
+Image::Image(int n_rows, int n_cols, int n_channels) : rows(n_rows), cols(n_cols), channels(n_channels)
+{
     size = n_channels * n_rows * n_cols;
     new_channel = channels > 3 ? 3 : channels;
-    data = static_cast<float *>(init("float", size));
+    float init_value = 0;
+    this->data = init(this->size, init_value);
 }
 
 Image::Image(const Image &image) : rows(image.rows), cols(image.cols), channels(image.channels), size(image.size),
-                                   new_channel(image.new_channel), _min(image._min), _max(image._max) {
-    data = static_cast<float *>(init("float", size, 0, "float", image.data));
+                                   new_channel(image.new_channel), _min(image._min), _max(image._max)
+{
+
+    this->data = copy(image.data, size);
 }
 
-bool Image::read(const char *filename) {
+bool Image::read(const char *filename)
+{
     uint8_t *tmp = stbi_load(filename, &cols, &rows, &channels, 0);
     size = cols * rows * channels;
-    data = static_cast<float *>(init("float", size, 0, "uint8_t", tmp));
+    float none(0.0);
+    data = cast(tmp, size, none);
     return data != nullptr;
 }
 
-bool Image::write(const char *filename) {
+bool Image::write(const char *filename)
+{
     int check;
-    auto *cpy = static_cast<float *>(init("float", size, 0, "float", data));
+    float *cpy = static_cast<float *>(copy(this->data, size));
 
-    if (_max > 255 or _min < 0) {
+    if (_max > 255 or _min < 0)
+    {
         normalize(cpy, rows * cols * channels);
     }
-    auto *_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", cpy));
-    switch (getType(filename)) {
-        case PNG:
-            check = stbi_write_png(filename, cols, rows, channels, _data, cols * channels);
-            break;
-        case JPG:
-            check = stbi_write_jpg(filename, cols, rows, channels, _data, 100);
-            break;
-        case BMP:
-            check = stbi_write_bmp(filename, cols, rows, channels, _data);
-            break;
-        case TGA:
-            check = stbi_write_tga(filename, cols, rows, channels, _data);
-            break;
+    uint8_t *_data = cast(cpy, size, new_channel);
+    switch (getType(filename))
+    {
+    case PNG:
+        check = stbi_write_png(filename, cols, rows, channels, _data, cols * channels);
+        break;
+    case JPG:
+        check = stbi_write_jpg(filename, cols, rows, channels, _data, 100);
+        break;
+    case BMP:
+        check = stbi_write_bmp(filename, cols, rows, channels, _data);
+        break;
+    case TGA:
+        check = stbi_write_tga(filename, cols, rows, channels, _data);
+        break;
     }
 
     return check != 0;
 }
 
-Image::Type Image::getType(const char *filename) {
+Image::Type Image::getType(const char *filename)
+{
     const char *extension = strrchr(filename, '.');
-    if (extension == nullptr) return PNG;
-    if (strcmp(extension, ".jpg") == 0 or strcmp(extension, ".jpeg") == 0) return JPG;
-    else if (strcmp(extension, ".bmp") == 0) return BMP;
-    else if (strcmp(extension, ".tga") == 0) return TGA;
+    if (extension == nullptr)
+        return PNG;
+    if (strcmp(extension, ".jpg") == 0 or strcmp(extension, ".jpeg") == 0)
+        return JPG;
+    else if (strcmp(extension, ".bmp") == 0)
+        return BMP;
+    else if (strcmp(extension, ".tga") == 0)
+        return TGA;
     return PNG;
 }
 
@@ -397,69 +102,87 @@ Image::Type Image::getType(const char *filename) {
  *
  * @return  The image data.
  */
-float *Image::getData() const {
+float *Image::getData() const
+{
     return data;
 }
 
-int Image::rows_() const {
+int Image::rows_() const
+{
     return rows;
 }
 
-int Image::height() const {
+int Image::height() const
+{
     return rows;
 }
 
-int Image::cols_() const {
+int Image::cols_() const
+{
     return cols;
 }
 
-int Image::width() const {
+int Image::width() const
+{
     return cols;
 }
 
-int Image::getChannels() const {
+int Image::getChannels() const
+{
     return channels;
 }
 
-Image Image::toGray() {
-    if (grayscale == nullptr) {
-        if (new_channel == 1) {
+Image Image::toGray()
+{
+    if (grayscale == nullptr)
+    {
+        if (new_channel == 1)
+        {
             grayscale = new Image(*this);
             return *grayscale;
         }
         int index = 0;
         float pixelSomme;
         grayscale = new Image(rows, cols, 1);
-        for (int i = 0; i < size; i += channels) {
+        for (int i = 0; i < size; i += channels)
+        {
             pixelSomme = 0;
-            for (int j = 0; j < new_channel; j++) { pixelSomme += data[i + j]; }
-            grayscale->setData(index++, pixelSomme / (float) new_channel);
+            for (int j = 0; j < new_channel; j++)
+            {
+                pixelSomme += data[i + j];
+            }
+            grayscale->setData(index++, pixelSomme / (float)new_channel);
         }
         grayscale->min_max();
-
     }
-//    grayscale->_min = getMin(grayscale->data, grayscale->size);
-//    grayscale->_max = getMax(grayscale->data, grayscale->size);
+    //    grayscale->_min = getMin(grayscale->data, grayscale->size);
+    //    grayscale->_max = getMax(grayscale->data, grayscale->size);
     return *grayscale;
 }
 
-Image Image::gray() {
+Image Image::gray()
+{
     return toGray();
 }
 
-Image Image::brightness() {
+Image Image::brightness()
+{
     return toGray();
 }
-Histogram Image::getHistogram() {
-//    DEBUG("Histogram", "getHistogram")
-    if (histogram == nullptr) {
-        uint8_t *tmp_data = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
+Histogram Image::getHistogram()
+{
+    //    DEBUG("Histogram", "getHistogram")
+    if (histogram == nullptr)
+    {
+        uint8_t none(0);
+        uint8_t *tmp_data = cast(this->data, this->size, none);
         histogram = new Histogram(rows, cols, channels, tmp_data);
     }
     return *histogram;
 }
 
-void Image::setData(int index, float value) {
+void Image::setData(int index, float value)
+{
     data[index] = value;
     if (value > _max)
         _max = value;
@@ -467,52 +190,66 @@ void Image::setData(int index, float value) {
         _min = value;
 }
 
-void Image::setData(float *data_, size_t length) {
-    for (int i = 0; i < length; ++i) {
+void Image::setData(float *data_, size_t length)
+{
+    for (int i = 0; i < length; ++i)
+    {
         setData(i, data_[i]);
     }
 }
 
-void Image::printData(const size_t length) const {
-    for (int i = 0; i < length; i++) {
+void Image::printData(const size_t length) const
+{
+    for (int i = 0; i < length; i++)
+    {
         printf("%.f ", data[i]);
     }
     printf("\n");
 }
 
-float Image::min() {
+float Image::min()
+{
     if (first_min_max)
         min_max();
     return _min;
 }
 
-float Image::max() {
+float Image::max()
+{
     if (first_min_max)
         min_max();
     return _max;
 }
 
-void Image::min_max() {
+void Image::min_max()
+{
     _min = data[0], _max = data[0];
-    for (int i = 1; i < size; ++i) {
-        if (data[i] > _max) _max = data[i];
-        if (data[i] < _min) _min = data[i];
+    for (int i = 1; i < size; ++i)
+    {
+        if (data[i] > _max)
+            _max = data[i];
+        if (data[i] < _min)
+            _min = data[i];
     }
     first_min_max = false;
 }
 
-int Image::size_() const {
+int Image::size_() const
+{
     return size;
 }
 
-Image Image::autoContrast(float a_min, float a_max) {
+Image Image::autoContrast(float a_min, float a_max)
+{
     Image cpy = clone();
     float dist = a_max - a_min;
     float dist_ = _max - _min;
     if (dist == 0 or dist_ == 0)
         return cpy;
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             cpy.data[i + j] = a_min + (data[i + j] - _min) * dist / dist_;
         }
     }
@@ -521,51 +258,67 @@ Image Image::autoContrast(float a_min, float a_max) {
     return cpy;
 }
 
-Image Image::equalize() {
+Image Image::equalize()
+{
     //    DEBUG(result, "EQUALIZE")
-    float mn = (float) size;
+    float mn = (float)size;
     Histogram hist = getHistogram();
-    Image result = copy();
-    for (int i = 0; i < size; i += new_channel) {
-        for (int j = 0; j < new_channel; ++j) {
-            result.data[i + j] = ((float) hist.cumsum[(uint8_t) data[i + j]] * _max) / mn;
+    Image result = clone();
+    for (int i = 0; i < size; i += new_channel)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
+            result.data[i + j] = ((float)hist.cumsum[(uint8_t)data[i + j]] * _max) / mn;
         }
     }
     return result;
 }
 
-void Image::bright(int a) {
+void Image::bright(int a)
+{
     const float offset = a;
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             data[i + j] += offset;
         }
     }
 }
 
-Image Image::contrast(float alpha) {
+Image Image::contrast(float alpha)
+{
     Image result = clone();
-    if (alpha < 0) return result;
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+    if (alpha < 0)
+        return result;
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             result.data[i + j] *= alpha;
         }
     }
     return result;
 }
 
-Image Image::convolve(const float *kernel, uint8_t r_, uint8_t c_) {
+Image Image::convolve(const float *kernel, uint8_t r_, uint8_t c_)
+{
     float sum;
     int index = 0;
     Image cpy = clone();
-//    auto *data_result = static_cast<float *>(init("float", size, 0, "float", cpy.data));
+    //    auto *data_result = static_cast<float *>(init("float", size, 0, "float", cpy.data));
     uint8_t l = r_ / 2, m = c_ / 2;
-    for (int color = 0; color < new_channel; ++color) {
-        for (int i = l; i < rows - l; ++i) {
-            for (int j = m; j < cols - m; ++j) {
+    for (int color = 0; color < new_channel; ++color)
+    {
+        for (int i = l; i < rows - l; ++i)
+        {
+            for (int j = m; j < cols - m; ++j)
+            {
                 sum = 0;
-                for (int row = -l; row <= l; ++row) {
-                    for (int col = -m; col <= m; ++col) {
+                for (int row = -l; row <= l; ++row)
+                {
+                    for (int col = -m; col <= m; ++col)
+                    {
                         sum += at(i + row, j + col, color) * kernel[(row + l) * c_ + col + m];
                     }
                 }
@@ -576,25 +329,24 @@ Image Image::convolve(const float *kernel, uint8_t r_, uint8_t c_) {
     return cpy;
 }
 
-Image Image::copy() {
+Image Image::clone()
+{
     Image cpy(rows, cols, channels);
-    copy_(cpy.data, data, size);
+    cpy.data = copy(data, size);
     cpy._max = _max;
     cpy._min = _min;
     return cpy;
 }
 
-Image Image::clone() {
-    return copy();
-}
-
-float Image::at(int row, int col, uint8_t color) {
+float Image::at(int row, int col, uint8_t color)
+{
     if ((row < 0 or row >= rows) or (col < 0 or col >= cols))
         return INFINITY;
     return data[(row * cols + col) * channels + color];
 }
 
-void Image::set_at(int row, int col, float value, uint8_t color) {
+void Image::set_at(int row, int col, float value, uint8_t color)
+{
     if (value > _max)
         _max = value;
     if (value < _min)
@@ -602,19 +354,25 @@ void Image::set_at(int row, int col, float value, uint8_t color) {
     data[(row * cols + col) * channels + color] = value;
 }
 
-float *Image::getPixel(int row, int col) {
-    auto pixels = static_cast<float *>(init("float", channels));
+float *Image::getPixel(int row, int col)
+{
+    float init_value = 0;
+    float *pixels = init(channels, init_value);
     int offset = (row * cols + col) * channels;
-    for (int i = 0; i < channels; ++i) {
+    for (int i = 0; i < channels; ++i)
+    {
         pixels[i] = data[offset + i];
     }
     return pixels;
 }
 
-void Image::setPixel(int row, int col, const float *values) {
-    if (values == nullptr) return;
+void Image::setPixel(int row, int col, const float *values)
+{
+    if (values == nullptr)
+        return;
     int offset = (row * cols + col) * channels;
-    for (int i = 0; i < channels; ++i) {
+    for (int i = 0; i < channels; ++i)
+    {
         if (values[i] > _max)
             _max = values[i];
         if (values[i] < _min)
@@ -623,10 +381,13 @@ void Image::setPixel(int row, int col, const float *values) {
     }
 }
 
-void Image::minus(const Image &rhs) {
+void Image::minus(const Image &rhs)
+{
     _max = 0;
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             data[i + j] -= rhs.data[i + j];
             if (data[i + j] < _min)
                 _min = data[i + j];
@@ -636,10 +397,13 @@ void Image::minus(const Image &rhs) {
     }
 }
 
-void Image::add(const Image &rhs) {
+void Image::add(const Image &rhs)
+{
     _min = _max, _max = 0;
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             data[i + j] = data[i + j] + rhs.data[i + j];
             if (data[i + j] < _min)
                 _min = data[i + j];
@@ -649,9 +413,12 @@ void Image::add(const Image &rhs) {
     }
 }
 
-void Image::mul(const Image &rhs) {
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; ++j) {
+void Image::mul(const Image &rhs)
+{
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; ++j)
+        {
             data[i + j] *= rhs.data[i + j];
             if (data[i + j] < _min)
                 _min = data[i + j];
@@ -661,66 +428,80 @@ void Image::mul(const Image &rhs) {
     }
 }
 
-Image Image::operator+(const Image &rhs) const {
+Image Image::operator+(const Image &rhs) const
+{
     Image plus(*this);
     plus.add(rhs);
     return plus;
 }
 
-Image Image::operator-(const Image &rhs) const {
+Image Image::operator-(const Image &rhs) const
+{
     Image sub(*this);
     sub.minus(rhs);
     return sub;
 }
 
-Image Image::operator*(const Image &rhs) const {
+Image Image::operator*(const Image &rhs) const
+{
     Image multiply(*this);
     multiply.mul(rhs);
     return multiply;
 }
 
-Image &Image::operator+=(const Image &rhs) {
+Image &Image::operator+=(const Image &rhs)
+{
     add(rhs);
     return *this;
 }
 
-Image &Image::operator-=(const Image &rhs) {
+Image &Image::operator-=(const Image &rhs)
+{
     minus(rhs);
     return *this;
 }
 
-Image &Image::operator*=(const Image &rhs) {
+Image &Image::operator*=(const Image &rhs)
+{
     mul(rhs);
     return *this;
 }
 
-bool Image::operator==(const Image &rhs) const {
+bool Image::operator==(const Image &rhs) const
+{
     return data == rhs.data &&
            rows == rhs.rows &&
            cols == rhs.cols &&
            channels == rhs.channels;
 }
 
-bool Image::operator!=(const Image &rhs) const {
+bool Image::operator!=(const Image &rhs) const
+{
     return !(rhs == *this);
 }
 
-std::ostream &operator<<(std::ostream &os, const Image &image) {
+std::ostream &operator<<(std::ostream &os, const Image &image)
+{
     os << "Rows: " << image.rows << " Columns: " << image.cols << " Channels: " << image.channels;
     return os;
 }
 
-Image Image::luminance(float r, float g, float b) {
-    if (new_channel < 3) {
+Image Image::luminance(float r, float g, float b)
+{
+    if (new_channel < 3)
+    {
         return toGray();
     }
     Image lum(rows, cols, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
             lum.set_at(i, j, at(i, j) * r);
             lum.set_at(i, j, at(i, j, 1) * g, 1);
             lum.set_at(i, j, at(i, j, 2) * b, 2);
-            for (int k = new_channel; k < channels; ++k) { // For png photos
+            for (int k = new_channel; k < channels; ++k)
+            { // For png photos
                 lum.set_at(i, j, at(i, j, k), k);
             }
         }
@@ -728,11 +509,14 @@ Image Image::luminance(float r, float g, float b) {
     return lum;
 }
 
-Image Image::clamping(float low, float high) {
+Image Image::clamping(float low, float high)
+{
     float pixel_value;
-    Image clamp = copy();
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; j++) {
+    Image clamp = clone();
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; j++)
+        {
             pixel_value = data[i + j];
             clamp.setData(i + j, pixel_value > high ? high : (pixel_value < low ? low : pixel_value));
         }
@@ -740,39 +524,48 @@ Image Image::clamping(float low, float high) {
     return clamp;
 }
 
-Image Image::remove_n_last_col(int n) {
+Image Image::remove_n_last_col(int n)
+{
     Image result(rows, cols - n, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols - n; ++j) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols - n; ++j)
+        {
             result.setPixel(i, j, getPixel(i, j));
         }
     }
     return result;
 }
 
-Image Image::resize(int row, int col) {
+Image Image::resize(int row, int col)
+{
 
     Image result(row, col, channels);
     DEBUG(result, "RESIZE");
     perror("Resize does not work correctly");
     return result;
-    uint8_t *data_out = static_cast<uint8_t *>(init("uint8_t", result.size, 0));
-    uint8_t *data_original = static_cast<uint8_t *>(init("uint8_t", size, 0, "float", data));
+    uint8_t init_value = 0;
+    uint8_t *data_out = init(result.size, init_value);
+    uint8_t *data_original = cast(this->data, this->size, init_value);
     stbir_resize_uint8(data_original, width(), height(),
                        cols * channels * sizeof(uint8_t), data_out, result.width(),
                        result.height(), col * channels * sizeof(uint8_t), channels);
-    float *data_result = static_cast<float *>(init("float", result.size, 0, "uint8_t", data_out));
+    float *data_result = cast(data_out, result.size, data[0]);
     memcpy(result.data, data_result, result.size);
     return result;
 }
 
-Image Image::threshold(float thresh) {
+Image Image::threshold(float thresh)
+{
     Image result(rows, cols, channels);
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; j++) {
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; j++)
+        {
             result.data[i + j] = data[i + j] > thresh ? 255 : 0;
         }
-        if (new_channel < channels) {
+        if (new_channel < channels)
+        {
             result.data[i + new_channel] = data[i + new_channel];
         }
     }
@@ -781,35 +574,40 @@ Image Image::threshold(float thresh) {
     return result;
 }
 
-Image Image::invert() {
-    Image invert_ = copy();
-    for (int i = 0; i < size; i += channels) {
-        for (int j = 0; j < new_channel; j++) {
+Image Image::invert()
+{
+    Image invert_ = clone();
+    for (int i = 0; i < size; i += channels)
+    {
+        for (int j = 0; j < new_channel; j++)
+        {
             invert_.data[i + j] = _max - data[i + j];
         }
     }
     return invert_;
 }
 
-void Image::gamma() {
-
+void Image::gamma()
+{
 }
 
-Image Image::sobel() {
+Image Image::sobel()
+{
     float u[] = {1, 2, 1};
     float v[] = {-1, 0, 1};
     float kernel_x[] = {1, 0, -1, 2, 0, -2, 1, 0, -1};
     float kernel_y[] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
     Image *_sobel = new Image(add_padding(3, 3).blur(3));
 
-//    Image s_x = _blur->convolve(u, 3, 1).convolve(v, 1, 3);
-//    Image s_y = _blur->convolve(v, 3, 1).convolve(u, 1, 3);
+    //    Image s_x = _blur->convolve(u, 3, 1).convolve(v, 1, 3);
+    //    Image s_y = _blur->convolve(v, 3, 1).convolve(u, 1, 3);
 
     Image s_x = _sobel->convolve(kernel_x, 3, 3).remove_padding(3, 3);
     Image s_y = _sobel->convolve(kernel_y, 3, 3).remove_padding(3, 3);
 
     _sobel = new Image(rows, cols, channels);
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < size; ++i)
+    {
         _sobel->data[i] = std::sqrt(s_x.data[i] * s_x.data[i] + s_y.data[i] * s_y.data[i]);
     }
     _sobel = new Image(_sobel->brightness());
@@ -817,14 +615,18 @@ Image Image::sobel() {
     return *_sobel;
 }
 
-Image Image::gauss(int radius, float sigma) {
+Image Image::gauss(int radius, float sigma)
+{
     int i = 0, j = 0, length = radius * radius;
-    float value, *kernel = static_cast<float *>(init("float", length));
+    float value = 0;
+    float *kernel = init(length, value);
     sigma = sigma == 0.0 ? float(0.3 * ((radius - 1) * 0.5 - 1) + 0.8) : sigma;
     sigma *= 2 * sigma;
-    for (int x = -radius / 2; x <= 0; ++x) {
+    for (int x = -radius / 2; x <= 0; ++x)
+    {
         j = 0;
-        for (int y = -radius / 2; y <= 0; ++y) {
+        for (int y = -radius / 2; y <= 0; ++y)
+        {
             value = exp(-float(x * x + y * y) / sigma);
             kernel[i * radius + j] = value;
             kernel[(i + 1) * radius - 1 - j] = value;
@@ -835,63 +637,79 @@ Image Image::gauss(int radius, float sigma) {
         i++;
     }
     value = 0;
-//    Compute the sum
-    for (i = 0; i < length; ++i) {
+    //    Compute the sum
+    for (i = 0; i < length; ++i)
+    {
         value += kernel[i];
     }
-//    Normalize the kernel
-    for (i = 0; i < length; ++i) {
+    //    Normalize the kernel
+    for (i = 0; i < length; ++i)
+    {
         kernel[i] /= value;
     }
-//    print(kernel, radius, radius);
+    //    print(kernel, radius, radius);
     return convolve(kernel, radius, radius);
 }
 
-Image Image::add(const Image &a, const Image &b) {
+Image Image::add(const Image &a, const Image &b)
+{
     Image result(a);
     result += b;
     return result;
 }
 
-Image Image::minus(const Image &a, const Image &b) {
+Image Image::minus(const Image &a, const Image &b)
+{
     Image result(a);
     result -= b;
     return result;
 }
 
-Image Image::convolve(Image &image, const float *kernel, uint8_t r, uint8_t c) {
+Image Image::convolve(Image &image, const float *kernel, uint8_t r, uint8_t c)
+{
     return image.convolve(kernel, r, c);
 }
 
-void Image::norm(float low, float high) {
-    auto *cpy = static_cast<float *>(init("float", size, 0, "float", data));
+void Image::norm(float low, float high)
+{
+    float *cpy = copy(this->data, this->size);
     normalize(cpy, size, low, high);
     setData(cpy, size);
 }
 
-template<typename T>
-void Image::normalize(T *_data, int size, float low, float high) {
+template <typename T>
+void Image::normalize(T *_data, int size, float low, float high)
+{
     T max_ = _data[0], min_ = _data[0];
-    for (int i = 1; i < size; ++i) {
-        if (_data[i] > max_) max_ = _data[i];
-        if (_data[i] < min_) min_ = _data[i];
+    for (int i = 1; i < size; ++i)
+    {
+        if (_data[i] > max_)
+            max_ = _data[i];
+        if (_data[i] < min_)
+            min_ = _data[i];
     }
     T dist = max_ - min_;
     T high_low = high - low;
-    if (dist == 0) return;
-    for (int i = 0; i < size; i++) {
+    if (dist == 0)
+        return;
+    for (int i = 0; i < size; i++)
+    {
         _data[i] = high_low * (_data[i] - min_) / dist;
     }
 }
 
-Image Image::add_padding(int _row, int _col) {
+Image Image::add_padding(int _row, int _col)
+{
     Image zp(rows + 2 * _row, cols + 2 * _col, channels);
     int index, offset;
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
             index = (i * cols + j) * channels;
             offset = ((i + _row) * zp.cols + j + _col) * channels;
-            for (int k = 0; k < channels; ++k) {
+            for (int k = 0; k < channels; ++k)
+            {
                 zp.data[offset + k] = data[index + k];
             }
         }
@@ -899,14 +717,18 @@ Image Image::add_padding(int _row, int _col) {
     return zp;
 }
 
-Image Image::remove_padding(int _row, int _col) {
+Image Image::remove_padding(int _row, int _col)
+{
     Image zp(rows - 2 * _row, cols - 2 * _col, channels);
     int index, offset;
-    for (int i = _row; i < rows - _row; ++i) {
-        for (int j = _col; j < cols - _col; ++j) {
+    for (int i = _row; i < rows - _row; ++i)
+    {
+        for (int j = _col; j < cols - _col; ++j)
+        {
             index = (i * cols + j) * channels;
             offset = ((i - _row) * zp.cols + j - _col) * channels;
-            for (int k = 0; k < channels; ++k) {
+            for (int k = 0; k < channels; ++k)
+            {
                 zp.data[offset + k] = data[index + k];
             }
         }
@@ -914,189 +736,223 @@ Image Image::remove_padding(int _row, int _col) {
     return zp;
 }
 
-Image Image::blur(int kernel_size) {
-    float *kernel = static_cast<float *>(init("float", kernel_size * kernel_size,
-                                              1. / float(kernel_size * kernel_size)));
+Image Image::blur(int kernel_size)
+{
+    float *kernel = init(kernel_size * kernel_size, float(1) / float(kernel_size * kernel_size));
 
     return clone().convolve(kernel, kernel_size, kernel_size);
 }
 
-template<typename T>
-int get_min_pos(T *array, size_t length) {
+template <typename T>
+int getMinPos(T *array, size_t length)
+{
     int pos = 0;
     T min_value = array[0];
-    for (int i = 1; i < length; ++i) {
-        if (array[i] < min_value) {
+    for (int i = 1; i < length; ++i)
+    {
+        if (array[i] < min_value)
+        {
             min_value = array[i];
             pos = i;
         }
     }
     return pos;
-
 }
 
-template<typename T>
-int get_max_pos(T *array, size_t length) {
+template <typename T>
+int get_max_pos(T *array, size_t length)
+{
     int pos = 0;
     T max_value = array[0];
-    for (int i = 1; i < length; ++i) {
-        if (array[i] > max_value) {
+    for (int i = 1; i < length; ++i)
+    {
+        if (array[i] > max_value)
+        {
             max_value = array[i];
             pos = i;
         }
     }
     return pos;
-
 }
 
-Image Image::shrink_n(int n) {
+Image Image::shrink_n(int n)
+{
     float max_value = _max + 1;
     Image *image = new Image(clone());
     Image *energy = new Image(sobel());
     Image energy_map = energy->clone();
     Image positions(energy->rows_(), energy->cols_(), 1);
-    int pos, pos_, *path = static_cast<int *>(init("int", image->height()));
+    int pos, pos_, *path = init(image->height(), 0);
     float lur[3], white[3] = {max_value, max_value, max_value}, energy_max_value = energy->_max + 1;
     //    DEBUG(this->energy->size_(), "FIND_SEAM_")
-    for (int k = 0; k < n; ++k) {
-        for (int i = energy->rows_() - 2; i > -1; --i) {
-            for (int j = 0; j < energy->cols_() - k; ++j) {
+    for (int k = 0; k < n; ++k)
+    {
+        for (int i = energy->rows_() - 2; i > -1; --i)
+        {
+            for (int j = 0; j < energy->cols_() - k; ++j)
+            {
                 lur[0] = energy->at(i + 1, j - 1);
                 lur[1] = energy->at(i + 1, j);
                 lur[2] = energy->at(i + 1, j + 1);
-                pos = get_min_pos(lur, 3);
+                pos = getMinPos(lur, 3);
                 energy_map.set_at(i, j, lur[pos] + energy->at(i, j));
-                positions.set_at(i, j, (float) pos);
+                positions.set_at(i, j, (float)pos);
             }
         }
-        pos_ = get_min_pos(energy_map.getData(), energy->cols_() - k);
-        for (int i = 0; i < energy->rows_(); ++i) {
+        pos_ = getMinPos(energy_map.getData(), energy->cols_() - k);
+        for (int i = 0; i < energy->rows_(); ++i)
+        {
             path[i] = pos_;
             //            Roll the row
-            for (int j = pos_; j < energy->cols_() - 1 - k; ++j) {
+            for (int j = pos_; j < energy->cols_() - 1 - k; ++j)
+            {
                 image->setPixel(i, j, image->getPixel(i, j + 1));
                 energy->set_at(i, j, energy->at(i, j + 1));
             }
             image->setPixel(i, energy->cols_() - 1 - k, white);
             energy->set_at(i, energy->cols_() - 1 - k, energy_max_value);
-            pos_ = pos_ - 1 + (int) positions.at(i, pos_);
+            pos_ = pos_ - 1 + (int)positions.at(i, pos_);
         }
     }
     //    Resize the image and the energy
-//    energy = new Image(energy->remove_n_last_col(n));
-//    image = new Image(image->remove_n_last_col(n));
+    //    energy = new Image(energy->remove_n_last_col(n));
+    //    image = new Image(image->remove_n_last_col(n));
     free(energy);
     return image->remove_n_last_col(n);
 }
 
-void Image::show_seam() {
+void Image::show_seam()
+{
     int pos;
     float lur[3];
     Image energy(sobel());
     float seam_color[] = {255, 0, 0};
     int *path = new int[height()];
     Image positions(rows_(), cols_(), getChannels());
-    for (int i = rows_() - 2; i > -1; --i) {
-        for (int j = 0; j < cols_(); ++j) {
+    for (int i = rows_() - 2; i > -1; --i)
+    {
+        for (int j = 0; j < cols_(); ++j)
+        {
             lur[0] = energy.at(i + 1, j - 1);
             lur[1] = energy.at(i + 1, j);
             lur[2] = energy.at(i + 1, j + 1);
-            pos = get_min_pos(lur, 3);
+            pos = getMinPos(lur, 3);
             energy.set_at(i, j, lur[pos] + energy.at(i, j));
-            positions.set_at(i, j, (float) pos);
+            positions.set_at(i, j, (float)pos);
         }
     }
-    int pos_ = get_min_pos(energy.getData(), energy.cols_());
-//    DEBUG(energy, "SHOW_SEAM")
-    for (int i = 0; i < energy.rows_(); ++i) {
+    int pos_ = getMinPos(energy.getData(), energy.cols_());
+    //    DEBUG(energy, "SHOW_SEAM")
+    for (int i = 0; i < energy.rows_(); ++i)
+    {
         path[i] = pos_;
         energy.set_at(i, pos_, 0);
         setPixel(i, pos_, seam_color);
-        pos_ = pos_ - 1 + (int) positions.at(i, pos_);
+        pos_ = pos_ - 1 + (int)positions.at(i, pos_);
     }
 }
 
-Image Image::flip_v() {
+Image Image::flip_v()
+{
     Image flip(rows, cols, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; j++) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; j++)
+        {
             flip.setPixel(i, cols - 1 - j, getPixel(i, j));
         }
     }
     return flip;
 }
 
-Image Image::flip_h() {
+Image Image::flip_h()
+{
     Image flip(rows, cols, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; j++) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; j++)
+        {
             flip.setPixel(rows - 1 - i, j, getPixel(i, j));
         }
     }
     return flip;
 }
 
-Image Image::rot180() {
+Image Image::rot180()
+{
     Image rot_180(rows, cols, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; j++) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; j++)
+        {
             rot_180.setPixel(rows - 1 - i, cols - 1 - j, getPixel(i, j));
         }
     }
     return rot_180;
 }
 
-Image Image::rot90() {
+Image Image::rot90()
+{
     Image rot_90(cols, rows, channels);
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; j++) {
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; j++)
+        {
             rot_90.setPixel(j, i, getPixel(i, j));
         }
     }
     return rot_90;
 }
 
-Image Image::concat_v(Image &image) {
-    if (cols != image.cols) {
+Image Image::concat_v(Image &image)
+{
+    if (cols != image.cols)
+    {
         DEBUG("The image must have the same number of columns.", "Concat_v")
         return nullptr;
     }
     Image concatenateImage(rows + image.rows, cols, channels);
-//    DEBUG(concatenateImage, "Concat_v")
-//    DEBUG(*this, "Concat_v")
-//    DEBUG(image, "Concat_v")
-    for (int i = 0; i < concatenateImage.rows; ++i) {
-        for (int j = 0; j < cols; j++) {
-            i < rows ? concatenateImage.setPixel(i, j, getPixel(i, j)) :
-            concatenateImage.setPixel(i, j, image.getPixel(i - rows, j));
+    //    DEBUG(concatenateImage, "Concat_v")
+    //    DEBUG(*this, "Concat_v")
+    //    DEBUG(image, "Concat_v")
+    for (int i = 0; i < concatenateImage.rows; ++i)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            i < rows ? concatenateImage.setPixel(i, j, getPixel(i, j)) : concatenateImage.setPixel(i, j, image.getPixel(i - rows, j));
         }
     }
 
     return concatenateImage;
 }
 
-Image Image::concat_h(Image &image) {
-    if (rows != image.rows) {
+Image Image::concat_h(Image &image)
+{
+    if (rows != image.rows)
+    {
         DEBUG("The image must have the same number of rows.", "Concat_h")
         return nullptr;
     }
     Image concatenateImage(rows, cols + image.cols, channels);
-//    DEBUG(concatenateImage, "Concat_h")
-//    DEBUG(*this, "Concat_h")
-//    DEBUG(image, "Concat_h")
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < concatenateImage.cols; j++) {
-            j < cols ? concatenateImage.setPixel(i, j, getPixel(i, j)) :
-            concatenateImage.setPixel(i, j, image.getPixel(i, j - cols));
+    //    DEBUG(concatenateImage, "Concat_h")
+    //    DEBUG(*this, "Concat_h")
+    //    DEBUG(image, "Concat_h")
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < concatenateImage.cols; j++)
+        {
+            j < cols ? concatenateImage.setPixel(i, j, getPixel(i, j)) : concatenateImage.setPixel(i, j, image.getPixel(i, j - cols));
         }
     }
 
     return concatenateImage;
 }
 
-Tree *new_tree(float initial_value) {
+Tree *new_tree(float initial_value)
+{
     Tree *m = static_cast<Tree *>(malloc(sizeof(Tree)));
-    if (m == nullptr) return nullptr;
+    if (m == nullptr)
+        return nullptr;
     m->left = nullptr;
     m->right = nullptr;
     m->l = nullptr;
@@ -1107,7 +963,8 @@ Tree *new_tree(float initial_value) {
 }
 // TREE
 
-Tree::Tree() : _node() {
+Tree::Tree() : _node()
+{
     this->left = nullptr;
     this->right = nullptr;
     this->next = nullptr;
@@ -1117,53 +974,61 @@ Tree::Tree() : _node() {
     this->value = 0;
 }
 
-Tree::Tree(float value) : Tree() {
+Tree::Tree(float value) : Tree()
+{
     this->value = value;
 }
 
-Tree::Tree(Image image) : _node() {
+Tree::Tree(Image image) : _node()
+{
     Tree *trees = new Tree[image.size_()];
     float *data = image.getData();
     int col = 0, row = 0;
-    for (int i = 0; i < image.rows_(); i++) {
-        for (int j = 0; j < image.cols_(); j++) {
+    for (int i = 0; i < image.rows_(); i++)
+    {
+        for (int j = 0; j < image.cols_(); j++)
+        {
             trees[row + j].value = image.at(i, j);
-            if (j != 0) {
+            if (j != 0)
+            {
                 trees[row + j].left = &trees[row + j - 1];
-                if (i != image.rows_() - 1) {
+                if (i != image.rows_() - 1)
+                {
                     trees[row + j].l = &trees[row + image.cols_() + j - 1];
                 }
             }
-            if (j + 1 != image.cols_()) {
+            if (j + 1 != image.cols_())
+            {
                 trees[row + j].right = &trees[row + j + 1];
-                if (i != image.rows_() - 1) {
+                if (i != image.rows_() - 1)
+                {
                     trees[row + j].r = &trees[row + image.cols_() + j + 1];
                 }
             }
-            if (i != image.rows_() - 1) {
+            if (i != image.rows_() - 1)
+            {
                 trees[row + j].u = &trees[row + image.cols_() + j];
             }
-            trees[row + j].next = trees[row + j].value == 0 ? trees[row + j].l :
-                                  (trees[row + j].value == 1 ? trees[row + j].u : trees[row + j].r);
-
+            trees[row + j].next = trees[row + j].value == 0 ? trees[row + j].l : (trees[row + j].value == 1 ? trees[row + j].u : trees[row + j].r);
         }
         row += image.cols_();
     }
 
-//    image.printData(10);
-//    for (int i = 0; i < 10; i++) {
-//        std::cout << trees[i];
-//    }
-//    col = 20;
-//    for (int i = 0; i < col; i++) {
-//        for (int j = 0; j < 2*col; ++j)
-//            std::cout << image.at(i, j) << " ";
-//        printf("\n");
-//    }
-//    printf("\n");
+    //    image.printData(10);
+    //    for (int i = 0; i < 10; i++) {
+    //        std::cout << trees[i];
+    //    }
+    //    col = 20;
+    //    for (int i = 0; i < col; i++) {
+    //        for (int j = 0; j < 2*col; ++j)
+    //            std::cout << image.at(i, j) << " ";
+    //        printf("\n");
+    //    }
+    //    printf("\n");
 }
 
-std::ostream &operator<<(std::ostream &os, const Tree &tree) {
+std::ostream &operator<<(std::ostream &os, const Tree &tree)
+{
     os << "L: " << ((tree.left == nullptr) ? INFINITY : tree.left->value)
        << " V: " << tree.value
        << " R: " << ((tree.right == nullptr) ? INFINITY : tree.right->value)

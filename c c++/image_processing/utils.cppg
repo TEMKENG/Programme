@@ -1,0 +1,88 @@
+#include "utils.h"
+
+template <typename T, typename Dtype>
+Dtype *cast(T *src, size_t length, Dtype none)
+{
+    Dtype *dst = new Dtype[length];
+    for (int i = 0; i < length; i++)
+    {
+        dst[i] = (Dtype) src[i];
+    }
+    return dst;
+}
+
+
+template <typename T>
+T *copy(T *pointer, size_t length)
+{
+    T *buffer = new T[length];
+    for (int i = 0; i < length; i++)
+        buffer[i] = pointer[i];
+
+    return buffer;
+}
+
+template <typename T>
+T getMax(T *data, size_t size)
+{
+    T max_value = data[0];
+    for (int i = 1; i < size; i++)
+    {
+        if (data[i] > max_value)
+            max_value = data[i];
+    }
+    return max_value;
+}
+
+template <typename T>
+T getMin(T *data, size_t size)
+{
+    T min_ = data[0];
+    for (int i = 1; i < size; i++)
+    {
+        if (data[i] < min_)
+            min_ = data[i];
+    }
+    return min_;
+}
+
+template <typename T>
+void init(T *buffer, size_t length, T default_value)
+{
+    for (int i = 0; i < length; ++i)
+        buffer[i] = default_value;
+}
+
+template <typename T>
+T *init(size_t length, T value)
+{
+    T *buffer = new T[length];
+    for (int i = 0; i < length; ++i)
+        buffer[i] = value;
+
+    return buffer;
+}
+
+template <typename T>
+void print(const T *data, int col, int row)
+{
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+            cout << data[i * row + j] << " ";
+        printf("\n");
+    }
+}
+
+// int main()
+// {
+//     uint16_t a(100);
+//     uint16_t *data;
+//     data = init(10, a);
+//     uint16_t *b = copy(data, 10);
+
+//     print(data, 5, 2);
+//     printf("\n");
+//     print(b, 5, 2);
+//     return 0;
+// }
